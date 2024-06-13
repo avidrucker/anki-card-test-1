@@ -10,15 +10,17 @@
 - [ ] Auto-prettify/indent or button to do similar
 - [x] Ability to save/load import/export designs
 - [x] Ability to name designs
-- [ ] Add ability to add images to designs
+- [ ] Add ability to clear out / reset all fields
+- [ ] Add ability to add custom images to designs by uploading an image
+- [x] Add images to one or more designs
 - [x] Fix content overflow for card w/ scrollbar (overflow should not increase page height)
-- [ ] Fix focus issue where name input requires 2 clicks (should be 1)
+- [x] Fix focus issue where name input requires 2 clicks (should be 1)
 - [o] Create several card templates to export
   - [x] Zenburn theme
   - [x] Blackboard with chalk font
   - [x] Black ink on rice paper
   - [ ] Lined paper / index card with hand-written pencil font
-  - [ ] Beautiful full-photo spread
+  - [x] Beautiful full-photo spread
   - [ ] 8-Bit console game
   - [ ] Illuminated manuscript
 - [ ] Create menu dropdown for included card templates
@@ -27,7 +29,7 @@
 - [x] Add ability to set styles on the card itself from within CSS editor w/ .card class
 - [x] Add ability to set root styles and CSS vars
 - [x] Fix global CSS style pollution, prevent CSS styles from being applied outside of card preview pane
-- [ ] Make tab buttons look more tab-like (remove bottom padding & bottom rounding)
+- [x] Make tab buttons look more tab-like (remove bottom padding & bottom rounding)
 - [ ] Reimplement tab buttons as radio buttons for a11y purposes
 - [ ] Replace "Copy" button text with SVG icon
 - [ ] Use i18n library to enable internationalization of app interface
