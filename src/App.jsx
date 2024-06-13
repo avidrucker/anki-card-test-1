@@ -3,7 +3,8 @@ import './App.css'
 
 const STYLE_SHEET_2 = 1;  // Index of the second style sheet in the document
 
-const BTN_STYLE = "f6 link dim br3 ph3 pv2 mb1 mr1 dib";
+const MENU_BTN_STYLE = "f6 link dim br3 ph2 pv2 ml1 dib"
+const BTN_STYLE = "f6 link dim br3 ph2 pv2 mb1 mr1 dib";
 const ACTIVE_BTN_STYLE = "fw6";
 const INACTIVE_BTN_STYLE = "light-gray";
 const CARD_STYLE = "bg-white br3 ba b--black-10";
@@ -110,21 +111,75 @@ function App() {
     localStorage.setItem('designName', designName);
   };
 
+  const saveDesignToJSON = () => {
+    const designData = {
+      frontHtml,
+      backHtml,
+      cardCss,
+      designName
+    };
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(designData));
+    const downloadAnchorNode = document.createElement('a');
+    downloadAnchorNode.setAttribute("href", dataStr);
+    downloadAnchorNode.setAttribute("download", designName + ".json");
+    document.body.appendChild(downloadAnchorNode); // required for firefox
+    downloadAnchorNode.click();
+    downloadAnchorNode.remove();
+  }
+  
+  const handleFileRead = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const content = e.target.result;
+        try {
+          const jsonData = JSON.parse(content);
+          setFrontHtml(jsonData.frontHtml || '');
+          setBackHtml(jsonData.backHtml || '');
+          // Update the CSS and immediately apply it
+          if (jsonData.cardCss) {
+            setCardCss(jsonData.cardCss);
+            applyStyles(jsonData.cardCss); // Apply styles immediately after loading
+        }
+          setDesignName(jsonData.designName || 'Untitled');
+        } catch (error) {
+          console.error('Error parsing JSON:', error);
+          alert('Invalid JSON file');
+        }
+      };
+      reader.readAsText(file);
+    }
+  }
+  
+  const loadDesignFromJSON = () => {
+    const fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.onchange = handleFileRead;
+    fileInput.click();
+  }  
+
   return (
     <div className="App w-100 flex flex-column vh-100 pb2">
-      <header>
-        <h1 className="ma0 pv2 ph2 dib">Card Designer</h1>
-        {editingName ?
-          <input 
-            type="text" 
-            placeholder="Design name" 
-            value={designName} 
-            onChange={(e) => setDesignName(e.target.value)}
-            onBlur={() => setEditingName(false)}
-            onKeyDown={(e) => { if (e.key === 'Enter') setEditingName(false); }}
-          /> :
-          <h2 className="ma0 pv1 ph2 dib" onClick={() => setEditingName(true)}>{designName}</h2>
-        }
+      <header className="flex justify-between items-center">
+        <div className="">
+          <h1 className="ma0 pv2 ph2 dib">Card Designer</h1>
+          {editingName ?
+            <input 
+              type="text" 
+              placeholder="Design name" 
+              value={designName} 
+              onChange={(e) => setDesignName(e.target.value)}
+              onBlur={() => setEditingName(false)}
+              onKeyDown={(e) => { if (e.key === 'Enter') setEditingName(false); }}
+            /> :
+            <h2 className="ma0 pv1 ph2 dib" onClick={() => setEditingName(true)}>{designName}</h2>
+          }
+        </div>
+        <div className="pr2">
+          <button onClick={saveDesignToJSON} className={`${MENU_BTN_STYLE}`}>Save Design</button>
+          <button onClick={loadDesignFromJSON} className={MENU_BTN_STYLE}>Load Design</button>
+        </div>
         </header>
       <div className="workspace flex flex-auto ph2">
         <div className="editor w-50 flex flex-column pr1">
