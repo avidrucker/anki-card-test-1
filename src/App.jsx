@@ -7,7 +7,7 @@ const MENU_BTN_STYLE = "f6 link dim br3 ph2 pv2 ml1 dib"
 const BTN_STYLE = "f6 link dim br3 ph2 pv2 mb1 mr1 dib";
 const ACTIVE_BTN_STYLE = "fw6";
 const INACTIVE_BTN_STYLE = "light-gray";
-const CARD_STYLE = "bg-white br3 ba b--black-10";
+const CARD_STYLE = "br3 ba b--black-10";
 
 function App() {
   const [frontHtml, setFrontHtml] = useState('');
