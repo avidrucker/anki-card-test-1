@@ -34,4 +34,7 @@
 - [ ] Replace "Copy" button text with SVG icon
 - [ ] Use i18n library to enable internationalization of app interface
 - [x] Fix bug where textarea becomes resizable when it shouldn't after editing content
+- [ ] Add branding icon (Anki icon?) to the header
+- [ ] Implement ability to collapse/expand editor/preview panes
+
 
