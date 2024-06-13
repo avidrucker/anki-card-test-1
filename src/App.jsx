@@ -129,7 +129,7 @@ function App() {
           <div className="relative w-100 flex-auto flex flex-column">
             <button onClick={copyToClipboard}
                 className={`absolute top-0 right-0 mt1 mr1 ${BTN_STYLE}`}>
-                  {copied ? "Copied!" : "Copy Code"}
+                  {copied ? "Copied!" : "Copy"}
             </button>
             <textarea
               className="code w-100 flex-auto resize-none"
