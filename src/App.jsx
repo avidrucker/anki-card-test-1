@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import './App.css'
 
 const STYLE_SHEET_2 = 1;  // Index of the second style sheet in the document
@@ -18,6 +18,7 @@ function App() {
   const [copied, setCopied] = useState(false);
   const [designName, setDesignName] = useState(localStorage.getItem('designName') || 'Untitled');
   const [editingName, setEditingName] = useState(false);
+  const nameInputRef = useRef(null); // Create a reference to the input element
 
   const getCurrentTextareaContent = () => {
     if (activeTab === 'frontHtml') {
@@ -59,6 +60,13 @@ function App() {
     saveToLocalStorage();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [frontHtml, backHtml, cardCss, activeTab, viewSide, designName]);  // Including all dependencies for saving
+
+  useEffect(() => {
+    // Whenever editingName becomes true, focus the input
+    if (editingName) {
+        nameInputRef.current && nameInputRef.current.focus();
+    }
+  }, [editingName]); // Depend on editingName to re-run the effect
 
   const applyStyles = (css) => {
     const styleSheet = document.styleSheets[STYLE_SHEET_2];
@@ -188,6 +196,7 @@ function App() {
           <h1 className="ma0 pv2 ph2 dib">Card Designer</h1>
           {editingName ?
             <input 
+              ref={nameInputRef} 
               type="text" 
               placeholder="Design name" 
               value={designName} 
