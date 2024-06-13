@@ -7,3 +7,6 @@
 - [x] Padding
 - [ ] Mobile support (responsive single-column display)
 - [ ] Ability to include Front on Back `{{FrontSide}}`
+- [ ] Auto-prettify/indent or button to do similar
+- [ ] Ability to save/load import/export designs
+- [x] Ability to name designs
