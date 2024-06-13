@@ -237,8 +237,14 @@ function App() {
         </div>
         <div className="card-display w-50 flex flex-column pl1">
           <div className="view-tabs">
-            <button onClick={() => handleViewChange('front')} className={viewSide === 'front' ? `active ${ACTIVE_BTN_STYLE + " " + BTN_STYLE + " br3--btn-l "}` : `${INACTIVE_BTN_STYLE + " " + BTN_STYLE + " br3--btn-l"}`}>Front View</button>
-            <button onClick={() => handleViewChange('back')} className={viewSide === 'back' ? `active ${ACTIVE_BTN_STYLE + " " + BTN_STYLE + " br3--btn-r "}` : `${INACTIVE_BTN_STYLE + " " + BTN_STYLE + " br3--btn-r"}`}>Back View</button>
+            <button onClick={() => handleViewChange('front')} 
+              className={viewSide === 'front' ? 
+                `active ${ACTIVE_BTN_STYLE + " " + BTN_STYLE + " br3--btn-l "}` : 
+                `${INACTIVE_BTN_STYLE + " " + BTN_STYLE + " br3--btn-l"}`}>Front View</button>
+            <button onClick={() => handleViewChange('back')} 
+              className={viewSide === 'back' ? 
+                `active ${ACTIVE_BTN_STYLE + " " + BTN_STYLE + " br3--btn-r "}` : 
+                `${INACTIVE_BTN_STYLE + " " + BTN_STYLE + " br3--btn-r"}`}>Back View</button>
           </div>
           <div className="card-container flex-auto flex flex-column">
             <div className={`card flex-auto overflow-y-auto ${CARD_STYLE}`} dangerouslySetInnerHTML={{ __html: viewSide === 'front' ? frontHtml : backHtml }} />
