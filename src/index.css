@@ -1,3 +1,7 @@
+/* Q: Is there a way to dynamically load Google Fonts w/o 
+ requiring it to be loaded on page load? i.e. lazy load on-demand */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap');
+
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
 
