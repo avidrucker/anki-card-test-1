@@ -3,8 +3,8 @@ import './App.css'
 
 const STYLE_SHEET_2 = 1;  // Index of the second style sheet in the document
 
-const MENU_BTN_STYLE = "f6 link dim br3 ph2 pv2 ml1 dib"
-const BTN_STYLE = "f6 link dim br3 ph2 pv2 mb1 mr1 dib";
+const MENU_BTN_STYLE = "f6 link dim br3 w35 pv2 ml1 dib"
+const BTN_STYLE = "f6 link dim br3 w35 pv2 dib";
 const ACTIVE_BTN_STYLE = "fw6";
 const INACTIVE_BTN_STYLE = "light-gray";
 const CARD_STYLE = "br3 ba b--black-10";
@@ -208,16 +208,16 @@ function App() {
           <div className="tabs">
             <button onClick={() => handleTabChange('frontHtml')} 
               className={activeTab === 'frontHtml' ? 
-                ACTIVE_BTN_STYLE + " " + BTN_STYLE : 
-                INACTIVE_BTN_STYLE + " " + BTN_STYLE}>Front HTML</button>
+                ACTIVE_BTN_STYLE + " " + BTN_STYLE + " br3--btn-l" : 
+                INACTIVE_BTN_STYLE + " " + BTN_STYLE + " br3--btn-l"}>Front HTML</button>
             <button onClick={() => handleTabChange('backHtml')} 
               className={activeTab === 'backHtml' ? 
-                ACTIVE_BTN_STYLE + " " + BTN_STYLE : 
-                INACTIVE_BTN_STYLE + " " + BTN_STYLE}>Back HTML</button>
+                ACTIVE_BTN_STYLE + " " + BTN_STYLE + " br3--btn-m" : 
+                INACTIVE_BTN_STYLE + " " + BTN_STYLE + " br3--btn-m"}>Back HTML</button>
             <button onClick={() => handleTabChange('cardCss')} 
               className={activeTab === 'cardCss' ? 
-                ACTIVE_BTN_STYLE + " " + BTN_STYLE : 
-                INACTIVE_BTN_STYLE + " " + BTN_STYLE}>CSS</button>
+                ACTIVE_BTN_STYLE + " " + BTN_STYLE + " br3--btn-r" : 
+                INACTIVE_BTN_STYLE + " " + BTN_STYLE + " br3--btn-r"}>CSS</button>
           </div>
           <div className="relative w-100 flex-auto flex flex-column">
             <button onClick={copyToClipboard}
@@ -237,8 +237,8 @@ function App() {
         </div>
         <div className="card-display w-50 flex flex-column pl1">
           <div className="view-tabs">
-            <button onClick={() => handleViewChange('front')} className={viewSide === 'front' ? `active ${ACTIVE_BTN_STYLE + " " + BTN_STYLE}` : `${INACTIVE_BTN_STYLE + " " + BTN_STYLE}`}>Front View</button>
-            <button onClick={() => handleViewChange('back')} className={viewSide === 'back' ? `active ${ACTIVE_BTN_STYLE + " " + BTN_STYLE}` : `${INACTIVE_BTN_STYLE + " " + BTN_STYLE}`}>Back View</button>
+            <button onClick={() => handleViewChange('front')} className={viewSide === 'front' ? `active ${ACTIVE_BTN_STYLE + " " + BTN_STYLE + " br3--btn-l "}` : `${INACTIVE_BTN_STYLE + " " + BTN_STYLE + " br3--btn-l"}`}>Front View</button>
+            <button onClick={() => handleViewChange('back')} className={viewSide === 'back' ? `active ${ACTIVE_BTN_STYLE + " " + BTN_STYLE + " br3--btn-r "}` : `${INACTIVE_BTN_STYLE + " " + BTN_STYLE + " br3--btn-r"}`}>Back View</button>
           </div>
           <div className="card-container flex-auto flex flex-column">
             <div className={`card flex-auto overflow-y-auto ${CARD_STYLE}`} dangerouslySetInnerHTML={{ __html: viewSide === 'front' ? frontHtml : backHtml }} />

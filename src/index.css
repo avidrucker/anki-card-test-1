@@ -19,3 +19,19 @@
 .resize-none {
   resize: none !important;
 }
+
+.br3--btn-m {
+  border-radius: 0rem;
+}
+
+.br3--btn-r {
+  border-radius: 0rem 0.5rem 0rem 0rem;
+}
+
+.br3--btn-l {
+  border-radius: 0.5rem 0rem 0rem 0rem;
+}
+
+.w35 {
+  width: 6rem;
+}
