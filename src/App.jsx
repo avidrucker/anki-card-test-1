@@ -233,7 +233,7 @@ function App() {
               rows="10"
               cols="30"
             />
-        </div>
+          </div>
         </div>
         <div className="card-display w-50 flex flex-column pl1">
           <div className="view-tabs">
