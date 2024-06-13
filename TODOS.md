@@ -8,5 +8,28 @@
 - [ ] Mobile support (responsive single-column display)
 - [ ] Ability to include Front on Back `{{FrontSide}}`
 - [ ] Auto-prettify/indent or button to do similar
-- [ ] Ability to save/load import/export designs
+- [x] Ability to save/load import/export designs
 - [x] Ability to name designs
+- [ ] Add ability to add images to designs
+- [x] Fix content overflow for card w/ scrollbar (overflow should not increase page height)
+- [ ] Fix focus issue where name input requires 2 clicks (should be 1)
+- [o] Create several card templates to export
+  - [x] Zenburn theme
+  - [x] Blackboard with chalk font
+  - [x] Black ink on rice paper
+  - [ ] Lined paper / index card with hand-written pencil font
+  - [ ] Beautiful full-photo spread
+  - [ ] 8-Bit console game
+  - [ ] Illuminated manuscript
+- [ ] Create menu dropdown for included card templates
+- [ ] Add ability to load built-in card templates
+- [x] Fix issue where CSS styles are not applied immediately after loading a design
+- [x] Add ability to set styles on the card itself from within CSS editor w/ .card class
+- [x] Add ability to set root styles and CSS vars
+- [x] Fix global CSS style pollution, prevent CSS styles from being applied outside of card preview pane
+- [ ] Make tab buttons look more tab-like (remove bottom padding & bottom rounding)
+- [ ] Reimplement tab buttons as radio buttons for a11y purposes
+- [ ] Replace "Copy" button text with SVG icon
+- [ ] Use i18n library to enable internationalization of app interface
+- [x] Fix bug where textarea becomes resizable when it shouldn't after editing content
+
