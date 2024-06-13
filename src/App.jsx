@@ -62,23 +62,45 @@ function App() {
 
   const applyStyles = (css) => {
     const styleSheet = document.styleSheets[STYLE_SHEET_2];
-    try {
-      styleSheet.deleteRule(0);
-    } catch (error) {
-      console.log("No rule to delete.");
+
+    // Remove existing rules
+    while (styleSheet.cssRules.length > 0) {
+        styleSheet.deleteRule(0);
     }
-    try {
-      styleSheet.insertRule(`.card { ${css} }`, 0);
-    } catch (error) {
-      console.error("Failed to insert rule:", error);
-    }
+
+    // Remove comments
+    css = css.replace(/\/\*[\s\S]*?\*\//g, '');
+
+    // Insert new rules one by one
+    const rules = css.split('}')
+        .filter(rule => rule.trim() !== '')
+        .map(rule => {
+            // If the rule is for :root, do not prepend .card-container
+            if (rule.trim().startsWith(':root')) {
+                return rule.trim();
+            } else if (!rule.trim().startsWith('.card-container')) {
+                // Prepend .card-container to all other rules
+                return `.card-container ${rule.trim()}`;
+            }
+            return rule.trim();
+        })
+        .map(rule => rule + '}')  // Close the rule
+        .filter(rule => rule.length > 2);  // Filter out empty rules
+
+    rules.forEach(rule => {
+        try {
+            styleSheet.insertRule(rule, styleSheet.cssRules.length);
+        } catch (error) {
+            console.error("Failed to insert rule:", rule, error);
+        }
+    });
   };
 
   const handleCssChange = (event) => {
     const newCss = event.target.value;
     setCardCss(newCss);
     applyStyles(newCss);  // Apply the raw CSS from the editor
-  };
+};
 
   const handleChange = (event) => {
     const value = event.target.value;
@@ -218,7 +240,7 @@ function App() {
             <button onClick={() => handleViewChange('front')} className={viewSide === 'front' ? `active ${ACTIVE_BTN_STYLE + " " + BTN_STYLE}` : `${INACTIVE_BTN_STYLE + " " + BTN_STYLE}`}>Front View</button>
             <button onClick={() => handleViewChange('back')} className={viewSide === 'back' ? `active ${ACTIVE_BTN_STYLE + " " + BTN_STYLE}` : `${INACTIVE_BTN_STYLE + " " + BTN_STYLE}`}>Back View</button>
           </div>
-          <div className="flex-auto flex flex-column">
+          <div className="card-container flex-auto flex flex-column">
             <div className={`card flex-auto overflow-y-auto ${CARD_STYLE}`} dangerouslySetInnerHTML={{ __html: viewSide === 'front' ? frontHtml : backHtml }} />
           </div>
         </div>
