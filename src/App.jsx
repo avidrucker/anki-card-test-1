@@ -15,6 +15,8 @@ function App() {
   const [activeTab, setActiveTab] = useState(localStorage.getItem('activeTab') || 'frontHtml');
   const [viewSide, setViewSide] = useState(localStorage.getItem('viewSide') || 'front');
   const [copied, setCopied] = useState(false);
+  const [designName, setDesignName] = useState(localStorage.getItem('designName') || 'Untitled');
+  const [editingName, setEditingName] = useState(false);
 
   const getCurrentTextareaContent = () => {
     if (activeTab === 'frontHtml') {
@@ -55,7 +57,7 @@ function App() {
   useEffect(() => {
     saveToLocalStorage();
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [frontHtml, backHtml, cardCss, activeTab, viewSide]);  // Including all dependencies for saving
+  }, [frontHtml, backHtml, cardCss, activeTab, viewSide, designName]);  // Including all dependencies for saving
 
   const applyStyles = (css) => {
     const styleSheet = document.styleSheets[STYLE_SHEET_2];
@@ -105,11 +107,25 @@ function App() {
     localStorage.setItem('cardCss', cardCss);
     localStorage.setItem('activeTab', activeTab);
     localStorage.setItem('viewSide', viewSide);
+    localStorage.setItem('designName', designName);
   };
 
   return (
     <div className="App w-100 flex flex-column vh-100 pb2">
-      <h1 className="ma0 pv2 ph2">Card Designer</h1>
+      <header>
+        <h1 className="ma0 pv2 ph2 dib">Card Designer</h1>
+        {editingName ?
+          <input 
+            type="text" 
+            placeholder="Design name" 
+            value={designName} 
+            onChange={(e) => setDesignName(e.target.value)}
+            onBlur={() => setEditingName(false)}
+            onKeyDown={(e) => { if (e.key === 'Enter') setEditingName(false); }}
+          /> :
+          <h2 className="ma0 pv1 ph2 dib" onClick={() => setEditingName(true)}>{designName}</h2>
+        }
+        </header>
       <div className="workspace flex flex-auto ph2">
         <div className="editor w-50 flex flex-column pr1">
           <div className="tabs">
