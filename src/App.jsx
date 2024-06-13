@@ -77,7 +77,7 @@ function App() {
   const handleCssChange = (event) => {
     const newCss = event.target.value;
     setCardCss(newCss);
-    applyStyles(newCss);
+    applyStyles(newCss);  // Apply the raw CSS from the editor
   };
 
   const handleChange = (event) => {
