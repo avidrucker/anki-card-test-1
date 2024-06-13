@@ -147,7 +147,9 @@ function App() {
             <button onClick={() => handleViewChange('front')} className={viewSide === 'front' ? `active ${ACTIVE_BTN_STYLE + " " + BTN_STYLE}` : `${INACTIVE_BTN_STYLE + " " + BTN_STYLE}`}>Front View</button>
             <button onClick={() => handleViewChange('back')} className={viewSide === 'back' ? `active ${ACTIVE_BTN_STYLE + " " + BTN_STYLE}` : `${INACTIVE_BTN_STYLE + " " + BTN_STYLE}`}>Back View</button>
           </div>
-          <div className={`card flex-auto ${CARD_STYLE}`} dangerouslySetInnerHTML={{ __html: viewSide === 'front' ? frontHtml : backHtml }} />
+          <div className="flex-auto flex flex-column">
+            <div className={`card flex-auto overflow-y-auto ${CARD_STYLE}`} dangerouslySetInnerHTML={{ __html: viewSide === 'front' ? frontHtml : backHtml }} />
+          </div>
         </div>
       </div>
     </div>
