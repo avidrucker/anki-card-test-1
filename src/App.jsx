@@ -76,7 +76,7 @@ function App() {
         .filter(rule => rule.trim() !== '')
         .map(rule => {
             // If the rule is for :root, do not prepend .card-container
-            if (rule.trim().startsWith(':root')) {
+            if (rule.trim().startsWith(':root') || rule.trim().startsWith('@font-face')) {
                 return rule.trim();
             } else if (!rule.trim().startsWith('.card-container')) {
                 // Prepend .card-container to all other rules
