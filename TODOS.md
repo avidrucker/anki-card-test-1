@@ -3,7 +3,7 @@
 - [x] Toggle-able HTML front, HTML back, and CSS editor panes
 - [x] Toggle-able card front and back display
 - [x] Convenient "copy code" button for editor pane
-- [ ] Syntax highlighting for HTML and CSS editor panes
+- [x] Syntax highlighting for HTML and CSS editor panes
 - [x] Padding
 - [ ] Mobile support (responsive single-column display)
 - [ ] Ability to include Front on Back `{{FrontSide}}`
@@ -21,11 +21,11 @@
   - [x] Black ink on rice paper
   - [x] Lined paper / index card with hand-written pencil font
   - [x] Beautiful full-photo spread
-  - [ ] 8-Bit console game
+  - [x] 8-Bit console game
   - [ ] Illuminated manuscript
-  - [ ] Green code rain
-- [ ] Create menu dropdown for included card templates
-- [ ] Add ability to load built-in card templates
+  - [x] Green code rain
+- [x] Create menu dropdown for included card templates
+- [x] Add ability to load built-in card templates
 - [x] Fix issue where CSS styles are not applied immediately after loading a design
 - [x] Add ability to set styles on the card itself from within CSS editor w/ .card class
 - [x] Add ability to set root styles and CSS vars
@@ -45,3 +45,5 @@
 - [x] Add ability to import Google fonts directly from user space (CSS editor pane)
 - [x] Fix bug where syntax highlighting turns off after switching tabs or refreshing page
 - [x] Make "Copy" button transparent by default, and solid on hover
+- [ ] Replace Save/Export and Load/Import buttons w/ SVG icons
+- [ ] Make non-active tabs dimmed by default, and brighten on hover
