@@ -1,5 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import './App.css'
+import hljs from 'highlight.js';
+// import 'highlight.js/styles/default.css';
+import 'highlight.js/styles/monokai-sublime.css';
 
 const STYLE_SHEET_2 = 1;  // Index of the second style sheet in the document
 
@@ -24,6 +27,15 @@ function App() {
   const [designName, setDesignName] = useState(localStorage.getItem('designName') || 'Untitled');
   const [editingName, setEditingName] = useState(false);
   const nameInputRef = useRef(null); // Create a reference to the input element
+  const textareaRef = useRef(null); // Create a reference to the textarea element
+  const [isEditing, setIsEditing] = useState(false); 
+
+  useEffect(() => {
+    if (isEditing) {
+      textareaRef.current?.focus();  // Automatically focus the textarea when editing
+    }
+  }, [isEditing]); // Re-run the effect when isEditing changes
+  
 
   const getCurrentTextareaContent = () => {
     if (activeTab === 'frontHtml') {
@@ -210,6 +222,27 @@ function App() {
     fileInput.click();
   }  
 
+  useEffect(() => {
+    hljs.highlightAll();
+  });  
+
+  useEffect(() => {
+    // Use setTimeout to ensure this runs after DOM updates
+    setTimeout(() => {
+      document.querySelectorAll('pre code').forEach((block) => {
+        // Check if the block has already been highlighted
+        if (block.dataset.highlighted) {
+          // Remove the attribute to allow re-highlighting
+          delete block.dataset.highlighted;
+        }
+        // Now apply highlighting
+        hljs.highlightElement(block);
+        // Set the attribute to mark it as highlighted
+        block.dataset.highlighted = 'yes';
+      });
+    }, 0); // A minimal delay to ensure all DOM updates have been processed
+  }, [frontHtml, backHtml, cardCss, activeTab, isEditing]); // Dependency array to determine when to re-run the effect
+
   return (
     <div className="App w-100 flex flex-column vh-100 pb2">
       <header className="flex justify-between items-center">
@@ -255,15 +288,29 @@ function App() {
               className={`absolute top-0 right-0 mt1 mr1 ${BTN_STYLE_GLASS}`}>    
                   {copied ? checkIcon : copyIcon}
             </button>
-            <textarea
-              className="code w-100 flex-auto resize-none"
-              spellCheck="false"
-              value={activeTab === 'frontHtml' ? frontHtml : activeTab === 'backHtml' ? backHtml : cardCss}
-              onChange={handleChange}
-              placeholder={`${activeTab.replace('Html', ' HTML').replace('Css', ' CSS')} Content`}
-              rows="10"
-              cols="30"
-            />
+            {isEditing ? (
+              <textarea
+                ref={textareaRef}
+                className={"code w-100 flex-auto resize-none " + (isEditing ? "db" : "dn")}
+                spellCheck="false"
+                value={activeTab === 'frontHtml' ? frontHtml : activeTab === 'backHtml' ? backHtml : cardCss}
+                onChange={handleChange}
+                onBlur={() => setIsEditing(false)}  // Hide textarea when it loses focus
+                placeholder={`${activeTab.replace('Html', ' HTML').replace('Css', ' CSS')} Content`}
+                rows="10"
+                cols="30"
+                autoFocus  // Automatically focus when shown
+              />
+            ) : (
+              <pre
+                className="w-100 flex-auto"
+                onClick={() => setIsEditing(true)}  // Show textarea when pre is clicked
+              >
+                <code className={(activeTab === 'frontHtml' ? "language-html" : activeTab === 'backHtml' ? "language-html" : "language-css") + " w-100 flex-auto hljs"}>
+                  {activeTab === 'frontHtml' ? frontHtml : activeTab === 'backHtml' ? backHtml : cardCss}
+                </code>
+              </pre>
+            )}
           </div>
         </div>
         <div className="card-display w-50 flex flex-column pl1">
