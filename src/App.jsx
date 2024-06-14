@@ -8,7 +8,7 @@ const STYLE_SHEET_2 = 1;  // Index of the second style sheet in the document
 
 const MENU_BTN_STYLE = "f6 link dim br3 w35 pv2 ml1 dib pointer"
 const BTN_STYLE = "f6 link dim br3 w35 pv2 dib pointer";
-const BTN_STYLE_GLASS = "link ba b--gray bw1 br3 dib pa2 w2 h2 bg-transparent pointer";
+const BTN_STYLE_GLASS = "link ba b--gray bw1 br3 dib pa2 w2 h2 pointer";
 const ACTIVE_BTN_STYLE = "fw6";
 const INACTIVE_BTN_STYLE = "light-gray";
 const CARD_STYLE = "ba b--black-10";
@@ -285,7 +285,7 @@ function App() {
           <div className="relative w-100 flex-auto flex flex-column">
             <button onClick={copyToClipboard}
               title={copied ? "Copied!" : "Copy"}
-              className={`absolute top-0 right-0 mt1 mr1 ${BTN_STYLE_GLASS}`}>    
+              className={`absolute top-0 right-0 mt3 mr3 transparent-btn ${BTN_STYLE_GLASS}`}>    
                   {copied ? checkIcon : copyIcon}
             </button>
             {isEditing ? (

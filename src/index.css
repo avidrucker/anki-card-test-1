@@ -47,3 +47,12 @@ code {
   word-wrap: break-word; /* ensures long words can break and wrap to the next line */
   overflow-wrap: break-word; /* similar to word-wrap, but a standard CSS property */
 }
+
+.transparent-btn {
+  background-color: rgba(255, 255, 255, 0.0);
+  transition: background-color .15s ease-in;
+}
+
+.transparent-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
