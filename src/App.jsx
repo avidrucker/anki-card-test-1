@@ -79,15 +79,29 @@ function App() {
     // Remove comments
     css = css.replace(/\/\*[\s\S]*?\*\//g, '');
 
-    // Insert new rules one by one
+    // Extract and handle @import statements
+    let importStatements = [];
+    css = css.replace(/@import\s+url\([^)]+\);?/g, (match) => {
+        importStatements.push(match.trim());
+        return ''; // Remove the import statement from the main CSS text
+    });
+
+    // Insert @import rules at the beginning
+    importStatements.forEach(importRule => {
+        try {
+            styleSheet.insertRule(importRule, styleSheet.cssRules.length);
+        } catch (error) {
+            console.error("Failed to insert import rule:", importRule, error);
+        }
+    });
+
+    // Process and insert other CSS rules
     const rules = css.split('}')
         .filter(rule => rule.trim() !== '')
         .map(rule => {
-            // If the rule is for :root, do not prepend .card-container
             if (rule.trim().startsWith(':root') || rule.trim().startsWith('@font-face')) {
                 return rule.trim();
             } else if (!rule.trim().startsWith('.card-container')) {
-                // Prepend .card-container to all other rules
                 return `.card-container ${rule.trim()}`;
             }
             return rule.trim();
@@ -97,7 +111,9 @@ function App() {
 
     rules.forEach(rule => {
         try {
-            styleSheet.insertRule(rule, styleSheet.cssRules.length);
+            if (!rule.startsWith('@import')) {  // Ensure no @import rules are in this batch
+                styleSheet.insertRule(rule, styleSheet.cssRules.length);
+            }
         } catch (error) {
             console.error("Failed to insert rule:", rule, error);
         }
