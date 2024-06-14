@@ -3,11 +3,16 @@ import './App.css'
 
 const STYLE_SHEET_2 = 1;  // Index of the second style sheet in the document
 
-const MENU_BTN_STYLE = "f6 link dim br3 w35 pv2 ml1 dib"
-const BTN_STYLE = "f6 link dim br3 w35 pv2 dib";
+const MENU_BTN_STYLE = "f6 link dim br3 w35 pv2 ml1 dib pointer"
+const BTN_STYLE = "f6 link dim br3 w35 pv2 dib pointer";
+const BTN_STYLE_GLASS = "link ba b--gray bw1 br3 dib pa2 w2 h2 bg-transparent pointer";
 const ACTIVE_BTN_STYLE = "fw6";
 const INACTIVE_BTN_STYLE = "light-gray";
 const CARD_STYLE = "ba b--black-10";
+
+// <!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) -->
+const copyIcon = <svg xmlns="http://www.w3.org/2000/svg" fill="gray" viewBox="0 0 448 512"><path d="M433.941 65.941l-51.882-51.882A48 48 0 0 0 348.118 0H176c-26.51 0-48 21.49-48 48v48H48c-26.51 0-48 21.49-48 48v320c0 26.51 21.49 48 48 48h224c26.51 0 48-21.49 48-48v-48h80c26.51 0 48-21.49 48-48V99.882a48 48 0 0 0-14.059-33.941zM266 464H54a6 6 0 0 1-6-6V150a6 6 0 0 1 6-6h74v224c0 26.51 21.49 48 48 48h96v42a6 6 0 0 1-6 6zm128-96H182a6 6 0 0 1-6-6V54a6 6 0 0 1 6-6h106v88c0 13.255 10.745 24 24 24h88v202a6 6 0 0 1-6 6zm6-256h-64V48h9.632c1.591 0 3.117.632 4.243 1.757l48.368 48.368a6 6 0 0 1 1.757 4.243V112z"/></svg>;
+const checkIcon = <svg xmlns="http://www.w3.org/2000/svg" fill="gray" viewBox="0 0 512 512"><path d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z"/></svg>
 
 function App() {
   const [frontHtml, setFrontHtml] = useState('');
@@ -246,8 +251,9 @@ function App() {
           </div>
           <div className="relative w-100 flex-auto flex flex-column">
             <button onClick={copyToClipboard}
-                className={`absolute top-0 right-0 mt1 mr1 ${BTN_STYLE}`}>
-                  {copied ? "Copied!" : "Copy"}
+              title={copied ? "Copied!" : "Copy"}
+              className={`absolute top-0 right-0 mt1 mr1 ${BTN_STYLE_GLASS}`}>    
+                  {copied ? checkIcon : copyIcon}
             </button>
             <textarea
               className="code w-100 flex-auto resize-none"
