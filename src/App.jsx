@@ -6,8 +6,8 @@ import 'highlight.js/styles/monokai-sublime.css';
 
 const STYLE_SHEET_2 = 1;  // Index of the second style sheet in the document
 
-const MENU_BTN_STYLE = "f6 link dim br3 w35 pv2 ml1 dib pointer"
 const BTN_STYLE = "f6 link dim br3 w35 pv2 dib pointer";
+const NARROW_BTN_STYLE = "f6 link dim br3 ph2 pv2 ml1 dib pointer";
 const BTN_STYLE_GLASS = "link ba b--gray bw1 br3 dib pa2 w2 h2 pointer";
 const ACTIVE_BTN_STYLE = "fw6";
 const INACTIVE_BTN_STYLE = "light-gray";
@@ -284,14 +284,22 @@ function App() {
         </div>
         <div className="pr2">
           {/* Dropdown for selecting a design */}
-          <select onChange={handleDesignChange} value={designName}>
+          <select className="ph2 pv2" onChange={handleDesignChange} value={designName}>
             <option value="">Select a Design</option>
             {availableDesigns.map(design => (
               <option key={design} value={design}>{design}</option>
             ))}
           </select>
-          <button onClick={saveDesignToJSON} className={`${MENU_BTN_STYLE}`}>Save Design</button>
-          <button onClick={loadDesignFromJSON} className={MENU_BTN_STYLE}>Load Design</button>
+          <button 
+            title="Save Design" 
+            onClick={saveDesignToJSON} 
+            className={`${NARROW_BTN_STYLE}`}>
+              Export</button>
+          <button
+            title="Load Design" 
+            onClick={loadDesignFromJSON} 
+            className={NARROW_BTN_STYLE}>
+              Import</button>
         </div>
         </header>
       <div className="workspace flex flex-auto ph2">
