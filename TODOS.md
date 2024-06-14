@@ -44,4 +44,4 @@
   - [ ] Green code rain filter
 - [x] Add ability to import Google fonts directly from user space (CSS editor pane)
 - [x] Fix bug where syntax highlighting turns off after switching tabs or refreshing page
-- [ ] Make "Copy" button transparent by default, and solid on hover
+- [x] Make "Copy" button transparent by default, and solid on hover
