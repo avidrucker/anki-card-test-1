@@ -19,10 +19,11 @@
   - [x] Zenburn theme
   - [x] Blackboard with chalk font
   - [x] Black ink on rice paper
-  - [ ] Lined paper / index card with hand-written pencil font
+  - [x] Lined paper / index card with hand-written pencil font
   - [x] Beautiful full-photo spread
   - [ ] 8-Bit console game
   - [ ] Illuminated manuscript
+  - [ ] Green code rain
 - [ ] Create menu dropdown for included card templates
 - [ ] Add ability to load built-in card templates
 - [x] Fix issue where CSS styles are not applied immediately after loading a design
@@ -36,5 +37,9 @@
 - [x] Fix bug where textarea becomes resizable when it shouldn't after editing content
 - [ ] Add branding icon (Anki icon?) to the header
 - [ ] Implement ability to collapse/expand editor/preview panes
-
-
+- [ ] Add an info page / modal listing relevant/useful info such as what fonts are available, basic usage instructions, etc.
+- [ ] Add SVG image filters
+  - [ ] Pixelize filter
+  - [ ] Ink filter
+  - [ ] Green code rain filter
+- [x] Add ability to import Google fonts directly from user space (CSS editor pane)
