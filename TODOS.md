@@ -32,7 +32,7 @@
 - [x] Fix global CSS style pollution, prevent CSS styles from being applied outside of card preview pane
 - [x] Make tab buttons look more tab-like (remove bottom padding & bottom rounding)
 - [ ] Reimplement tab buttons as radio buttons for a11y purposes
-- [ ] Replace "Copy" button text with SVG icon
+- [x] Replace "Copy" button text with SVG icon
 - [ ] Use i18n library to enable internationalization of app interface
 - [x] Fix bug where textarea becomes resizable when it shouldn't after editing content
 - [ ] Add branding icon (Anki icon?) to the header
@@ -43,3 +43,5 @@
   - [ ] Ink filter
   - [ ] Green code rain filter
 - [x] Add ability to import Google fonts directly from user space (CSS editor pane)
+- [x] Fix bug where syntax highlighting turns off after switching tabs or refreshing page
+- [ ] Make "Copy" button transparent by default, and solid on hover
