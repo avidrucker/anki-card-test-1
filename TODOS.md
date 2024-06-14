@@ -42,9 +42,10 @@
 - [ ] Implement ability to collapse/expand editor/preview panes
 - [ ] Add an info page / modal listing relevant/useful info such as what fonts are available, basic usage instructions, etc.
 - [ ] Add SVG image filters
-  - [ ] Pixelize filter
+  - [x] Pixelize filter
   - [ ] Ink filter
-  - [ ] Green code rain filter
+  - [x] Green code rain filter
+  - [ ] Pencil drawing filter
 - [ ] Add thematically appropriate Japanese fonts to each card type
   - [ ] Zenburn
   - [ ] Blackboard
