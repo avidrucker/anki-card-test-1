@@ -24,6 +24,9 @@
   - [x] 8-Bit console game
   - [ ] Illuminated manuscript
   - [x] Green code rain
+  - [ ] Glowing blue circuits
+  - [x] Blue architectural diagram
+  - [ ] Da Vinci's Notes
 - [x] Create menu dropdown for included card templates
 - [x] Add ability to load built-in card templates
 - [x] Fix issue where CSS styles are not applied immediately after loading a design
@@ -42,6 +45,17 @@
   - [ ] Pixelize filter
   - [ ] Ink filter
   - [ ] Green code rain filter
+- [ ] Add thematically appropriate Japanese fonts to each card type
+  - [ ] Zenburn
+  - [ ] Blackboard
+  - [x] Rice paper
+  - [ ] Lined paper
+  - [ ] Full photo
+  - [x] 8-Bit
+  - [ ] Illuminated manuscript
+  - [ ] Green code rain
+  - [ ] Glowing blue circuits
+  - [x] Blueprint
 - [x] Add ability to import Google fonts directly from user space (CSS editor pane)
 - [x] Fix bug where syntax highlighting turns off after switching tabs or refreshing page
 - [x] Make "Copy" button transparent by default, and solid on hover
