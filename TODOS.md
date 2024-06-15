@@ -62,4 +62,6 @@
 - [x] Make "Copy" button transparent by default, and solid on hover
 - [ ] Replace Save/Export and Load/Import buttons w/ SVG icons
 - [ ] Make non-active tabs dimmed by default, and brighten on hover
-- [ ] Host on GitHub pages
+- [x] Host on GitHub pages
+- [x] Fix bug where hosted app doesn't load CSS styles (but it should)
+- [ ] Fix hover area to be just the image inline block for Zenburn theme
