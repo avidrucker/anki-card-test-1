@@ -43,9 +43,9 @@
 - [ ] Add an info page / modal listing relevant/useful info such as what fonts are available, basic usage instructions, etc.
 - [ ] Add SVG image filters
   - [x] Pixelize filter
-  - [ ] Ink filter
+  - [x] Ink filter
   - [x] Green code rain filter
-  - [ ] Pencil drawing filter
+  - [x] Pencil drawing filter
 - [ ] Add thematically appropriate Japanese fonts to each card type
   - [ ] Zenburn
   - [ ] Blackboard
@@ -62,3 +62,4 @@
 - [x] Make "Copy" button transparent by default, and solid on hover
 - [ ] Replace Save/Export and Load/Import buttons w/ SVG icons
 - [ ] Make non-active tabs dimmed by default, and brighten on hover
+- [ ] Host on GitHub pages
