@@ -7,6 +7,6 @@ export default defineConfig({
     outDir: 'build', // Make sure the output directory aligns with what gh-pages expects
     assetsDir: 'assets'
   },
-  publicDir: 'src/assets',
+  publicDir: 'public',
   plugins: [react()],
 });
