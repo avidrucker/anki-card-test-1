@@ -9,7 +9,7 @@
     "deploy": "gh-pages -d build",
     "dev": "vite",
     "build": "vite build",
-    "postbuild": "mv build/*.jpg build/assets/ && mv build/*.png build/assets/ && mv build/*.woff build/assets/",
+    "_postbuild": "mv build/*.jpg build/assets/ && mv build/*.png build/assets/ && mv build/*.woff build/assets/",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
@@ -26,6 +26,7 @@
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.3",
+    "express": "^4.19.2",
     "gh-pages": "^6.1.1",
     "vite": "^4.4.5"
   }

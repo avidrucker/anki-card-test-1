@@ -88,11 +88,10 @@ function App() {
   }, [editingName]); // Depend on editingName to re-run the effect
 
   const applyStyles = (css) => {
-    const styleSheet = document.styleSheets[STYLE_SHEET_2];
-
-    // Remove existing rules
-    while (styleSheet.cssRules.length > 0) {
-        styleSheet.deleteRule(0);
+    // Remove existing style tag if it exists
+    const existingStyleTag = document.getElementById('dynamic-styles');
+    if (existingStyleTag) {
+        existingStyleTag.remove();
     }
 
     // Remove comments
@@ -103,15 +102,6 @@ function App() {
     css = css.replace(/@import\s+url\([^)]+\);?/g, (match) => {
         importStatements.push(match.trim());
         return ''; // Remove the import statement from the main CSS text
-    });
-
-    // Insert @import rules at the beginning
-    importStatements.forEach(importRule => {
-        try {
-            styleSheet.insertRule(importRule, styleSheet.cssRules.length);
-        } catch (error) {
-            console.error("Failed to insert import rule:", importRule, error);
-        }
     });
 
     // Process and insert other CSS rules
@@ -128,16 +118,33 @@ function App() {
         .map(rule => rule + '}')  // Close the rule
         .filter(rule => rule.length > 2);  // Filter out empty rules
 
+    // Create a new style tag
+    const styleTag = document.createElement('style');
+    styleTag.id = 'dynamic-styles';
+
+    // Insert @import rules at the beginning
+    importStatements.forEach(importRule => {
+        try {
+            styleTag.innerHTML += importRule + '\n';
+        } catch (error) {
+            console.error("Failed to insert import rule:", importRule, error);
+        }
+    });
+
+    // Insert other CSS rules
     rules.forEach(rule => {
         try {
             if (!rule.startsWith('@import')) {  // Ensure no @import rules are in this batch
-                styleSheet.insertRule(rule, styleSheet.cssRules.length);
+                styleTag.innerHTML += rule + '\n';
             }
         } catch (error) {
             console.error("Failed to insert rule:", rule, error);
         }
     });
-  };
+
+    // Append the style tag to the head of the document
+    document.head.appendChild(styleTag);
+};
 
   const handleCssChange = (event) => {
     const newCss = event.target.value;
