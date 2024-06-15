@@ -246,7 +246,7 @@ function App() {
   }, [frontHtml, backHtml, cardCss, activeTab, isEditing]); // Dependency array to determine when to re-run the effect
 
   const loadDesign = (filename) => {
-    fetch(`/designs/${filename}`)
+    fetch(`designs/${filename}`)
       .then(res => res.json())
       .then(data => {
         setFrontHtml(data.frontHtml || '');
