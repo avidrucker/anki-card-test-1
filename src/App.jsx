@@ -271,6 +271,16 @@ function App() {
     loadDesign(event.target.value);
   };
 
+  const finalizeDesignName = (event) => {
+    const newName = event.target.value.trim(); // Trim whitespace
+    if (!newName) { // Check if the new name is empty after trimming
+        setDesignName('Untitled'); // Set default name if empty
+    } else {
+        setDesignName(newName); // Set to the new name if not empty
+    }
+    setEditingName(false);
+  };
+
   return (
     <div className="App w-100 flex flex-column vh-100 pb2">
       <header className="flex flex-column flex-row-ns justify-between items-center pb2 pb0-ns">{/*responsive design test classes: bg-blue bg-red-m bg-purple-l*/}
@@ -283,7 +293,7 @@ function App() {
               placeholder="Design name" 
               value={designName} 
               onChange={(e) => setDesignName(e.target.value)}
-              onBlur={() => setEditingName(false)}
+              onBlur={finalizeDesignName}
               onKeyDown={(e) => { if (e.key === 'Enter') setEditingName(false); }}
             /> :
             <h2 className="ma0 pv1 ph2 dib" onClick={() => setEditingName(true)}>{designName}</h2>
