@@ -4,8 +4,6 @@ import hljs from 'highlight.js';
 // import 'highlight.js/styles/default.css';
 import 'highlight.js/styles/monokai-sublime.css';
 
-const STYLE_SHEET_2 = 1;  // Index of the second style sheet in the document
-
 const BTN_STYLE = "f6 link dim br3 w35 pv2 dib pointer";
 const NARROW_BTN_STYLE = "f6 link dim br3 ph2 pv2 ml1 dib pointer";
 const BTN_STYLE_GLASS = "link ba b--gray bw1 br3 dib pa2 w2 h2 pointer";
