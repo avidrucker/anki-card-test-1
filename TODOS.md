@@ -10,7 +10,7 @@
 - [ ] Auto-prettify/indent or button to do similar
 - [x] Ability to save/load import/export designs
 - [x] Ability to name designs
-- [ ] Add ability to clear out / reset all fields
+- [ ] Add ability to clear out / reset all editor panes and title input
 - [ ] Add ability to add custom images to designs by uploading an image
 - [x] Add images to one or more designs
 - [x] Fix content overflow for card w/ scrollbar (overflow should not increase page height)
@@ -26,7 +26,9 @@
   - [x] Green code rain
   - [ ] Glowing blue circuits
   - [x] Blue architectural diagram
-  - [ ] Da Vinci's Notes
+  - [ ] Da Vinci's notes
+  - [ ] JRPG battle/menu screen
+  - [ ] Halloween theme
 - [x] Create menu dropdown for included card templates
 - [x] Add ability to load built-in card templates
 - [x] Fix issue where CSS styles are not applied immediately after loading a design
@@ -41,17 +43,18 @@
 - [ ] Add branding icon (Anki icon?) to the header
 - [ ] Implement ability to collapse/expand editor/preview panes
 - [ ] Add an info page / modal listing relevant/useful info such as what fonts are available, basic usage instructions, etc.
-- [ ] Add SVG image filters
-  - [x] Pixelize filter
+- [x] Add SVG/CSS image filters
+  - [x] 2 Bit color filter
   - [x] Ink filter
   - [x] Green code rain filter
   - [x] Pencil drawing filter
-- [ ] Add thematically appropriate Japanese fonts to each card type
+  - [x] White pencil filter
+- [o] Add thematically appropriate Japanese fonts to each card type
   - [ ] Zenburn
   - [ ] Blackboard
   - [x] Rice paper
   - [ ] Lined paper
-  - [ ] Full photo
+  - [x] Full photo
   - [x] 8-Bit
   - [ ] Illuminated manuscript
   - [ ] Green code rain
@@ -64,4 +67,11 @@
 - [ ] Make non-active tabs dimmed by default, and brighten on hover
 - [x] Host on GitHub pages
 - [x] Fix bug where hosted app doesn't load CSS styles (but it should)
-- [ ] Fix hover area to be just the image inline block for Zenburn theme
+- [x] Fix hover area to be just the image inline block for Zenburn theme
+- [ ] Investigate which font supports more Japanese characters, Otsutome or Yuji Syuku
+  - https://www.freejapanesefont.com/otsutome-font-download/
+  - https://fonts.google.com/specimen/Yuji+Syuku?query=syuku&preview.layout=grid
+- [ ] Make all images unfiltered on hover
+- [ ] Add ability to toggle between dummy card data display and template view
+- [ ] Add meaning and example sentence fields to dummy card data and template view
+- [ ] Fix defect where erasing a design name causes the field to become inaccessible
