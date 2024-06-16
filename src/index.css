@@ -90,3 +90,7 @@ code {
   .bg-red-l { background-color: red; }
   .bg-purple-l { background-color: purple; }
 }
+
+.crab-image {
+  background-image: url("crab_l.jpg")
+}
