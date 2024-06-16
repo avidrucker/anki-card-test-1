@@ -51,7 +51,7 @@
   - [x] White pencil filter
 - [o] Add thematically appropriate Japanese fonts to each card type
   - [ ] Zenburn
-  - [ ] Blackboard
+  - [x] Blackboard
   - [x] Rice paper
   - [ ] Lined paper
   - [x] Full photo
@@ -74,4 +74,6 @@
 - [ ] Make all images unfiltered on hover
 - [ ] Add ability to toggle between dummy card data display and template view
 - [ ] Add meaning and example sentence fields to dummy card data and template view
-- [ ] Fix defect where erasing a design name causes the field to become inaccessible
+- [x] Fix defect where erasing a design name causes the field to become inaccessible
+- [ ] Implement ability to add media breakpoints to the CSS editor contents
+- [ ] Add responsiveness to the cards themselves
