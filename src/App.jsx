@@ -273,8 +273,8 @@ function App() {
 
   return (
     <div className="App w-100 flex flex-column vh-100 pb2">
-      <header className="flex justify-between items-center">
-        <div className="">
+      <header className="flex flex-column flex-row-ns justify-between items-center pb2 pb0-ns">{/*responsive design test classes: bg-blue bg-red-m bg-purple-l*/}
+        <div className="header-left-side flex flex-column items-center-ns flex-row-ns">
           <h1 className="ma0 pv2 ph2 dib">Card Designer</h1>
           {editingName ?
             <input 
@@ -289,28 +289,30 @@ function App() {
             <h2 className="ma0 pv1 ph2 dib" onClick={() => setEditingName(true)}>{designName}</h2>
           }
         </div>
-        <div className="pr2">
+        <div className="header-right-side ph2 flex flex-column-reverse flex-row-l">
           {/* Dropdown for selecting a design */}
-          <select className="ph2 pv2" onChange={handleDesignChange} value={designName}>
+          <select className="ph2 pv2 ml-auto-l" onChange={handleDesignChange} value={designName}>
             <option value="">Select a Design</option>
             {availableDesigns.map(design => (
               <option key={design} value={design}>{design}</option>
             ))}
           </select>
-          <button 
-            title="Save Design" 
-            onClick={saveDesignToJSON} 
-            className={`${NARROW_BTN_STYLE}`}>
-              Export</button>
-          <button
-            title="Load Design" 
-            onClick={loadDesignFromJSON} 
-            className={NARROW_BTN_STYLE}>
-              Import</button>
+          <div className="ml-auto ml0-l pl1 mb2 mb1-m mb0-l mt1 mt0-l">
+            <button
+              title="Load Design" 
+              onClick={loadDesignFromJSON} 
+              className={NARROW_BTN_STYLE}>
+                Import</button>
+            <button 
+              title="Save Design" 
+              onClick={saveDesignToJSON} 
+              className={`${NARROW_BTN_STYLE}`}>
+                Export</button>
+          </div>
         </div>
         </header>
-      <div className="workspace flex flex-auto ph2">
-        <div className="editor w-50 flex flex-column pr1">
+      <div className="workspace flex flex-column-reverse flex-row-ns flex-auto-ns ph2">
+        <div className="editor pv2 pv0-ns w-100 w-50-ns flex flex-column pr1">
           <div className="tabs">
             <button onClick={() => handleTabChange('frontHtml')} 
               className={activeTab === 'frontHtml' ? 
@@ -356,7 +358,7 @@ function App() {
             )}
           </div>
         </div>
-        <div className="card-display w-50 flex flex-column pl1">
+        <div className="card-display pt2 pt0-ns w-100 w-50-ns flex flex-column pl1">
           <div className="view-tabs">
             <button onClick={() => handleViewChange('front')} 
               className={viewSide === 'front' ? 

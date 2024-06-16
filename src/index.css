@@ -67,3 +67,26 @@ code {
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
 }
+
+/* responsive design test classes */
+/* Tachyons breakpoints */
+/* 'not-small' breakpoint */
+@media screen and (min-width: 30em) {
+  .bg-blue-ns { background-color: blue; }
+  .bg-red-ns { background-color: red; }
+  .bg-purple-ns { background-color: purple; }
+}
+
+/* 'medium' breakpoint */
+@media screen and (min-width: 30em) and (max-width: 60em) {
+  .bg-blue-m { background-color: blue; }
+  .bg-red-m { background-color: red; }
+  .bg-purple-m { background-color: purple; }
+}
+
+/* 'large' breakpoint */
+@media screen and (min-width: 60em)  {
+  .bg-blue-l { background-color: blue; }
+  .bg-red-l { background-color: red; }
+  .bg-purple-l { background-color: purple; }
+}
