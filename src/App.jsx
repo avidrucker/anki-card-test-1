@@ -438,8 +438,8 @@ function App() {
                 `active ${ACTIVE_BTN_STYLE + " " + BTN_STYLE + " br3--btn-r "}` : 
                 `${INACTIVE_BTN_STYLE + " " + BTN_STYLE + " br3--btn-r"}`}>Back View</button>
           </div>
-          <div className="card-container flex-auto flex flex-column">
-            <div className={`card flex-auto overflow-y-auto ${CARD_STYLE}`} dangerouslySetInnerHTML={{ __html: previewData }} />{/*viewSide === 'front' ? frontHtml : backHtml*/}
+          <div className={`card-container flex-auto flex flex-column ${CARD_STYLE}`}>
+            <div className={`card flex-auto overflow-y-auto`} dangerouslySetInnerHTML={{ __html: previewData }} />{/*viewSide === 'front' ? frontHtml : backHtml*/}
           </div>
         </div>
       </div>
