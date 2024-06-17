@@ -5,7 +5,7 @@
 - [x] Convenient "copy code" button for editor pane
 - [x] Syntax highlighting for HTML and CSS editor panes
 - [x] Padding
-- [ ] Mobile support (responsive single-column display)
+- [x] Mobile support (responsive single-column display)
 - [ ] Ability to include Front on Back `{{FrontSide}}`
 - [ ] Auto-prettify/indent or button to do similar
 - [x] Ability to save/load import/export designs
@@ -44,20 +44,23 @@
 - [ ] Implement ability to collapse/expand editor/preview panes
 - [ ] Add an info page / modal listing relevant/useful info such as what fonts are available, basic usage instructions, etc.
 - [x] Add SVG/CSS image filters
-  - [x] 2 Bit color filter
-  - [x] Ink filter
-  - [x] Green code rain filter
-  - [x] Pencil drawing filter
-  - [x] White pencil filter
+  - [x] 2 Bit color
+  - [ ] Pixelize
+  - [ ] Ink painting
+  - [x] Green code rain
+  - [x] Pencil drawing
+  - [x] White pencil
+  - [x] Blue architectural drawing
+  - [x] Code rain
 - [o] Add thematically appropriate Japanese fonts to each card type
-  - [ ] Zenburn
+  - [x] Zenburn
   - [x] Blackboard
   - [x] Rice paper
-  - [ ] Lined paper
+  - [x] Lined paper
   - [x] Full photo
   - [x] 8-Bit
   - [ ] Illuminated manuscript
-  - [ ] Green code rain
+  - [x] Green code rain
   - [ ] Glowing blue circuits
   - [x] Blueprint
 - [x] Add ability to import Google fonts directly from user space (CSS editor pane)
@@ -71,9 +74,23 @@
 - [ ] Investigate which font supports more Japanese characters, Otsutome or Yuji Syuku
   - https://www.freejapanesefont.com/otsutome-font-download/
   - https://fonts.google.com/specimen/Yuji+Syuku?query=syuku&preview.layout=grid
-- [ ] Make all images unfiltered on hover
-- [ ] Add ability to toggle between dummy card data display and template view
+  - [ ] Pick whichever font has more supported characters to use in the app
+- [o] Make all images unfiltered on hover
+  - [ ] Ink painting
+- [ ] Fix ink painting filter to use multiple img elements stacked
+- [x] Add ability to toggle between dummy card data display and template view
 - [ ] Add meaning and example sentence fields to dummy card data and template view
 - [x] Fix defect where erasing a design name causes the field to become inaccessible
 - [ ] Implement ability to add media breakpoints to the CSS editor contents
 - [ ] Add responsiveness to the cards themselves
+- [ ] make card flip animation for front to back preview
+- [ ] add optional audio auto-play + setting toggle
+- [ ] experiment w/ identical HTML markdown for all cards & have the theme and filter application be conducted solely by the CSS styles
+- [ ] first time visitor welcome informational modal
+- [ ] investigate implementing overlay of textarea and pre code elements so you can see the syntax highlighting as you edit
+- [ ] put donation link to buymeacoffee
+- [ ] implement export to apkg
+- [ ] implement ability to export multiple card designs at once with a multi-select
+- [ ] implement save to gist feature
+- [x] adjust lineheight and font size for blueprint design to have text fit nicely within grid
+
