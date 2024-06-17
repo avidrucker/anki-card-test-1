@@ -29,6 +29,9 @@ function App() {
   const nameInputRef = useRef(null); // Create a reference to the input element
   const textareaRef = useRef(null); // Create a reference to the textarea element
   const [isEditing, setIsEditing] = useState(false); 
+  const [cardData, setCardData] = useState({});
+  const [previewData, setPreviewData] = useState("");
+  const [cardIndex, setCardIndex] = useState(0);
 
   useEffect(() => {
     if (isEditing) {
@@ -36,6 +39,58 @@ function App() {
     }
   }, [isEditing]); // Re-run the effect when isEditing changes
   
+  const displayCardData = (index) => {
+    const cardKeys = Object.keys(cardData).filter(key => key !== 'default');  // Avoid 'default'
+    if (cardKeys.length > 0 && cardData[cardKeys[index]]) {
+        const currentCard = cardData[cardKeys[index]];
+        const htmlWithValues = replacePlaceholders(viewSide === 'front' ? frontHtml : backHtml, 
+          currentCard);
+        setPreviewData(htmlWithValues);  // Assuming you have a state to hold the preview HTML
+    }
+  };
+
+  const replacePlaceholders = (htmlContent, cardData) => {
+    let updatedHtml = htmlContent;
+    updatedHtml = updatedHtml.replace(/{{audio}}/g, cardData.audio === "{{audio}}" ? "{{audio}}" : 
+      `<audio class="dn" id="audio" src="${cardData.audio}" controls ></audio><button style="color: inherit; background-color: transparent; border: none; z-index: inherit; cursor: inherit" class="play-button" onclick="document.getElementById('audio').play()">▶</button>` || '');
+    updatedHtml = updatedHtml.replace(/{{term}}/g, cardData.term || '');
+    updatedHtml = updatedHtml.replace(/{{reading}}/g, cardData.reading || '');
+    updatedHtml = updatedHtml.replace(/{{translation}}/g, cardData.translation || '');
+    updatedHtml = updatedHtml.replace(/{{transliteration}}/g, cardData.transliteration || '');
+    updatedHtml = updatedHtml.replace(/{{Tags}}/g, (cardData.Tags || []).join(', '));
+    updatedHtml = updatedHtml.replace(/{{picture}}/g, cardData.picture === "{{picture}}" ? "{{picture}}" : `<img src="${cardData.picture}" />` || '');
+    return updatedHtml;
+  };
+
+  useEffect(() => {
+    fetch('/dummy_card_data.json')
+        .then(response => response.json())
+        .then(data => {
+            setCardData(data);
+            // console.log("data", data);
+            displayCardData(0);  // Initialize display with the first card
+        })
+        .catch(error => console.error('Failed to load card data:', error));
+  }, []);
+
+  useEffect(() => {
+    if (Object.keys(cardData).length > 0 && frontHtml && backHtml) {
+        displayCardData(cardIndex);  // Ensure initial data is displayed on load
+    }
+}, [cardData, cardCss, frontHtml, backHtml, cardIndex, viewSide]); // Depend on cardData and HTML content
+
+  const handleNextCard = () => {
+      const newIndex = (cardIndex + 1) % Object.keys(cardData).length;
+      setCardIndex(newIndex);
+      displayCardData(newIndex);
+  };
+
+  const handlePreviousCard = () => {
+      const totalCards = Object.keys(cardData).length;
+      const newIndex = (cardIndex - 1 + totalCards) % totalCards;
+      setCardIndex(newIndex);
+      displayCardData(newIndex);
+  };
 
   const getCurrentTextareaContent = () => {
     if (activeTab === 'frontHtml') {
@@ -298,6 +353,12 @@ function App() {
           }
         </div>
         <div className="header-right-side ph2 flex flex-column-reverse flex-row-l">
+
+          <div className="card-navigation mr2">
+            <button className={`${NARROW_BTN_STYLE}`} title="Previous" onClick={handlePreviousCard}>&lt;</button>
+            <button className={`${NARROW_BTN_STYLE}`} title="Next" onClick={handleNextCard}>&gt;</button>
+          </div>
+
           {/* Dropdown for selecting a design */}
           <select className="ph2 pv2 ml-auto-l" onChange={handleDesignChange} value={designName}>
             <option value="">Select a Design</option>
@@ -378,7 +439,7 @@ function App() {
                 `${INACTIVE_BTN_STYLE + " " + BTN_STYLE + " br3--btn-r"}`}>Back View</button>
           </div>
           <div className="card-container flex-auto flex flex-column">
-            <div className={`card flex-auto overflow-y-auto ${CARD_STYLE}`} dangerouslySetInnerHTML={{ __html: viewSide === 'front' ? frontHtml : backHtml }} />
+            <div className={`card flex-auto overflow-y-auto ${CARD_STYLE}`} dangerouslySetInnerHTML={{ __html: previewData }} />{/*viewSide === 'front' ? frontHtml : backHtml*/}
           </div>
         </div>
       </div>
