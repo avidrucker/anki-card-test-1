@@ -63,7 +63,7 @@ function App() {
   };
 
   useEffect(() => {
-    fetch('/dummy_card_data.json')
+    fetch('dummy_card_data.json')
         .then(response => response.json())
         .then(data => {
             setCardData(data);
