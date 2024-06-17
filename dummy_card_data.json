@@ -1,0 +1,27 @@
+{
+    "0": {
+        "audio": "{{audio}}",
+        "term": "{{term}}",
+        "reading": "{{reading}}",
+        "translation": "{{translation}}",
+        "transliteration": "{{transliteration}}",
+        "Tags": ["{{Tags}}"],
+        "picture": "{{picture}}"
+    },
+    "1":{"audio":"https://audio12.forvo.com/audios/mp3/0/n/0n_8998474_76_3255057_1.mp3",
+        "term": "猫",
+        "reading": "ねこ",
+        "translation": "cat",
+        "transliteration": "neko",
+        "Tags": ["animals", "noun", "common", "JLPT5"],
+        "picture": "https://bit.ly/fcc-relaxing-cat"
+    },
+    "2":{"audio":"https://audio12.forvo.com/audios/mp3/p/j/pj_9478059_76_810984.mp3",
+        "term": "オーストラリア",
+        "reading": "",
+        "translation": "Australia",
+        "transliteration": "oosutoraria",
+        "Tags": ["countries", "noun", "common"],
+        "picture": "australia.jpg"
+    }
+}
