@@ -365,7 +365,7 @@ function App() {
 
           <div className="card-navigation mr2 flex items-center">
             <button className={`${NARROW_BTN_STYLE}`} title="Previous" onClick={handlePreviousCard}>&lt;</button>
-            <p className="ma0 ph2">{`Data: ${cardIndex}`}</p>
+            <p className="ma0 ph2">{`Example: ${cardIndex + 1}`}</p>
             <button className={`${NARROW_BTN_STYLE}`} title="Next" onClick={handleNextCard}>&gt;</button>
           </div>
 
