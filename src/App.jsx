@@ -363,8 +363,9 @@ function App() {
         </div>
         <div className="header-right-side ph2 flex flex-column-reverse flex-row-l">
 
-          <div className="card-navigation mr2">
+          <div className="card-navigation mr2 flex items-center">
             <button className={`${NARROW_BTN_STYLE}`} title="Previous" onClick={handlePreviousCard}>&lt;</button>
+            <p className="ma0 ph2">{`Data: ${cardIndex}`}</p>
             <button className={`${NARROW_BTN_STYLE}`} title="Next" onClick={handleNextCard}>&gt;</button>
           </div>
 
