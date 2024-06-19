@@ -24,9 +24,9 @@
   - [x] 8-Bit console game
   - [ ] Illuminated manuscript
   - [x] Green code rain
-  - [ ] Glowing blue circuits
+  - [x] Glowing blue circuits
   - [x] Blue architectural diagram
-  - [ ] Da Vinci's notes
+  - [x] Da Vinci's notes
   - [ ] JRPG battle/menu screen
   - [ ] Halloween theme
 - [x] Create menu dropdown for included card templates
@@ -60,8 +60,9 @@
   - [x] Full photo
   - [x] 8-Bit
   - [ ] Illuminated manuscript
+  - [x] Da Vinci Sketch
   - [x] Green code rain
-  - [ ] Glowing blue circuits
+  - [x] Glowing blue circuits
   - [x] Blueprint
 - [x] Add ability to import Google fonts directly from user space (CSS editor pane)
 - [x] Fix bug where syntax highlighting turns off after switching tabs or refreshing page
@@ -93,4 +94,6 @@
 - [ ] implement ability to export multiple card designs at once with a multi-select
 - [ ] implement save to gist feature
 - [x] adjust lineheight and font size for blueprint design to have text fit nicely within grid
-
+- [ ] add glowing white lines to Glowing Blue Circuits design
+- [ ] make the drawings and text in Da Vinci Sketch design more sepia toned
+- [ ] add data name indicator inbetween left and right arrows ala "< example: namehere >"
