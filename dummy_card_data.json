@@ -23,5 +23,13 @@
         "transliteration": "oosutoraria",
         "Tags": ["countries", "noun", "common"],
         "picture": "australia.jpg"
+    },
+    "3":{"audio":"crab_kani.mp3",
+        "term": "蟹",
+        "reading": "かに",
+        "translation": "crab",
+        "transliteration": "kani",
+        "Tags": ["animals", "noun", "common", "JLPT5"],
+        "picture": "crab_l.jpg"
     }
 }
