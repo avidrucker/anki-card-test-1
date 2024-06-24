@@ -130,3 +130,7 @@ code {
   position: absolute;
   left: -9999px;
 }
+
+.balance {
+  text-wrap: balance;
+}
