@@ -410,8 +410,8 @@ function App() {
           <div className="relative w-100 flex-auto flex flex-column">
             <button onClick={copyToClipboard}
               title={copied ? "Copied!" : "Copy"}
-              className={`absolute top-0 right-0 mt3 mr3 transparent-btn ${BTN_STYLE_GLASS}`}>    
-                  {copied ? checkIcon : copyIcon}
+              className={`absolute db top-0 right-0 mt3 mr3 transparent-btn ${BTN_STYLE_GLASS}`}>    
+                  <span className="relative shift-up-right">{copied ? checkIcon : copyIcon}</span>
             </button>
             {isEditing ? (
               <textarea

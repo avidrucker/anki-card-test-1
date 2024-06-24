@@ -98,3 +98,8 @@ code {
 .australia-image {
   background-image: url("australia.jpg")
 }
+
+.shift-up-right {
+  position: relative;
+  top: -0.1rem;
+}
