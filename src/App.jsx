@@ -4,10 +4,10 @@ import hljs from 'highlight.js';
 // import 'highlight.js/styles/default.css';
 import 'highlight.js/styles/monokai-sublime.css';
 
-const BTN_STYLE = "f6 link dim br3 w35 pv2 dib pointer";
-const NARROW_BTN_STYLE = "f6 link dim br3 ph2 pv2 ml1 dib pointer";
+const BTN_STYLE = "bn mr1 f6 link dim br3 w35 pv2 dib pointer bg-gray";
+const NARROW_BTN_STYLE = "bn f6 link dim br3 ph2 pv2 ml1 dib pointer bg-gray white";
 const BTN_STYLE_GLASS = "link ba b--gray bw1 br3 dib pa2 w2 h2 pointer";
-const ACTIVE_BTN_STYLE = "fw6";
+const ACTIVE_BTN_STYLE = "fw6 white";
 const INACTIVE_BTN_STYLE = "light-gray";
 const CARD_STYLE = "ba b--black-10";
 
@@ -371,13 +371,13 @@ function App() {
           </div>
 
           {/* Dropdown for selecting a design */}
-          <select className="ph2 pv2 ml-auto-l" onChange={handleDesignChange} value={designName}>
+          <select className="ph2 pv2 ml-auto-l bg-dark-gray white" onChange={handleDesignChange} value={designName}>
             <option value="">Select a Design</option>
             {availableDesigns.map(design => (
               <option key={design} value={design}>{design}</option>
             ))}
           </select>
-          <div className="ml-auto ml0-l pl1 mb2 mb1-m mb0-l mt1 mt0-l">
+          <div className="ml-auto ml0-l pl1 mb2 mb1-m mb0-l mt1 mt0-l flex items-center">
             <button
               title="Load Design" 
               onClick={loadDesignFromJSON} 
