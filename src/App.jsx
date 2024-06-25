@@ -1,8 +1,17 @@
 import { useState, useEffect, useRef } from 'react';
 import './App.css'
 import hljs from 'highlight.js';
+
+async function highlightJSLoad() {
+    return await import('highlight.js');
+}
+async function highlightLineNumbersLoad() {
+    return await import('highlightjs-line-numbers.js');
+}
+
 // import 'highlight.js/styles/default.css';
 import 'highlight.js/styles/monokai-sublime.css';
+
 
 const BTN_STYLE = "bn mr1 f6 link dim br3 w35 pv2 dib pointer bg-gray";
 const NARROW_BTN_STYLE = "bn f6 link dim br3 ph2 pv2 ml1 dib pointer bg-gray white";
@@ -296,8 +305,17 @@ function App() {
   }  
 
   useEffect(() => {
-    hljs.highlightAll();
-  });  
+    highlightJSLoad().then(() => {
+        window.hljs = hljs;
+        hljs.highlightAll();
+        highlightLineNumbersLoad().then(() => {
+            const blocks = document.querySelectorAll('pre code');
+            blocks.forEach((block) => {
+                hljs.lineNumbersBlock(block);
+            });
+        });
+    });
+}, []);
 
   useEffect(() => {
     // Use setTimeout to ensure this runs after DOM updates
@@ -308,8 +326,13 @@ function App() {
           // Remove the attribute to allow re-highlighting
           delete block.dataset.highlighted;
         }
+
         // Now apply highlighting
         hljs.highlightElement(block);
+        hljs.lineNumbersBlock(block);
+        // Apply line numbers
+        // hljsLineNumbers.highlightBlock(block);
+
         // Set the attribute to mark it as highlighted
         block.dataset.highlighted = 'yes';
       });
@@ -411,13 +434,13 @@ function App() {
           <div className="relative w-100 flex-auto flex flex-column">
             <button onClick={copyToClipboard}
               title={copied ? "Copied!" : "Copy"}
-              className={`absolute db top-0 right-0 mt3 mr3 transparent-btn ${BTN_STYLE_GLASS}`}>    
+              className={`absolute db top-0 right-0 z-999 mt3 mr3 transparent-btn ${BTN_STYLE_GLASS}`}>    
                   <span className="relative shift-up-right">{copied ? checkIcon : copyIcon}</span>
             </button>
             {isEditing ? (
               <textarea
                 ref={textareaRef}
-                className={"code w-100 flex-auto resize-none " + (isEditing ? "db" : "dn")}
+                className={"code w-100 pa3 textarea-ph relative z-0 flex-auto resize-none " + (isEditing ? "db" : "dn")}
                 spellCheck="false"
                 value={activeTab === 'frontHtml' ? frontHtml : activeTab === 'backHtml' ? backHtml : cardCss}
                 onChange={handleChange}
@@ -429,7 +452,7 @@ function App() {
               />
             ) : (
               <pre
-                className="w-100 flex-auto"
+                className="w-100 flex-auto ma0 relative"
                 onClick={() => setIsEditing(true)}  // Show textarea when pre is clicked
               >
                 <code className={(activeTab === 'frontHtml' ? "language-html" : activeTab === 'backHtml' ? "language-html" : "language-css") + " w-100 flex-auto hljs"}>
