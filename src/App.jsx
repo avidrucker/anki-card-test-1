@@ -1,6 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
 import './App.css'
 import hljs from 'highlight.js';
+import prettier from 'prettier/standalone';
+import htmlParser from 'prettier/plugins/html';
+import cssParser from 'prettier/plugins/postcss';
 
 async function highlightJSLoad() {
     return await import('highlight.js');
@@ -339,6 +342,34 @@ function App() {
     }, 0); // A minimal delay to ensure all DOM updates have been processed
   }, [frontHtml, backHtml, cardCss, activeTab, isEditing]); // Dependency array to determine when to re-run the effect
 
+  const prettify = async () => {
+    const code = activeTab === 'frontHtml' ? frontHtml : activeTab === 'backHtml' ? backHtml : cardCss;
+    const parser = activeTab.includes('Html') ? 'html' : 'css';
+
+    const formattedCode = await prettier.format(code, {
+      parser: parser,
+      plugins: [parser === 'html' ? htmlParser : cssParser],
+      tabWidth: 2,
+      useTabs: false
+    });
+  
+    // Update the state with the formatted code
+    if (activeTab === 'frontHtml') {
+      setFrontHtml(formattedCode);
+    } else if (activeTab === 'backHtml') {
+      setBackHtml(formattedCode);
+    } else {
+      setCardCss(formattedCode);
+    }
+  
+    setIsEditing(false); // Optionally hide textarea after formatting
+  }
+
+  const handleBlur = async () => {
+    await prettify();
+  };
+  
+
   const loadDesign = (filename) => {
     fetch(`${filename}`)
       .then(res => res.json())
@@ -444,7 +475,7 @@ function App() {
                 spellCheck="false"
                 value={activeTab === 'frontHtml' ? frontHtml : activeTab === 'backHtml' ? backHtml : cardCss}
                 onChange={handleChange}
-                onBlur={() => setIsEditing(false)}  // Hide textarea when it loses focus
+                onBlur={handleBlur}  // Hide textarea when it loses focus
                 placeholder={`${activeTab.replace('Html', ' HTML').replace('Css', ' CSS')} Content`}
                 rows="10"
                 cols="30"
