@@ -318,11 +318,11 @@ function App() {
             });
         });
     });
-}, []);
+  }, []);
 
   useEffect(() => {
     // Use setTimeout to ensure this runs after DOM updates
-    setTimeout(() => {
+    requestAnimationFrame(() => {
       document.querySelectorAll('pre code').forEach((block) => {
         // Check if the block has already been highlighted
         if (block.dataset.highlighted) {
@@ -330,16 +330,16 @@ function App() {
           delete block.dataset.highlighted;
         }
 
-        // Now apply highlighting
-        hljs.highlightElement(block);
-        hljs.lineNumbersBlock(block);
-        // Apply line numbers
-        // hljsLineNumbers.highlightBlock(block);
+        if(hljs.lineNumbersBlock) {
+          hljs.highlightElement(block);
+          hljs.lineNumbersBlock(block);
 
-        // Set the attribute to mark it as highlighted
-        block.dataset.highlighted = 'yes';
+          // Set the attribute to mark it as highlighted
+          block.dataset.highlighted = 'yes';
+        }
+        
       });
-    }, 0); // A minimal delay to ensure all DOM updates have been processed
+    }); // A minimal delay to ensure all DOM updates have been processed
   }, [frontHtml, backHtml, cardCss, activeTab, isEditing]); // Dependency array to determine when to re-run the effect
 
   const prettify = async () => {
