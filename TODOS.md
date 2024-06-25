@@ -103,3 +103,4 @@
 - [x] make textarea have the exact same padding/margins as pre code elements so it has the exact same text placement
 - [ ] make it so that when clicking on the code editor pane the scroll position is maintained
 - [ ] make it so that when clicking on the code editor pane, the cursor is placed at the exact same position as the click
+- [ ] test out making a text-editable pre code block that has line numbers and syntax highlighting that updates text-highlighting and line-numbers on content change
