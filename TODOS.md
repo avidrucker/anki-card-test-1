@@ -7,7 +7,7 @@
 - [x] Padding
 - [x] Mobile support (responsive single-column display)
 - [ ] Ability to include Front on Back `{{FrontSide}}`
-- [ ] Auto-prettify/indent or button to do similar
+- [ ] Auto-prettify/indent or button to do similar on blur of editor pane
 - [x] Ability to save/load import/export designs
 - [x] Ability to name designs
 - [ ] Add ability to clear out / reset all editor panes and title input
@@ -99,3 +99,7 @@
 - [x] add glowing white lines to Glowing Blue Circuits design
 - [x] make the drawings and text in Da Vinci Sketch design more sepia toned
 - [x] add data name indicator inbetween left and right arrows ala "< example: namehere >"
+- [x] add line numbers to code editor pane
+- [x] make textarea have the exact same padding/margins as pre code elements so it has the exact same text placement
+- [ ] make it so that when clicking on the code editor pane the scroll position is maintained
+- [ ] make it so that when clicking on the code editor pane, the cursor is placed at the exact same position as the click
