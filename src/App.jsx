@@ -419,9 +419,9 @@ function App() {
         </div>
         <div className="header-right-side ph2 flex flex-column-reverse flex-row-l">
 
-          <div className="card-navigation mr2 flex items-center">
+          <div className="card-navigation mt2 mt1-m mt0-l mr2 flex items-center">
             <button className={`${NARROW_BTN_STYLE}`} title="Previous" onClick={handlePreviousCard}>&lt;</button>
-            <p className="ma0 ml1 prevent-select ph2">{`Example: ${cardIndex + 1}`}</p>
+            <p className="ma0 ml1 prevent-select w3 f5 tc">{`Data ${cardIndex + 1}`}</p>
             <button className={`${NARROW_BTN_STYLE}`} title="Next" onClick={handleNextCard}>&gt;</button>
           </div>
 
