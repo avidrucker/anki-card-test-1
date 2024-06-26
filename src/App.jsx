@@ -471,7 +471,7 @@ function App() {
             {isEditing ? (
               <textarea
                 ref={textareaRef}
-                className={"code w-100 pa3 textarea-ph relative z-0 flex-auto resize-none " + (isEditing ? "db" : "dn")}
+                className={"code w-100 pa3 textarea-ph pl-textarea-strong relative z-0 flex-auto resize-none " + (isEditing ? "db" : "dn")}
                 spellCheck="false"
                 value={activeTab === 'frontHtml' ? frontHtml : activeTab === 'backHtml' ? backHtml : cardCss}
                 onChange={handleChange}
@@ -486,7 +486,7 @@ function App() {
                 className="w-100 flex-auto ma0 relative"
                 onClick={() => setIsEditing(true)}  // Show textarea when pre is clicked
               >
-                <code className={(activeTab === 'frontHtml' ? "language-html" : activeTab === 'backHtml' ? "language-html" : "language-css") + " w-100 flex-auto hljs"}>
+                <code className={(activeTab === 'frontHtml' ? "language-html" : activeTab === 'backHtml' ? "language-html" : "language-css") + " w-100 flex-auto hljs pl0-strong"}>
                   {activeTab === 'frontHtml' ? frontHtml : activeTab === 'backHtml' ? backHtml : cardCss}
                 </code>
               </pre>

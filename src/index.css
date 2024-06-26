@@ -189,3 +189,11 @@ pre table {
   -ms-user-select: none; /* IE 10 and IE 11 */
   user-select: none; /* Standard syntax */
 }
+
+.pl0-strong {
+  padding-left: 0rem !important;
+}
+
+.pl-textarea-strong {
+  padding-left: 2.25rem !important;
+}
