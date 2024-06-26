@@ -104,3 +104,12 @@
 - [ ] make it so that when clicking on the code editor pane the scroll position is maintained
 - [ ] make it so that when clicking on the code editor pane, the cursor is placed at the exact same position as the click
 - [ ] test out making a text-editable pre code block that has line numbers and syntax highlighting that updates text-highlighting and line-numbers on content change, and applies text-formatting on element blur
+- [ ] fix issue where line numbers get weirdly formatted after 99
+- [ ] add ability to toggle line numbers on/off
+- [ ] add ability to toggle syntax highlighting on/off
+- [ ] implement user defined data field name conversions, e.g. "{{reading}}" -> "{{yomi}}" via dropdown with text inputs
+- [ ] add subtle opacity transition to all images on hover
+- [ ] add glowing orb animation to Glowing Blue Circuits design
+- [ ] brainstorm some more light mode themes
+- [ ] take stock of light, dark, and neutral themes and make sure there's a good balance
+- [ ] make the paper lines move with the text in the Index Card design
