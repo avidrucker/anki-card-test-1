@@ -27,7 +27,7 @@
   - [x] Glowing blue circuits
   - [x] Blue architectural diagram
   - [x] Da Vinci's notes
-  - [ ] JRPG battle/menu screen
+  - [x] JRPG battle/menu screen
   - [ ] Halloween theme
 - [x] Create menu dropdown for included card templates
 - [x] Add ability to load built-in card templates
@@ -80,7 +80,7 @@
   - [ ] Pick whichever font has more supported characters to use in the app
 - [o] Make all images unfiltered on hover
   - [ ] Ink painting
-- [ ] Fix ink painting filter to use multiple img elements stacked
+- [ ] Fix ink painting filter to be more like a sumi-e painting
 - [x] Add ability to toggle between dummy card data display and template view
 - [ ] Add meaning and example sentence fields to dummy card data and template view
 - [x] Fix defect where erasing a design name causes the field to become inaccessible
@@ -94,7 +94,8 @@
 - [ ] put donation link to buymeacoffee
 - [ ] implement export to apkg
 - [ ] implement ability to export multiple card designs at once with a multi-select
-- [ ] implement save to gist feature
+- [ ] implement save/load to/from gist feature
+  - [ ] allow users to share designs via unique URLs (built w/ gist IDs)
 - [x] adjust lineheight and font size for blueprint design to have text fit nicely within grid
 - [x] add glowing white lines to Glowing Blue Circuits design
 - [x] make the drawings and text in Da Vinci Sketch design more sepia toned
@@ -112,4 +113,13 @@
 - [ ] add glowing orb animation to Glowing Blue Circuits design
 - [ ] brainstorm some more light mode themes
 - [ ] take stock of light, dark, and neutral themes and make sure there's a good balance
-- [ ] make the paper lines move with the text in the Index Card design
+- [x] make the paper lines move with the text in the Index Card design
+- [ ] add i18n support for Japanese for the menu UI text elements
+- [ ] add sidebar that has quick-links to useful sites, such as the GitHub repo, Google Fonts,
+- [ ] add preview thumbnail images for each card design
+- [ ] "Anki Sync feature": provide seamless synchronization with Anki, including bidirectional updates
+- [ ] improve rendering performance to remove re-rendering "blips" when switching between tabs, clicking in or out of tabs, etc.
+- [ ] make some more card designs
+  - [ ] Comic Book Panel: Styled like a frame from a comic book, complete with speech bubbles and thought clouds.
+  - [ ] Steampunk: Brass, copper, and gear-themed designs with a Victorian-era industrial feel, steam effect in the background, dripping water effect, spinning gears, etc.
+- [ ] design custom cursors for some themes, such as a glowing green outline for green code rain, a glowing blue outline for glowing blue circuits, etc.
