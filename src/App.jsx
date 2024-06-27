@@ -180,6 +180,13 @@ function App() {
         return ''; // Remove the import statement from the main CSS text
     });
 
+    // Extract and handle @keyframes rules
+    let keyframesRules = [];
+    css = css.replace(/@keyframes\s+[\s\S]+?\{([\s\S]+?\}){2,}/g, (match) => {
+        keyframesRules.push(match.trim());
+        return ''; // Remove the @keyframes rule from the main CSS text
+    });
+
     // Process and insert other CSS rules
     const rules = css.split('}')
         .filter(rule => rule.trim() !== '')
@@ -207,6 +214,15 @@ function App() {
         }
     });
 
+    // Insert @keyframes rules next
+    keyframesRules.forEach(keyframeRule => {
+        try {
+            styleTag.innerHTML += keyframeRule + '\n';
+        } catch (error) {
+            console.error("Failed to insert keyframe rule:", keyframeRule, error);
+        }
+    });
+
     // Insert other CSS rules
     rules.forEach(rule => {
         try {
@@ -220,7 +236,7 @@ function App() {
 
     // Append the style tag to the head of the document
     document.head.appendChild(styleTag);
-};
+  };
 
   const handleCssChange = (event) => {
     const newCss = event.target.value;
