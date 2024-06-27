@@ -122,4 +122,11 @@
 - [ ] make some more card designs
   - [ ] Comic Book Panel: Styled like a frame from a comic book, complete with speech bubbles and thought clouds.
   - [ ] Steampunk: Brass, copper, and gear-themed designs with a Victorian-era industrial feel, steam effect in the background, dripping water effect, spinning gears, etc.
+  - [ ] Cyberpunk: Neon lights, holographic displays, digital rain, and other cyberpunk elements.
+  - [ ] Classic MacOS: Styled like the classic MacOS interface, complete with window frames, buttons, and icons.
+  - [ ] Blue DOS Terminal: Styled like a blue DOS terminal, complete with a blinking cursor, monospaced font, and ASCII art.
 - [ ] design custom cursors for some themes, such as a glowing green outline for green code rain, a glowing blue outline for glowing blue circuits, etc.
+- [ ] enable custom dummy data to be added to the dummy data list by users
+- [x] add falling green rain animation to green code rain design
+- [ ] enable use of animation frames in CSS editor
+  - [ ] add typing animation to green code rain design
