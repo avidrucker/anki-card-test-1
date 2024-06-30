@@ -149,7 +149,7 @@ code {
   border-right: 1px solid white;
   vertical-align: top;
   /* background-color: green; */
-  width: 1.75rem;
+  width: 2.25rem;
 }
 
 .hljs-ln-n {
@@ -171,7 +171,7 @@ code {
 }
 
 .hljs-ln-line.hljs-ln-code {
-  /* background-color: pink; */
+  /*background-color: pink;*/
   padding-left: 0.5rem;
 }
 
@@ -181,7 +181,7 @@ pre table {
 }
 
 .textarea-ph {
-  padding-left: 3.25rem;
+  /* background-color: orange; */
 }
 
 .prevent-select {
@@ -195,5 +195,5 @@ pre table {
 }
 
 .pl-textarea-strong {
-  padding-left: 2.25rem !important;
+  padding-left: 2.75rem !important;
 }
