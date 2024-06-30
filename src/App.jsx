@@ -417,38 +417,40 @@ function App() {
 
   return (
     <div className="App w-100 flex flex-column vh-100 pb2">
-      <header className="flex flex-column flex-row-ns justify-between items-center pb2 pb0-ns">{/*responsive design test classes: bg-blue bg-red-m bg-purple-l*/}
-        <div className="header-left-side flex flex-column items-center-ns flex-row-ns">
-          <h1 className="ma0 pv2 ph2 dib">Card Designer</h1>
+      <header className="flex flex-column flex-row-ns justify-between items-center pb2">{/*responsive design test classes: bg-blue bg-red-m bg-purple-l*/}
+        <div className="header-left-side w-100 flex flex-column items-center-ns flex-row-ns">
+          <h1 className="ma0 pv2 ph2 dib w-100 tc tl-ns">Card Designer</h1>
           {editingName ?
             <input 
               ref={nameInputRef} 
               type="text" 
+              className="white bg-dark-gray pv1 ph2 ma0 f3 w-100 tc tl-ns"
               placeholder="Design name" 
               value={designName} 
               onChange={(e) => setDesignName(e.target.value)}
               onBlur={finalizeDesignName}
               onKeyDown={(e) => { if (e.key === 'Enter') setEditingName(false); }}
             /> :
-            <h2 className="ma0 pv1 ph2 dib" onClick={() => setEditingName(true)}>{designName}</h2>
+            <h2 className="ma0 pv1 ph2 dib pointer f3 ba w-100 tc tl-ns b--white bg-dark-gray" onClick={() => setEditingName(true)}>{designName}</h2>
           }
         </div>
-        <div className="header-right-side ph2 flex flex-column-reverse flex-row-l">
+        <div className="header-right-side w-100 ph2 flex flex-column-reverse flex-row-l">
 
-          <div className="card-navigation mt2 mt1-m mt0-l mr2 flex items-center">
+          <div className="card-navigation pr2-l dib ml-auto mr-auto mr0-ns mt2 mt1-m mt0-l mr2 flex items-center">
             <button className={`${NARROW_BTN_STYLE}`} title="Previous" onClick={handlePreviousCard}>&lt;</button>
             <p className="ma0 ml1 prevent-select w3 f5 tc">{`Data ${cardIndex + 1}`}</p>
             <button className={`${NARROW_BTN_STYLE}`} title="Next" onClick={handleNextCard}>&gt;</button>
           </div>
 
           {/* Dropdown for selecting a design */}
-          <select className="ph2 pv2 ml-auto-l bg-dark-gray white" onChange={handleDesignChange} value={designName}>
+          <select className="ph2 pv2 ml-auto-m dib bg-dark-gray white" onChange={handleDesignChange} value={designName}>
             <option value="">Select a Design</option>
             {availableDesigns.map(design => (
               <option key={design} value={design}>{design}</option>
             ))}
           </select>
-          <div className="ml-auto ml0-l pl1 mb2 mb1-m mb0-l mt1 mt0-l flex items-center">
+          {/* Import and Export Buttons*/}
+          <div className="ml-auto mr-auto mr0-ns dib ml0-l pl1 mb2 mb1-m mb0-l mt2 mt1-m mt0-l flex items-center">
             <button
               title="Load Design" 
               onClick={loadDesignFromJSON} 
@@ -463,7 +465,7 @@ function App() {
         </div>
         </header>
       <div className="workspace flex flex-column-reverse flex-row-ns flex-auto-ns ph2">
-        <div className="editor pv2 pv0-ns w-100 w-50-ns flex flex-column pr1">
+        <div className="editor w-100 w-50-ns flex flex-column pr1">
           <div className="tabs">
             <button onClick={() => handleTabChange('frontHtml')} 
               className={activeTab === 'frontHtml' ? 
@@ -509,7 +511,7 @@ function App() {
             )}
           </div>
         </div>
-        <div className="card-display pt2 pt0-ns w-100 w-50-ns flex flex-column pl1">
+        <div className="card-display pb2 pb0-ns w-100 w-50-ns flex flex-column pl1">
           <div className="view-tabs">
             <button onClick={() => handleViewChange('front')} 
               className={viewSide === 'front' ? 
