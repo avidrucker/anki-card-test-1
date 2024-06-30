@@ -75,6 +75,8 @@ code {
   .bg-blue-ns { background-color: blue; }
   .bg-red-ns { background-color: red; }
   .bg-purple-ns { background-color: purple; }
+  .w-100-ns-strong { width: 100% !important; }
+  .w0-ns-strong { width: 0rem !important; }
 }
 
 /* 'medium' breakpoint */
@@ -196,4 +198,8 @@ pre table {
 
 .pl-textarea-strong {
   padding-left: 2.75rem !important;
+}
+
+.w-animate {
+  transition: width 0.5s ease-in-out;
 }
