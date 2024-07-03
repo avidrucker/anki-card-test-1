@@ -33,6 +33,7 @@ const eyeSlashIcon = <svg xmlns="http://www.w3.org/2000/svg" fill="gray" viewBox
 const availableDesigns = ["8 Bit Console.json", 
                           "Blackboard and Chalk.json", 
                           "Blueprint Theme.json", 
+                          "Brutalist HTML.json",
                           "Code Rain.json", 
                           "Da Vinci Sketch.json",
                           "Full Photo.json",
