@@ -424,6 +424,10 @@ function App() {
     setEditingName(false);
   };
 
+  const formatDesignName = (name) => {
+    return name.replace('.json', '');
+  }
+
   return (
     <div className="App w-100 flex flex-column vh-100 pb2">
       <header className="flex flex-column flex-row-ns justify-between items-center pb2">{/*responsive design test classes: bg-blue bg-red-m bg-purple-l*/}
@@ -460,7 +464,7 @@ function App() {
           <select className="ph2 pv2 ml-auto-m dib bg-dark-gray white" onChange={handleDesignChange} value={designName}>
             <option value="">Select a Design</option>
             {availableDesigns.map(design => (
-              <option key={design} value={design}>{design}</option>
+              <option key={design} value={design}>{formatDesignName(design)}</option>
             ))}
           </select>
           {/* Import and Export Buttons*/}
