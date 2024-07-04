@@ -50,7 +50,7 @@ code {
 
 .transparent-btn {
   background-color: rgba(255, 255, 255, 0.0);
-  transition: background-color .15s ease-in;
+  transition: background-color .15s ease-in-out;
 }
 
 .transparent-btn:hover {
@@ -202,4 +202,19 @@ pre table {
 
 .w-animate {
   transition: width 0.5s ease-in-out;
+}
+
+.reverse-dim {
+  opacity: 0.7;
+  transition: opacity .15s ease-in;
+}
+
+.reverse-dim:hover, .reverse-dim:focus {
+  opacity: 1;
+  transition: opacity .15s ease-in;
+}
+
+.reverse-dim:active {
+  opacity: 0.85;
+  transition: opacity .15s ease-out;
 }

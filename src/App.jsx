@@ -16,13 +16,13 @@ async function highlightLineNumbersLoad() {
 import 'highlight.js/styles/monokai-sublime.css';
 
 
-const BTN_STYLE = "bn mr1 f6 link dim br3 w35 pv2 dib pointer bg-gray";
-const NARROW_BTN_STYLE = "bn f6 link dim br3 ph2 pv2 ml1 dib pointer bg-gray white";
-const BTN_STYLE_GLASS = "link ba b--gray bw1 br3 dib pa2 w2 h2 pointer";
-const BTN_STYLE_TOGGLE = "link ba b--gray f6 bw1 br3 w2 dib pa2 pointer transparent-btn"
+const BTN_STYLE = "bn mr1 f6 br3 w35 pv2 dib pointer bg-gray";
+const NARROW_BTN_STYLE = "bn f6 reverse-dim br3 ph2 pv2 ml1 dib pointer bg-gray white";
+const BTN_STYLE_GLASS = "ba b--gray bw1 br3 dib pa2 w2 h2 pointer transparent-btn";
+const BTN_STYLE_TOGGLE = "ba b--gray f6 bw1 br3 w2 dib pa2 pointer transparent-btn"
 const ACTIVE_BTN_STYLE = "fw6 white";
-const INACTIVE_BTN_STYLE = "light-gray";
-const CARD_STYLE = "ba b--black-10";
+const INACTIVE_BTN_STYLE = "light-gray reverse-dim";
+const CARD_STYLE = "ba b--black-50";
 
 // <!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) -->
 const copyIcon = <svg xmlns="http://www.w3.org/2000/svg" fill="gray" viewBox="0 0 448 512"><path d="M433.941 65.941l-51.882-51.882A48 48 0 0 0 348.118 0H176c-26.51 0-48 21.49-48 48v48H48c-26.51 0-48 21.49-48 48v320c0 26.51 21.49 48 48 48h224c26.51 0 48-21.49 48-48v-48h80c26.51 0 48-21.49 48-48V99.882a48 48 0 0 0-14.059-33.941zM266 464H54a6 6 0 0 1-6-6V150a6 6 0 0 1 6-6h74v224c0 26.51 21.49 48 48 48h96v42a6 6 0 0 1-6 6zm128-96H182a6 6 0 0 1-6-6V54a6 6 0 0 1 6-6h106v88c0 13.255 10.745 24 24 24h88v202a6 6 0 0 1-6 6zm6-256h-64V48h9.632c1.591 0 3.117.632 4.243 1.757l48.368 48.368a6 6 0 0 1 1.757 4.243V112z"/></svg>;
@@ -481,7 +481,7 @@ function App() {
                 Export</button>
           </div>
         </div>
-        </header>
+      </header>
       <div className={`workspace flex flex-column-reverse flex-row-ns flex-auto-ns ph2`}>
         <div className={`editor w-100 w-50-ns flex flex-column w-animate pr1 overflow-x-hidden ${(editorViewCollapsed && " w0-ns-strong ")}`}>
           <div className="tabs">
@@ -498,10 +498,10 @@ function App() {
                 ACTIVE_BTN_STYLE + " " + BTN_STYLE + " br3--btn-r" : 
                 INACTIVE_BTN_STYLE + " " + BTN_STYLE + " br3--btn-r"}>CSS</button>
           </div>
-          <div className="relative w-100 flex-auto flex flex-column">
+          <div className={`relative w-100 flex-auto flex flex-column ${CARD_STYLE}`}>
             <button onClick={copyToClipboard}
               title={copied ? "Copied!" : "Copy"}
-              className={`absolute db top-0 right-0 z-999 mt3 mr3 transparent-btn ${BTN_STYLE_GLASS}`}>    
+              className={`absolute db top-0 right-0 z-999 mt3 mr3 ${BTN_STYLE_GLASS}`}>    
                   <span className="relative shift-up-right">{copied ? checkIcon : copyIcon}</span>
             </button>
             {isEditing ? (
@@ -541,7 +541,9 @@ function App() {
                 `${INACTIVE_BTN_STYLE + " " + BTN_STYLE + " br3--btn-r"}`}>Back View</button>
           </div>
           <div className={`card-container flex-auto flex flex-column ${CARD_STYLE}`}>
-            <div className={`card flex-auto overflow-y-auto`} dangerouslySetInnerHTML={{ __html: previewData }} />{/*viewSide === 'front' ? frontHtml : backHtml*/}
+            <div 
+              className={`card flex-auto overflow-y-auto`} 
+              dangerouslySetInnerHTML={{ __html: previewData }} />{/*viewSide === 'front' ? frontHtml : backHtml*/}
           </div>
         </div>
       </div>
