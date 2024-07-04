@@ -89,7 +89,7 @@
 - [ ] make card flip animation for front to back preview
 - [ ] add optional audio auto-play + setting toggle
 - [ ] experiment w/ identical HTML markdown for all cards & have the theme and filter application be conducted solely by the CSS styles
-- [ ] first time visitor welcome informational modal
+- [ ] first time visitor welcome informational / help modal to help users get started
 - [ ] investigate implementing overlay of textarea and pre code elements so you can see the syntax highlighting as you edit
 - [ ] put donation link to buymeacoffee
 - [ ] implement export to apkg
