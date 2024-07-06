@@ -13,7 +13,7 @@
         "reading": "ねこ",
         "translation": "cat",
         "transliteration": "neko",
-        "Tags": ["animals", "noun", "common", "JLPT5"],
+        "Tags": ["animals", "noun", "common", "JLPT5", "kanji"],
         "picture": "https://bit.ly/fcc-relaxing-cat"
     },
     "2":{"audio":"australia_oosutoraria.mp3",
@@ -21,7 +21,7 @@
         "reading": "",
         "translation": "Australia",
         "transliteration": "oosutoraria",
-        "Tags": ["countries", "noun", "common"],
+        "Tags": ["countries", "noun", "common", "kana"],
         "picture": "australia.jpg"
     },
     "3":{"audio":"crab_kani.mp3",
@@ -29,7 +29,15 @@
         "reading": "かに",
         "translation": "crab",
         "transliteration": "kani",
-        "Tags": ["animals", "noun", "common", "JLPT5"],
+        "Tags": ["animals", "noun", "common", "JLPT5", "kanji"],
         "picture": "crab_l.jpg"
+    },
+    "4":{"audio":"kokuren.mp3",
+        "term":"国連安全保障理事会",
+        "reading":"こくれんあんぜんほしょうりじかい",
+        "translation":"UN Security Council; United Nations Security Board of Directors​",
+        "transliteration":"",
+        "Tags":["noun", "fromNews", "kanji"],
+        "picture": "un_security_council.jpg"
     }
 }
