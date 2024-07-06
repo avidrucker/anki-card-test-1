@@ -131,8 +131,9 @@
 - [ ] enable use of animation frames in CSS editor
 - [ ] add typing animation to green code rain design
 - [ ] review dummy data for representative sample of short words, long words, missing fields, etc.
-- [ ] remove ".json" prefix from design names in the dropdown
+- [x] remove ".json" prefix from design names in the dropdown
 - [ ] enable user to make different front designs for different card types ("listening", "picture", "L1>L2 translation", etc.)
 - [ ] enable user to add custom JavaScript to their cards
 - [ ] implement light/dark theme toggle for the app UI
 - [x] make active tabs stand out more by using a `reverse-dim` CSS effect for non-active tabs and underlining the active tab
+- [ ] fix classic apple theme cursor cursor hotspot to be pixel perfect: https://developer.mozilla.org/en-US/docs/Web/CSS/cursor
