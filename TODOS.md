@@ -105,7 +105,7 @@
 - [ ] make it so that when clicking on the code editor pane the scroll position is maintained
 - [ ] make it so that when clicking on the code editor pane, the cursor is placed at the exact same position as the click
 - [ ] test out making a text-editable pre code block that has line numbers and syntax highlighting that updates text-highlighting and line-numbers on content change, and applies text-formatting on element blur
-- [ ] fix issue where line numbers get weirdly formatted after 99
+- [x] fix issue where line numbers get weirdly formatted after 99
 - [ ] add ability to toggle line numbers on/off
 - [ ] add ability to toggle syntax highlighting on/off
 - [ ] implement user defined data field name conversions, e.g. "{{reading}}" -> "{{yomi}}" via dropdown with text inputs
@@ -123,7 +123,7 @@
   - [ ] Comic Book Panel: Styled like a frame from a comic book, complete with speech bubbles and thought clouds.
   - [ ] Steampunk: Brass, copper, and gear-themed designs with a Victorian-era industrial feel, steam effect in the background, dripping water effect, spinning gears, etc.
   - [ ] Cyberpunk: Neon lights, holographic displays, digital rain, and other cyberpunk elements.
-  - [ ] Classic MacOS: Styled like the classic MacOS interface, complete with window frames, buttons, and icons.
+  - [x] Classic MacOS: Styled like the classic MacOS interface, complete with window frames, buttons, and icons.
   - [ ] Blue DOS Terminal: Styled like a blue DOS terminal, complete with a blinking cursor, monospaced font, and ASCII art.
 - [ ] design custom cursors for some themes, such as a glowing green outline for green code rain, a glowing blue outline for glowing blue circuits, etc.
 - [ ] enable custom dummy data to be added to the dummy data list by users
@@ -142,3 +142,4 @@
 - [ ] add plain border to play button for blueprint theme
 - [ ] style play button for HTML brutalist theme as a standard HTML button
 - [ ] refactor code for readability and maintainability
+- [ ] rename main branch to "main"
