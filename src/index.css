@@ -218,3 +218,12 @@ pre table {
   opacity: 0.85;
   transition: opacity .15s ease-out;
 }
+
+.play-button {
+  color: inherit; 
+  background-color: transparent; 
+  border: none; 
+  z-index: inherit; 
+  cursor: inherit; 
+  text-shadow: inherit;
+}

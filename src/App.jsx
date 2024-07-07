@@ -81,7 +81,7 @@ function App() {
   const replacePlaceholders = (htmlContent, cardData) => {
     let updatedHtml = htmlContent;
     updatedHtml = updatedHtml.replace(/{{audio}}/g, cardData.audio === "{{audio}}" ? "{{audio}}" : 
-      `<audio class="dn" id="audio" src="${cardData.audio}" controls ></audio><button style="color: inherit; background-color: transparent; border: none; z-index: inherit; cursor: inherit; text-shadow: inherit;" class="play-button" onclick="document.getElementById('audio').play()">▶</button>` || '');
+      `<audio class="dn" id="audio" src="${cardData.audio}" controls ></audio><button class="play-button" onclick="document.getElementById('audio').play()">▶</button>` || '');
     updatedHtml = updatedHtml.replace(/{{term}}/g, cardData.term || '');
     updatedHtml = updatedHtml.replace(/{{reading}}/g, cardData.reading || '');
     updatedHtml = updatedHtml.replace(/{{translation}}/g, cardData.translation || '');
