@@ -137,3 +137,8 @@
 - [ ] implement light/dark theme toggle for the app UI
 - [x] make active tabs stand out more by using a `reverse-dim` CSS effect for non-active tabs and underlining the active tab
 - [ ] fix classic apple theme cursor cursor hotspot to be pixel perfect: https://developer.mozilla.org/en-US/docs/Web/CSS/cursor
+- [ ] make play button grow on hover for all card types
+- [ ] add glowing border to play button for glowing blue circuits theme
+- [ ] add plain border to play button for blueprint theme
+- [ ] style play button for HTML brutalist theme as a standard HTML button
+- [ ] refactor code for readability and maintainability
