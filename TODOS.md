@@ -143,3 +143,10 @@
 - [ ] style play button for HTML brutalist theme as a standard HTML button
 - [ ] refactor code for readability and maintainability
 - [ ] rename main branch to "main"
+
+- [ ] modify React to inject the global CSS styles dynamically into the head of the CSS editor pane, so they don't have to be written into the JSON of each design, but can still be easily copied or exported out to Anki
+- [ ] implement switching between preview when the editor is switched to 'Front HTML' or 'Back HTML' editor panes but not when switching to 'CSS' editor pane
+- [ ] modify the non-Google font imports to be served from a CDN rather than locally from the app itself so that themes can be more easily transferred with correct font display
+- [ ] include instructions for how to host fonts and images locally in Anki to reduce on web calls, leave both local first and CDN second as options within the CSS w/ local first commented out for the web app version to confirm correct importing behavior
+- [ ] write up instructions document for how to transfer designs from the web app to Anki, post to GitHub repo
+- [ ] add link to export to Anki instructions within web app
