@@ -145,8 +145,20 @@
 - [ ] rename main branch to "main"
 
 - [ ] modify React to inject the global CSS styles dynamically into the head of the CSS editor pane, so they don't have to be written into the JSON of each design, but can still be easily copied or exported out to Anki
-- [ ] implement switching between preview when the editor is switched to 'Front HTML' or 'Back HTML' editor panes but not when switching to 'CSS' editor pane
+- [ ] implement 'auto-switching' between preview when the editor is switched to 'Front HTML' or 'Back HTML' editor panes but not when switching to 'CSS' editor pane
 - [ ] modify the non-Google font imports to be served from a CDN rather than locally from the app itself so that themes can be more easily transferred with correct font display
 - [ ] include instructions for how to host fonts and images locally in Anki to reduce on web calls, leave both local first and CDN second as options within the CSS w/ local first commented out for the web app version to confirm correct importing behavior
 - [ ] write up instructions document for how to transfer designs from the web app to Anki, post to GitHub repo
 - [ ] add link to export to Anki instructions within web app
+- [ ] add text input field to all designs for text answer field on Anki cards
+- [ ] add sample hint field to all designs for hint field on Anki cards
+- [ ] implement local first, remote second strategy for sourcing of fonts, images, and CSS style sheets (Tachyons ~~and custom global styles CSS~~) for Anki export
+- ~~host CDN of global styles for all designs~~ (not necessary, can be included in the JSON of the design, and preferrably we will make less/no API calls to CDNs)
+- [ ] implement CD styled play button transfer to Anki for Anki audio fields
+- [ ] implement CD styled input element transfer to Anki for Anki input fields
+- [ ] implement CD styled hint element transfer to Anki for Anki hint fields
+- [ ] add demo card data with a tall orientation image for testing purposes
+- [x] fix bug in 8-bit design where multiple images would not be fully displayed
+- [ ] remove global card styles from index.css, instead locate any card styles in the JSON of the card designs themselves
+- [x] figure out how to add custom placeholder text to text input field in Anki
+- [x] figure out how to override default play button styling and SVG icon in Anki
