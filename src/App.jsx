@@ -78,8 +78,18 @@ function App() {
     }
   };
 
+  const removeConsecutiveSpaces = (str) => {
+    return str.replace(/\s+/g, ' ');
+  }
+
   const replacePlaceholders = (htmlContent, cardData) => {
     let updatedHtml = htmlContent;
+    
+    // look in htmlContent for placeholder field on div with class of input-container, save this into a variable called placeholder
+    const placeholderRegex = /<div id="input-container".*?placeholder="([^"]+)"/;
+    const match = removeConsecutiveSpaces(updatedHtml).match(placeholderRegex);
+    const placeholder = match ? match[1] : '';
+
     updatedHtml = updatedHtml.replace(/{{audio}}/g, cardData.audio === "{{audio}}" ? "{{audio}}" : 
       `<audio class="dn" id="audio" src="${cardData.audio}" controls ></audio><button class="play-button" onclick="document.getElementById('audio').play()">▶</button>` || '');
     updatedHtml = updatedHtml.replace(/{{term}}/g, cardData.term || '');
@@ -88,6 +98,10 @@ function App() {
     updatedHtml = updatedHtml.replace(/{{transliteration}}/g, cardData.transliteration || '');
     updatedHtml = updatedHtml.replace(/{{Tags}}/g, (cardData.Tags || []).join(', '));
     updatedHtml = updatedHtml.replace(/{{picture}}/g, cardData.picture === "{{picture}}" ? "{{picture}}" : `<img src="${cardData.picture}" />` || '');
+    // grab a tag in the format of {{type:TAG_NAME}} and replace like the audio button but this time instead with an input text field
+    updatedHtml = updatedHtml.replace(/{{type:([^}]+)}}/g, (type) => {
+        return `<input type="text" id="typeans" class="input-field" placeholder="${placeholder || type}" />`;
+    });
     return updatedHtml;
   };
 
@@ -95,6 +109,7 @@ function App() {
     fetch('dummy_card_data.json')
         .then(response => response.json())
         .then(data => {
+
             setCardData(data);
             // console.log("data", data);
             displayCardData(0);  // Initialize display with the first card
@@ -400,6 +415,17 @@ function App() {
     fetch(`${filename}`)
       .then(res => res.json())
       .then(data => {
+
+        /*const injectionHtml = `<!-- Hack to configure Anki's built-in text input placeholder -->
+              <img
+                src
+                onerror="document.getElementById('typeans').placeholder='Enter your answer here'; document.getElementById('typeans').value=''; document.getElementById('typeans').removeAttribute('readonly');"
+              />`;
+
+              console.log("data:", data);
+
+              data.frontHtml = data.frontHtml + injectionHtml;*/
+
         setFrontHtml(data.frontHtml || '');
         setBackHtml(data.backHtml || '');
         setCardCss(data.cardCss || '');
