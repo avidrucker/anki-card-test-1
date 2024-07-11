@@ -155,10 +155,18 @@
 - [ ] implement local first, remote second strategy for sourcing of fonts, images, and CSS style sheets (Tachyons ~~and custom global styles CSS~~) for Anki export
 - ~~host CDN of global styles for all designs~~ (not necessary, can be included in the JSON of the design, and preferrably we will make less/no API calls to CDNs)
 - [ ] implement CD styled play button transfer to Anki for Anki audio fields
-- [ ] implement CD styled input element transfer to Anki for Anki input fields
-- [ ] implement CD styled hint element transfer to Anki for Anki hint fields
+- [o] implement CD styled input element transfer to Anki for Anki input fields
+  - [x] 8 bit
+- [o] implement CD styled hint element transfer to Anki for Anki hint fields
+  - [x] 8 bit
 - [ ] add demo card data with a tall orientation image for testing purposes
 - [x] fix bug in 8-bit design where multiple images would not be fully displayed
-- [ ] remove global card styles from index.css, instead locate any card styles in the JSON of the card designs themselves
+- [ ] remove global card styles from index.css, instead ~~locate any card styles in the JSON of the card designs themselves~~ inject the styles into the tail of the CSS editor pane when loading from JSON
 - [x] figure out how to add custom placeholder text to text input field in Anki
 - [x] figure out how to override default play button styling and SVG icon in Anki
+- [ ] implement offline first strategy so that the app can be used offline
+- [ ] implement service worker for offline first strategy
+- [x] implement replacement of {{type:/S+}} field with HTML input element in the front HTML markdown
+- [ ] ~~inject img tag into the editor pane for the front HTML when loading from JSON~~
+- [ ] figure out if possible how to inject custom hint field markdown based on ID name in HTML markdown, iterating the ID for each field, in way that works for Card Designer AND Anki
+- [x] fix bug where multiple audio play buttons grow at the same time, instead they should only grow individually on hover
