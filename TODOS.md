@@ -154,11 +154,15 @@
 - [ ] add sample hint field to all designs for hint field on Anki cards
 - [ ] implement local first, remote second strategy for sourcing of fonts, images, and CSS style sheets (Tachyons ~~and custom global styles CSS~~) for Anki export
 - ~~host CDN of global styles for all designs~~ (not necessary, can be included in the JSON of the design, and preferrably we will make less/no API calls to CDNs)
-- [ ] implement CD styled play button transfer to Anki for Anki audio fields
+- [x] implement CD styled play button transfer to Anki for Anki audio fields
+  - [x] 8 bit
+  - [ ] blackboard
 - [o] implement CD styled input element transfer to Anki for Anki input fields
   - [x] 8 bit
+  - [ ] blackboard
 - [o] implement CD styled hint element transfer to Anki for Anki hint fields
   - [x] 8 bit
+  - [ ] blackboard
 - [ ] add demo card data with a tall orientation image for testing purposes
 - [x] fix bug in 8-bit design where multiple images would not be fully displayed
 - [ ] remove global card styles from index.css, instead ~~locate any card styles in the JSON of the card designs themselves~~ inject the styles into the tail of the CSS editor pane when loading from JSON
