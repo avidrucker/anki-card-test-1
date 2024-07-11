@@ -57,17 +57,6 @@ code {
   background-color: rgba(255, 255, 255, 0.1);
 }
 
-/* Hide scrollbar for Chrome, Safari and Opera */
-.invisible-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-
-/* Hide scrollbar for IE, Edge and Firefox */
-.invisible-scrollbar {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
-}
-
 /* responsive design test classes */
 /* Tachyons breakpoints */
 /* 'not-small' breakpoint */
@@ -91,50 +80,6 @@ code {
   .bg-blue-l { background-color: blue; }
   .bg-red-l { background-color: red; }
   .bg-purple-l { background-color: purple; }
-}
-
-.crab-image {
-  background-image: url("crab_l.jpg")
-}
-
-.australia-image {
-  background-image: url("australia.jpg")
-}
-
-.shift-up-right {
-  position: relative;
-  top: -0.1rem;
-}
-
-.visually-hidden {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap; /* Prevents content from "spilling" */
-  border-width: 0;
-}
-
-.visually-hidden:hover {
-  position: inherit;
-  width: auto;
-  height: auto;
-  margin: 0;
-  overflow: visible;
-  clip: auto;
-  white-space: normal;
-  border-width: 0;
-}
-
-.off-screen {
-  position: absolute;
-  left: -9999px;
-}
-
-.balance {
-  text-wrap: balance;
 }
 
 /* for block of numbers */
@@ -219,6 +164,53 @@ pre table {
   transition: opacity .15s ease-out;
 }
 
+/* Hide scrollbar for Chrome, Safari and Opera */
+.invisible-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.invisible-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.shift-up-right {
+  position: relative;
+  top: -0.1rem;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap; /* Prevents content from "spilling" */
+  border-width: 0;
+}
+
+.visually-hidden:hover {
+  position: inherit;
+  width: auto;
+  height: auto;
+  margin: 0;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+  border-width: 0;
+}
+
+.off-screen {
+  position: absolute;
+  left: -9999px;
+}
+
+.balance {
+  text-wrap: balance;
+}
+
 .play-button {
   color: inherit; 
   background-color: transparent; 
@@ -226,4 +218,5 @@ pre table {
   z-index: inherit; 
   cursor: inherit; 
   text-shadow: inherit;
+  line-height: inherit;
 }
