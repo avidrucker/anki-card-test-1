@@ -174,3 +174,4 @@
 - [ ] ~~inject img tag into the editor pane for the front HTML when loading from JSON~~
 - [ ] figure out if possible how to inject custom hint field markdown based on ID name in HTML markdown, iterating the ID for each field, in way that works for Card Designer AND Anki
 - [x] fix bug where multiple audio play buttons grow at the same time, instead they should only grow individually on hover
+- [x] Dynamically take the placeholder text from the user's input in the text input div container placeholder attribute and inject it into the text input field
