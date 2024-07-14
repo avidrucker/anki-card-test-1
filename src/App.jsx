@@ -69,7 +69,8 @@ function App() {
         const currentCard = cardData[cardKeys[index]];
         const htmlWithValues = replacePlaceholders(viewSide === 'front' ? frontHtml : backHtml, 
           currentCard);
-        setPreviewData(htmlWithValues);  // Assuming you have a state to hold the preview HTML
+        const conditionalHtml = processConditionalContent(htmlWithValues, currentCard);
+        setPreviewData(conditionalHtml);  // Assuming you have a state to hold the preview HTML
     }
   };
 
@@ -79,7 +80,7 @@ function App() {
 
   const replacePlaceholders = (htmlContent, cardData) => {
     let updatedHtml = htmlContent;
-    
+
     // look in htmlContent for placeholder field on div with class of input-container, save this into a variable called placeholder
     const placeholderRegex = /<div id="input-container".*?placeholder="([^"]+)"/;
     const match = removeConsecutiveSpaces(updatedHtml).match(placeholderRegex);
@@ -99,6 +100,30 @@ function App() {
     });
     return updatedHtml;
   };
+
+  const processConditionalContent = (htmlContent, cardData) => {
+    // Function to remove sections not meeting the condition
+    const removeSection = (regex, keepIfTrue) => {
+        return htmlContent.replace(regex, (match, key, innerContent) => {
+            const hasData = !!cardData[key];
+            if (keepIfTrue === hasData) {
+                return innerContent || ''; // Return inner content if condition is met
+            }
+            return ''; // Remove section if condition is not met
+        });
+    };
+
+    // Handle positive conditions
+    const positiveRegex = /{{#([^{}]+)}}([\s\S]*?){{\/\1}}/g;
+    htmlContent = removeSection(positiveRegex, true);
+
+    // Handle negative conditions
+    const negativeRegex = /{{\^([^{}]+)}}([\s\S]*?){{\/\1}}/g;
+    htmlContent = removeSection(negativeRegex, false);
+
+    return htmlContent;
+};
+
 
   useEffect(() => {
     fetch('dummy_card_data.json')
