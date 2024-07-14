@@ -4,6 +4,7 @@ import hljs from 'highlight.js';
 import prettier from 'prettier/standalone';
 import htmlParser from 'prettier/plugins/html';
 import cssParser from 'prettier/plugins/postcss';
+import { copyIcon, checkIcon, eyeIcon, eyeSlashIcon } from './icons';
 
 async function highlightJSLoad() {
     return await import('highlight.js');
