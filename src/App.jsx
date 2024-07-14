@@ -69,7 +69,7 @@ function App() {
         const currentCard = cardData[cardKeys[index]];
         const htmlWithValues = replacePlaceholders(viewSide === 'front' ? frontHtml : backHtml, 
           currentCard);
-        const conditionalHtml = processConditionalContent(htmlWithValues, currentCard);
+        const conditionalHtml = processConditionalContent(htmlWithValues, currentCard, viewSide === 'front');
         setPreviewData(conditionalHtml);  // Assuming you have a state to hold the preview HTML
     }
   };
@@ -101,7 +101,7 @@ function App() {
     return updatedHtml;
   };
 
-  const processConditionalContent = (htmlContent, cardData) => {
+  const processConditionalContent = (htmlContent, cardData, isFrontSide) => {
     // Function to remove sections not meeting the condition
     const removeSection = (regex, keepIfTrue) => {
         return htmlContent.replace(regex, (match, key, innerContent) => {
@@ -120,6 +120,11 @@ function App() {
     // Handle negative conditions
     const negativeRegex = /{{\^([^{}]+)}}([\s\S]*?){{\/\1}}/g;
     htmlContent = removeSection(negativeRegex, false);
+
+    // if htmlContent is empty, instead return the following content
+    if(isFrontSide && htmlContent.trim() === '') {
+      htmlContent = `<div class="black"><p>The front of this card is blank.</p><a class="blue link underline" href="https://anki.tenderapp.com/kb/card-appearance/the-front-of-this-card-is-blank">More information</a></div>`;
+    }
 
     return htmlContent;
 };
