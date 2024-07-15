@@ -38,6 +38,7 @@ const availableDesigns = ["8 Bit Console.json",
                           "Glowing Blue Circuits.json", 
                           "Index Card.json", 
                           "Ink on Ricepaper.json", 
+                          "Stormy Night Poster.json",
                           "Zenburn Theme.json"];
 
 function App() {
