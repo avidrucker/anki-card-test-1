@@ -102,26 +102,30 @@ function App() {
   };
 
   const processConditionalContent = (htmlContent, cardData, isFrontSide) => {
-    // Function to remove sections not meeting the condition
-    const removeSection = (regex, keepIfTrue) => {
-        return htmlContent.replace(regex, (match, key, innerContent) => {
+    // Function to process conditionals, allowing for up to two levels of nesting
+    const processConditionals = (content, regex, keepIfTrue) => {
+        return content.replace(regex, (match, key, innerContent) => {
+            // Check if the key exists in cardData to determine if the section should be kept
             const hasData = !!cardData[key];
             if (keepIfTrue === hasData) {
+                // Process nested conditionals within this section before returning
+                innerContent = processConditionals(innerContent, positiveRegex, true); // Process nested positive conditionals
+                innerContent = processConditionals(innerContent, negativeRegex, false); // Process nested negative conditionals
                 return innerContent || ''; // Return inner content if condition is met
             }
             return ''; // Remove section if condition is not met
         });
     };
 
-    // Handle positive conditions
+    // Regex for positive and negative conditions
     const positiveRegex = /{{#([^{}]+)}}([\s\S]*?){{\/\1}}/g;
-    htmlContent = removeSection(positiveRegex, true);
-
-    // Handle negative conditions
     const negativeRegex = /{{\^([^{}]+)}}([\s\S]*?){{\/\1}}/g;
-    htmlContent = removeSection(negativeRegex, false);
 
-    // if htmlContent is empty, instead return the following content
+    // Process outer conditionals first
+    htmlContent = processConditionals(htmlContent, positiveRegex, true);
+    htmlContent = processConditionals(htmlContent, negativeRegex, false);
+
+    // Handle case where htmlContent is empty on the front side
     if(isFrontSide && htmlContent.trim() === '') {
       htmlContent = `<div class="black"><p>The front of this card is blank.</p><a class="blue link underline" href="https://anki.tenderapp.com/kb/card-appearance/the-front-of-this-card-is-blank">More information</a></div>`;
     }
