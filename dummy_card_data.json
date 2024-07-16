@@ -39,5 +39,13 @@
         "transliteration":"",
         "Tags":["noun", "fromNews", "kanji"],
         "picture": "un_security_council.jpg"
+    },
+    "5":{"audio": "hataraku.mp3",
+        "term": "働く",
+        "reading": "はたらく",
+        "translation": "",
+        "transliteration": "",
+        "Tags": ["verb", "common", "JLPT5", "kanji"],
+        "picture": ""
     }
 }
