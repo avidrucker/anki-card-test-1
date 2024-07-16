@@ -156,13 +156,13 @@
 - ~~host CDN of global styles for all designs~~ (not necessary, can be included in the JSON of the design, and preferrably we will make less/no API calls to CDNs)
 - [x] implement CD styled play button transfer to Anki for Anki audio fields
   - [x] 8 bit
-  - [ ] blackboard
+  - [x] blackboard
 - [o] implement CD styled input element transfer to Anki for Anki input fields
   - [x] 8 bit
-  - [ ] blackboard
+  - [x] blackboard
 - [o] implement CD styled hint element transfer to Anki for Anki hint fields
   - [x] 8 bit
-  - [ ] blackboard
+  - [x] blackboard
 - [ ] add demo card data with a tall orientation image for testing purposes
 - [x] fix bug in 8-bit design where multiple images would not be fully displayed
 - [ ] remove global card styles from index.css, instead ~~locate any card styles in the JSON of the card designs themselves~~ inject the styles into the tail of the CSS editor pane when loading from JSON
@@ -175,3 +175,22 @@
 - [ ] figure out if possible how to inject custom hint field markdown based on ID name in HTML markdown, iterating the ID for each field, in way that works for Card Designer AND Anki
 - [x] fix bug where multiple audio play buttons grow at the same time, instead they should only grow individually on hover
 - [x] Dynamically take the placeholder text from the user's input in the text input div container placeholder attribute and inject it into the text input field
+- [ ] enable multiple pictures to be added to dummy data and card designs
+- [ ] enable multiple audio files to be added to dummy data and card designs
+- [ ] enable multiple hint fields to be added to dummy data and card designs
+- [ ] implement field renaming from dummy data fields with global toggle renaming on/off and renamed fields to be saved into local storage
+- [ ] review screenshots of mobile view for each theme and make sure that they hold up well
+  - [ ] 8 bit
+  - [ ] blackboard
+  - [ ] blueprint
+  - [ ] brutalist html
+  - [ ] classic apple
+  - [ ] code rain
+  - [ ] da vinci sketch
+  - [ ] full photo 1
+  - [ ] full photo 2
+  - [ ] jrpg menu
+  - [ ] glowing blue circuits
+  - [ ] index card
+  - [ ] ink on ricepaper
+  - [ ] zenburn
