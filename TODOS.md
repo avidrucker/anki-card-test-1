@@ -194,3 +194,7 @@
   - [ ] index card
   - [ ] ink on ricepaper
   - [ ] zenburn
+- [x] improve stormy clouds poster theme
+  - [x] blur the background slightly
+  - [x] add a bluish tint to the text shadow
+  - [x] make the text slightly transparent to get more dark bluish tint to the metal effect
