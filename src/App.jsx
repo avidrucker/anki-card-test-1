@@ -25,7 +25,8 @@ const ACTIVE_BTN_STYLE = "fw6 white";
 const INACTIVE_BTN_STYLE = "light-gray reverse-dim";
 const CARD_STYLE = "ba b--black-50";
 
-const availableDesigns = ["8 Bit Console.json", 
+const availableDesigns = ["8 Bit Console.json",
+                          "Beach Night Poster.json", 
                           "Blackboard and Chalk.json", 
                           "Blueprint Theme.json", 
                           "Brutalist HTML.json",
