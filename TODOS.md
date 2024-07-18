@@ -178,8 +178,10 @@
 - [ ] enable multiple pictures to be added to dummy data and card designs
 - [ ] enable multiple audio files to be added to dummy data and card designs
 - [ ] enable multiple hint fields to be added to dummy data and card designs
-- [ ] add 2nd picture to cat card
-- [ ] add 2nd audio to cat card
+- [ ] figure out how to render full photo themes w/ multiple images in picture field
+  - [ ] add 2nd picture to cat card
+- [ ] figure out how to render play buttons for multiple audio files in audio field for each card theme
+  - [ ] add 2nd audio to cat card
 - [ ] implement field renaming from dummy data fields with global toggle renaming on/off and renamed fields to be saved into local storage
 - [ ] review screenshots of mobile view for each theme and make sure that they hold up well
   - [ ] 8 bit
