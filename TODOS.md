@@ -178,6 +178,8 @@
 - [ ] enable multiple pictures to be added to dummy data and card designs
 - [ ] enable multiple audio files to be added to dummy data and card designs
 - [ ] enable multiple hint fields to be added to dummy data and card designs
+- [ ] add 2nd picture to cat card
+- [ ] add 2nd audio to cat card
 - [ ] implement field renaming from dummy data fields with global toggle renaming on/off and renamed fields to be saved into local storage
 - [ ] review screenshots of mobile view for each theme and make sure that they hold up well
   - [ ] 8 bit
@@ -198,3 +200,13 @@
   - [x] blur the background slightly
   - [x] add a bluish tint to the text shadow
   - [x] make the text slightly transparent to get more dark bluish tint to the metal effect
+- [ ] fix full photo 2 theme to have blurred placeholder background image on the back side when there is no image
+- [ ] make full photo 2 "dot" delimiters in text box render conditionally based on the presence of text the follows each dot
+- [ ] make blueprint theme background scroll with the text
+- [ ] fix hitbox for play button in da vinci theme to not take up full screen width
+- [ ] remove unused fonts from full photo 2 theme CSS
+- [ ] rename 'glowing-text' to text-shadow in game menu UI theme and apply white font color as a separate class
+- [ ] increase font size of term for glowing blue circuits theme by roughly a factor of 2
+- [x] fix front side of index card to render correctly
+- [x] remove ghost padding from bottom of index card (its the top--2 and margin-top)
+
