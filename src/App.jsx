@@ -52,18 +52,19 @@ function App() {
   const [designName, setDesignName] = useState(localStorage.getItem('designName') || 'Untitled');
   const [editingName, setEditingName] = useState(false);
   const nameInputRef = useRef(null); // Create a reference to the input element
-  const textareaRef = useRef(null); // Create a reference to the textarea element
+  //// const textareaRef = useRef(null); // Create a reference to the textarea element
   const [isEditing, setIsEditing] = useState(false); 
   const [cardData, setCardData] = useState({});
   const [previewData, setPreviewData] = useState("");
   const [cardIndex, setCardIndex] = useState(0);
   const [editorViewCollapsed, setEditorViewCollapsed] = useState(false);
+  const contentEditableRef = useRef(null);
 
-  useEffect(() => {
-    if (isEditing) {
-      textareaRef.current?.focus();  // Automatically focus the textarea when editing
-    }
-  }, [isEditing]); // Re-run the effect when isEditing changes
+  // useEffect(() => {
+  //   if (isEditing) {
+  //     textareaRef.current?.focus();  // Automatically focus the textarea when editing
+  //   }
+  // }, [isEditing]); // Re-run the effect when isEditing changes
   
   const displayCardData = (index) => {
     const cardKeys = Object.keys(cardData).filter(key => key !== 'default');  // Avoid 'default'
@@ -297,7 +298,7 @@ function App() {
 };
 
   const handleChange = (event) => {
-    const value = event.target.value;
+    const value = event.currentTarget.innerText;
     if (activeTab === 'frontHtml') {
       setFrontHtml(value);
     } else if (activeTab === 'backHtml') {
@@ -307,6 +308,42 @@ function App() {
     }
     setCopied(false);
   };
+
+  useEffect(() => {
+    const saveCursor = () => {
+      const selection = window.getSelection();
+      if (selection.rangeCount > 0) {
+        const range = selection.getRangeAt(0);
+        const startContainer = range.startContainer;
+        const startOffset = range.startOffset;
+        // Traverse up to find the index of the node within contentEditable
+        let node = startContainer;
+        let index = 0;
+        while (node && node !== contentEditableRef.current) {
+          node = node.previousSibling;
+          index++;
+        }
+        return { index, startOffset };
+      }
+      return null;
+    };
+  
+    const restoreCursor = (position) => {
+      if (position) {
+        const { index, startOffset } = position;
+        const selection = window.getSelection();
+        const range = document.createRange();
+        const targetNode = contentEditableRef.current.childNodes[index] || contentEditableRef.current.lastChild;
+        range.setStart(targetNode, Math.min(startOffset, targetNode.length || 0));
+        range.collapse(true);
+        selection.removeAllRanges();
+        selection.addRange(range);
+      }
+    };
+  
+    const position = saveCursor();
+    requestAnimationFrame(() => restoreCursor(position));
+  }, [frontHtml, backHtml, cardCss]); // Dependencies might need adjustment based on your state management
 
   const handleTabChange = (newTab) => {
     setActiveTab(newTab);
@@ -447,16 +484,6 @@ function App() {
       .then(res => res.json())
       .then(data => {
 
-        /*const injectionHtml = `<!-- Hack to configure Anki's built-in text input placeholder -->
-              <img
-                src
-                onerror="document.getElementById('typeans').placeholder='Enter your answer here'; document.getElementById('typeans').value=''; document.getElementById('typeans').removeAttribute('readonly');"
-              />`;
-
-              console.log("data:", data);
-
-              data.frontHtml = data.frontHtml + injectionHtml;*/
-
         setFrontHtml(data.frontHtml || '');
         setBackHtml(data.backHtml || '');
         setCardCss(data.cardCss || '');
@@ -562,8 +589,8 @@ function App() {
               className={`absolute db top-0 right-0 z-999 mt3 mr3 ${BTN_STYLE_GLASS}`}>    
                   <span className="relative shift-up-right">{copied ? checkIcon : copyIcon}</span>
             </button>
-            {isEditing ? (
-              <textarea
+            
+              {/*<textarea
                 ref={textareaRef}
                 className={"code w-100 pa3 textarea-ph pl-textarea-strong relative z-0 flex-auto resize-none " + (isEditing ? "db" : "dn")}
                 spellCheck="false"
@@ -574,17 +601,27 @@ function App() {
                 rows="10"
                 cols="30"
                 autoFocus  // Automatically focus when shown
-              />
-            ) : (
+              />*/}
+            
               <pre
                 className="w-100 flex-auto ma0 relative"
-                onClick={() => setIsEditing(true)}  // Show textarea when pre is clicked
               >
-                <code className={(activeTab === 'frontHtml' ? "language-html" : activeTab === 'backHtml' ? "language-html" : "language-css") + " w-100 flex-auto hljs pl0-strong"}>
+                <code 
+                  ref={contentEditableRef}
+                  spellCheck="false"
+                  onClick={() => setIsEditing(true)}  // Show textarea when pre is clicked
+                  onBlur={handleBlur}
+                  onInput={handleChange}
+                  contentEditable={true} 
+                  className={(activeTab === 'frontHtml' 
+                      ? "language-html" 
+                      : activeTab === 'backHtml' 
+                        ? "language-html" 
+                        : "language-css") + " w-100 flex-auto hljs pl0-strong"}>
                   {activeTab === 'frontHtml' ? frontHtml : activeTab === 'backHtml' ? backHtml : cardCss}
                 </code>
               </pre>
-            )}
+            
           </div>
         </div>
         <div className={`card-display pb2 pb0-ns w-100 w-50-ns flex w-animate flex-column pl1 ${(editorViewCollapsed && " w-100-ns-strong ")}`}>
