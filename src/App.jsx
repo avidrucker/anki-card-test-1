@@ -383,10 +383,21 @@ function App() {
 
   const handleTabChange = (newTab) => {
     setActiveTab(newTab);
+    if(newTab === "frontHtml") {
+      setViewSide("front");
+    }
+    if (newTab === "backHtml") {
+      setViewSide("back");
+    }
     setCopied(false);
   };
 
   const handleViewChange = (newView) => {
+    if(newView === "front") {
+      setActiveTab("frontHtml");
+    } else {
+      setActiveTab("backHtml");
+    }
     setViewSide(newView);
   };
 
@@ -452,10 +463,9 @@ function App() {
     fileInput.click();
   };
 
-  // TODO: rename onChange of what?
-  const onChange = useCallback((val, viewUpdate) => {
-    // console.log("val:", val);
+  const onEditorChange = useCallback((val, viewUpdate) => {
     setCurrentEditorText(val);
+    setCopied(false); // set copied icon back
   }, []);
 
   const handleToggleEditorView = () => {
@@ -484,13 +494,9 @@ function App() {
   // useEffect to call updateEditorTextConditionally after state updates
   useEffect(() => {
     if (designLoaded) {
-      // console.log("designLoaded useEffect", designLoaded, activeTab, viewSide);
-
       updateEditorTextConditionally();
       // Reset designLoaded to false
       setDesignLoaded(false);
-    } else {
-      // console.log("empty call to useEffect on designLoaded")
     }
   }, [designLoaded, cardCss, frontHtml, backHtml]);
 
@@ -516,7 +522,6 @@ function App() {
   // activetab in this onblur will be the old tab
   // ( if we are in fronthtml and click backhtml it will be fronthtml )
   const formatCode = async () => {
-    // console.log("code-mirror onBlur");
     const parser = activeTab.includes("Html") ? "html" : "css";
 
     const formattedCode = await prettier.format(currentEditorText, {
@@ -531,14 +536,7 @@ function App() {
 
   return (
     <div className="App w-100 flex flex-column vh-100 pb2">
-      <CodeMirror
-        onBlur={formatCode}
-        value={currentEditorText}
-        height="200px"
-        extensions={[less(), html(), EditorView.lineWrapping]}
-        theme={monokai}
-        onChange={onChange}
-      />
+      
       <header className="flex flex-column flex-row-ns justify-between items-center pb2">
         {/*responsive design test classes: bg-blue bg-red-m bg-purple-l*/}
         <div className="header-left-side w-100 flex flex-column items-center-ns flex-row-ns">
@@ -685,23 +683,16 @@ function App() {
               </span>
             </button>
 
-            <pre className="w-100 flex-auto ma0 relative">
-              <code
-                className={
-                  (activeTab === "frontHtml"
-                    ? "language-html"
-                    : activeTab === "backHtml"
-                      ? "language-html"
-                      : "language-css") + " w-100 flex-auto hljs pl0-strong"
-                }
-              >
-                {activeTab === "frontHtml"
-                  ? frontHtml
-                  : activeTab === "backHtml"
-                    ? backHtml
-                    : cardCss}
-              </code>
-            </pre>
+            <section className="w-100 flex-auto ma0 relative bg-monokai">
+              <CodeMirror
+                onBlur={formatCode}
+                value={currentEditorText}
+                height="100%"
+                extensions={[activeTab === "cardCss" ? less() : html(), EditorView.lineWrapping]}
+                theme={monokai}
+                onChange={onEditorChange}
+              />
+            </section>
           </div>
         </div>
         <div
