@@ -253,6 +253,7 @@ function App() {
     const newIndex = (cardIndex + 1) % Object.keys(cardData).length;
     setCardIndex(newIndex);
     displayCardData(newIndex);
+    localStorage.setItem("cardIndex", newIndex);
   };
 
   const handlePreviousCard = () => {
@@ -260,6 +261,7 @@ function App() {
     const newIndex = (cardIndex - 1 + totalCards) % totalCards;
     setCardIndex(newIndex);
     displayCardData(newIndex);
+    localStorage.setItem("cardIndex", newIndex);
   };
 
   const getCurrentTextareaContent = () => {
@@ -671,7 +673,7 @@ function App() {
             </button>
           </div>
           <div
-            className={`relative w-100 flex-auto flex flex-column ${CARD_STYLE}`}
+            className={`relative w-100 h-100 overflow-y-hidden ${CARD_STYLE}`}
           >
             <button
               onClick={copyToClipboard}
@@ -683,7 +685,7 @@ function App() {
               </span>
             </button>
 
-            <section className="w-100 flex-auto ma0 relative bg-monokai">
+            <section className="w-100 ma0 relative bg-monokai h-100 overflow-y-scroll">
               <CodeMirror
                 onBlur={formatCode}
                 value={currentEditorText}
