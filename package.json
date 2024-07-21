@@ -16,6 +16,7 @@
   "dependencies": {
     "@codemirror/lang-html": "^6.4.9",
     "@codemirror/lang-less": "^6.0.2",
+    "@codemirror/view": "^6.28.6",
     "@uiw/codemirror-theme-monokai": "^4.23.0",
     "@uiw/react-codemirror": "^4.23.0",
     "highlight.js": "^11.9.0",

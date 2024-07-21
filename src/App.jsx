@@ -6,8 +6,9 @@ import htmlParser from "prettier/plugins/html";
 import cssParser from "prettier/plugins/postcss";
 import { copyIcon, checkIcon, eyeIcon, eyeSlashIcon } from "./icons";
 import CodeMirror from "@uiw/react-codemirror";
+import { EditorView } from "@codemirror/view";
 // import { javascript } from '@codemirror/lang-javascript';
-import { less } from '@codemirror/lang-less';
+import { less } from "@codemirror/lang-less";
 import { html } from "@codemirror/lang-html";
 import { monokai } from "@uiw/codemirror-theme-monokai";
 
@@ -52,14 +53,14 @@ const availableDesigns = [
 ];
 
 function App() {
-  const [frontHtml, setFrontHtml] = useState("");
-  const [backHtml, setBackHtml] = useState("");
-  const [cardCss, setCardCss] = useState("");
+  const [frontHtml, setFrontHtml] = useState(localStorage.getItem("frontHtml") || "put your front html here");
+  const [backHtml, setBackHtml] = useState(localStorage.getItem("backHtml") || "put your back html here");
+  const [cardCss, setCardCss] = useState(localStorage.getItem("cardCss") || "put your css here");
   const [activeTab, setActiveTab] = useState(
     localStorage.getItem("activeTab") || "backHtml"
   );
   const [viewSide, setViewSide] = useState(
-    localStorage.getItem("viewSide") || "front"
+    localStorage.getItem("viewSide") || "back"
   );
   const [copied, setCopied] = useState(false);
   const [designName, setDesignName] = useState(
@@ -69,14 +70,14 @@ function App() {
   const nameInputRef = useRef(null); // Create a reference to the input element
   const [cardData, setCardData] = useState({});
   const [previewData, setPreviewData] = useState("");
-  const [cardIndex, setCardIndex] = useState(0);
+  const [cardIndex, setCardIndex] = useState(parseInt(localStorage.getItem("cardIndex"),10) || 0);
   const [editorViewCollapsed, setEditorViewCollapsed] = useState(false);
   const [currentEditorText, setCurrentEditorText] = useState("");
+  const [designLoaded, setDesignLoaded] = useState(false);
 
-  // when either of frontHtml, backHtml, or cardCss changes, we will set 
+  // when either of frontHtml, backHtml, or cardCss changes, we will set
   // the currentEditorText to the value of said changed variable
   useEffect(() => {
-    // console.log("currentEditorText useEffect", activeTab, currentEditorText);
     if (activeTab === "frontHtml") {
       setFrontHtml(currentEditorText);
     } else if (activeTab === "backHtml") {
@@ -84,12 +85,11 @@ function App() {
     } else {
       setCardCss(currentEditorText);
     }
-  }, [currentEditorText])
+  }, [currentEditorText]);
 
-  // when changing content for the frontHtml, it will trigger updating of currentEditorText
+  // when changing content for the frontHtml, it 
+  // will trigger updating of currentEditorText
   const updateEditorTextConditionally = () => {
-    ////
-    console.log("updateEditorTextConditionally", activeTab);
     if (activeTab === "frontHtml") {
       setCurrentEditorText(frontHtml);
     } else if (activeTab === "backHtml") {
@@ -97,7 +97,7 @@ function App() {
     } else {
       setCurrentEditorText(cardCss);
     }
-  }
+  };
 
   const displayCardData = (index) => {
     const cardKeys = Object.keys(cardData).filter((key) => key !== "default"); // Avoid 'default'
@@ -204,35 +204,36 @@ function App() {
       .then((response) => response.json())
       .then((data) => {
         setCardData(data);
-        // console.log("data", data);
         displayCardData(0); // Initialize display with the first card
-        
       })
       .catch((error) => console.error("Failed to load card data:", error));
   }, []);
 
-    // Load initial state from localStorage on component mount
-    useEffect(() => {
-      const savedFrontHtml = localStorage.getItem("frontHtml");
-      const savedBackHtml = localStorage.getItem("backHtml");
-      const savedCardCss = localStorage.getItem("cardCss");
-      const savedActiveTab = localStorage.getItem("activeTab");
-      // TODO: save and load the activeTab
+  // Load initial state from localStorage on component mount
+  useEffect(() => {
+    const savedFrontHtml = localStorage.getItem("frontHtml") || "Error: No front HTML saved.";
+    const savedBackHtml = localStorage.getItem("backHtml") || "Error: No back HTML saved.";
+    const savedCardCss = localStorage.getItem("cardCss");
+    const savedActiveTab = localStorage.getItem("activeTab");
+    const savedViewSide = localStorage.getItem("viewSide");
+    const savedCardIndex = parseInt(localStorage.getItem("cardIndex"),10);
+    // TODO: save and load the activeTab
 
-      if (savedFrontHtml) setFrontHtml(savedFrontHtml);
-      if (savedBackHtml) setBackHtml(savedBackHtml);
-      if (savedCardCss) {
-        setCardCss(savedCardCss);
-        applyStyles(savedCardCss);
-      }
-      ////
-      setActiveTab(savedActiveTab);
-      // setActiveTab("backHtml");
-      
-    }, []);
+    if (savedFrontHtml) setFrontHtml(savedFrontHtml);
+    if (savedBackHtml) setBackHtml(savedBackHtml);
+    if (savedCardCss) {
+      setCardCss(savedCardCss);
+      applyStyles(savedCardCss);
+    }
+
+    setActiveTab(savedActiveTab);
+    setViewSide(savedViewSide);
+    setCardIndex(savedCardIndex);
+    
+    setDesignLoaded(true);
+  }, []);
 
   useEffect(() => {
-    console.log("activeTab useEffect", activeTab);
     if (activeTab === "frontHtml") {
       setCurrentEditorText(frontHtml);
     } else if (activeTab === "backHtml") {
@@ -243,8 +244,7 @@ function App() {
   }, [activeTab]);
 
   useEffect(() => {
-    // console.log("displayCardData frontHtml", frontHtml, Object.keys(cardData).length > 0 && frontHtml || backHtml);
-    if (Object.keys(cardData).length > 0 && frontHtml || backHtml) {
+    if ((Object.keys(cardData).length > 0 && frontHtml) || backHtml) {
       displayCardData(cardIndex); // Ensure initial data is displayed on load
     }
   }, [cardData, cardCss, frontHtml, backHtml, cardIndex, viewSide]); // Depend on cardData and HTML content
@@ -391,13 +391,13 @@ function App() {
   };
 
   const saveToLocalStorage = () => {
-    // console.log('Saving to localStorage:', { frontHtml, backHtml, cardCss, activeTab, viewSide });
     localStorage.setItem("frontHtml", frontHtml);
     localStorage.setItem("backHtml", backHtml);
     localStorage.setItem("cardCss", cardCss);
     localStorage.setItem("activeTab", activeTab);
     localStorage.setItem("viewSide", viewSide);
     localStorage.setItem("designName", designName);
+    localStorage.setItem("cardIndex", cardIndex);
   };
 
   const saveDesignToJSON = () => {
@@ -425,7 +425,7 @@ function App() {
       reader.onload = (e) => {
         const content = e.target.result;
         try {
-          debugger;
+          // debugger;
           const jsonData = JSON.parse(content);
           setFrontHtml(jsonData.frontHtml || "");
           setBackHtml(jsonData.backHtml || "");
@@ -435,7 +435,7 @@ function App() {
             applyStyles(jsonData.cardCss); // Apply styles immediately after loading
           }
           setDesignName(jsonData.designName || "Untitled");
-          updateEditorTextConditionally();
+          setDesignLoaded(true);
         } catch (error) {
           console.error("Error parsing JSON:", error);
           alert("Invalid JSON file");
@@ -452,8 +452,9 @@ function App() {
     fileInput.click();
   };
 
+  // TODO: rename onChange of what?
   const onChange = useCallback((val, viewUpdate) => {
-    console.log('val:', val);
+    // console.log("val:", val);
     setCurrentEditorText(val);
   }, []);
 
@@ -475,10 +476,23 @@ function App() {
         setActiveTab("backHtml"); // Switch to CSS tab
         setViewSide("back"); // Switch to back view
         applyStyles(data.cardCss || ""); // Apply styles immediately after loading
-        updateEditorTextConditionally();
+        setDesignLoaded(true);
       })
       .catch((err) => console.error("Failed to load design:", err));
   };
+
+  // useEffect to call updateEditorTextConditionally after state updates
+  useEffect(() => {
+    if (designLoaded) {
+      // console.log("designLoaded useEffect", designLoaded, activeTab, viewSide);
+
+      updateEditorTextConditionally();
+      // Reset designLoaded to false
+      setDesignLoaded(false);
+    } else {
+      // console.log("empty call to useEffect on designLoaded")
+    }
+  }, [designLoaded, cardCss, frontHtml, backHtml]);
 
   const handleDesignChange = (event) => {
     loadDesign(event.target.value);
@@ -499,8 +513,6 @@ function App() {
     return name.replace(".json", "");
   };
 
-
-
   // activetab in this onblur will be the old tab
   // ( if we are in fronthtml and click backhtml it will be fronthtml )
   const formatCode = async () => {
@@ -513,7 +525,7 @@ function App() {
       tabWidth: 2,
       useTabs: false,
     });
-    
+
     setCurrentEditorText(formattedCode);
   };
 
@@ -523,7 +535,7 @@ function App() {
         onBlur={formatCode}
         value={currentEditorText}
         height="200px"
-        extensions={[less(), html()]}
+        extensions={[less(), html(), EditorView.lineWrapping]}
         theme={monokai}
         onChange={onChange}
       />
@@ -672,27 +684,24 @@ function App() {
                 {copied ? checkIcon : copyIcon}
               </span>
             </button>
-            
-              <pre
-                className="w-100 flex-auto ma0 relative"
-              >
-                <code
-                  className={
-                    (activeTab === "frontHtml"
-                      ? "language-html"
-                      : activeTab === "backHtml"
-                        ? "language-html"
-                        : "language-css") + " w-100 flex-auto hljs pl0-strong"
-                  }
-                >
-                  {activeTab === "frontHtml"
-                    ? frontHtml
-                    : activeTab === "backHtml"
-                      ? backHtml
-                      : cardCss}
-                </code>
-              </pre>
 
+            <pre className="w-100 flex-auto ma0 relative">
+              <code
+                className={
+                  (activeTab === "frontHtml"
+                    ? "language-html"
+                    : activeTab === "backHtml"
+                      ? "language-html"
+                      : "language-css") + " w-100 flex-auto hljs pl0-strong"
+                }
+              >
+                {activeTab === "frontHtml"
+                  ? frontHtml
+                  : activeTab === "backHtml"
+                    ? backHtml
+                    : cardCss}
+              </code>
+            </pre>
           </div>
         </div>
         <div
