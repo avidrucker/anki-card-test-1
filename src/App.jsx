@@ -70,7 +70,7 @@ function App() {
   const nameInputRef = useRef(null); // Create a reference to the input element
   const [cardData, setCardData] = useState({});
   const [previewData, setPreviewData] = useState("");
-  const [cardIndex, setCardIndex] = useState(parseInt(localStorage.getItem("cardIndex"),10) || 0);
+  const [cardIndex, setCardIndex] = useState(parseInt(localStorage.getItem("cardIndex"), 10) || 0); // parseInt(localStorage.getItem("cardIndex"),10)
   const [editorViewCollapsed, setEditorViewCollapsed] = useState(false);
   const [currentEditorText, setCurrentEditorText] = useState("");
   const [designLoaded, setDesignLoaded] = useState(false);
@@ -216,7 +216,7 @@ function App() {
     const savedCardCss = localStorage.getItem("cardCss");
     const savedActiveTab = localStorage.getItem("activeTab");
     const savedViewSide = localStorage.getItem("viewSide");
-    const savedCardIndex = parseInt(localStorage.getItem("cardIndex"),10);
+    const savedCardIndex = parseInt(localStorage.getItem("cardIndex")) || 0; // parseInt(localStorage.getItem("cardIndex"), 10) || 0;
     // TODO: save and load the activeTab
 
     if (savedFrontHtml) setFrontHtml(savedFrontHtml);
