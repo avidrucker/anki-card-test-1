@@ -7,7 +7,7 @@
 - [x] Padding
 - [x] Mobile support (responsive single-column display)
 - [ ] Ability to include Front on Back `{{FrontSide}}`
-- [ ] Auto-prettify/indent or button to do similar on blur of editor pane
+- [x] Auto-prettify/indent or button to do similar on blur of editor pane
 - [x] Ability to save/load import/export designs
 - [x] Ability to name designs
 - [ ] Add ability to clear out / reset all editor panes and title input
@@ -21,6 +21,7 @@
   - [x] Black ink on rice paper
   - [x] Lined paper / index card with hand-written pencil font
   - [x] Beautiful full-photo spread
+  - [x] Another full photo display
   - [x] 8-Bit console game
   - [ ] Illuminated manuscript
   - [x] Green code rain
@@ -28,7 +29,11 @@
   - [x] Blue architectural diagram
   - [x] Da Vinci's notes
   - [x] JRPG battle/menu screen
-  - [ ] Halloween theme
+  - [ ] Halloween
+  - [x] Stormy night poster
+  - [x] Beach night poster
+  - [x] Starry night poster
+  - [ ] Steampunk gears, brass, and glass
 - [x] Create menu dropdown for included card templates
 - [x] Add ability to load built-in card templates
 - [x] Fix issue where CSS styles are not applied immediately after loading a design
@@ -41,18 +46,20 @@
 - [ ] Use i18n library to enable internationalization of app interface
 - [x] Fix bug where textarea becomes resizable when it shouldn't after editing content
 - [ ] Add branding icon (Anki icon?) to the header
-- [ ] Implement ability to collapse/expand editor/preview panes
+- [o] Implement ability to collapse/expand editor/preview panes
+  - [x] maximize preview pane
+  - [ ] **maximize editor pane**
 - [ ] Add an info page / modal listing relevant/useful info such as what fonts are available, basic usage instructions, etc.
 - [x] Add SVG/CSS image filters
   - [x] 2 Bit color
   - ~~Pixelize~~
-  - [ ] Ink painting
+  - [x] Ink painting
   - [x] Green code rain
   - [x] Pencil drawing
   - [x] White pencil
   - [x] Blue architectural drawing
   - [x] Code rain
-- [o] Add thematically appropriate Japanese fonts to each card type
+- [x] Add thematically appropriate Japanese fonts to each card type
   - [x] Zenburn
   - [x] Blackboard and chalk
   - [x] Rice paper and ink
@@ -69,8 +76,8 @@
 - [x] Add ability to import Google fonts directly from user space (CSS editor pane)
 - [x] Fix bug where syntax highlighting turns off after switching tabs or refreshing page
 - [x] Make "Copy" button transparent by default, and solid on hover
-- [ ] Replace Save/Export and Load/Import buttons w/ SVG icons
-- [ ] Make non-active tabs dimmed by default, and brighten on hover
+- [ ] **Replace Save/Export and Load/Import buttons w/ SVG icons**
+- [x] Make non-active tabs dimmed by default, and brighten on hover
 - [x] Host on GitHub pages
 - [x] Fix bug where hosted app doesn't load CSS styles (but it should)
 - [x] Fix hover area to be just the image inline block for Zenburn theme
@@ -80,17 +87,29 @@
   - [ ] Pick whichever font has more supported characters to use in the app
 - [o] Make all images unfiltered on hover
   - [ ] Ink painting
-- [ ] Fix ink painting filter to be more like a sumi-e painting
+- [x] Fix ink painting filter to be more like a sumi-e painting
 - [x] Add ability to toggle between dummy card data display and template view
 - [ ] Add meaning and example sentence fields to dummy card data and template view
 - [x] Fix defect where erasing a design name causes the field to become inaccessible
-- [ ] Implement ability to add media breakpoints to the CSS editor contents
+- [ ] **Implement ability for users to add their own media breakpoints to the CSS editor pane contents**
 - [ ] Add responsiveness to the cards themselves
+  - [ ] full photo spread
+  - [ ] 8-bit
+  - [ ] blackboard
+  - [ ] blueprint
+  - [ ] brutalist html
+  - [ ] classic apple
+  - [ ] code rain
+  - [ ] da vinci sketch
+  - [ ] glowing blue circuits
+  - [ ] index card
+  - [ ] ink on ricepaper
+  - [ ] zenburn
 - [ ] make card flip animation for front to back preview
-- [ ] add optional audio auto-play + setting toggle
+- ~~add optional audio auto-play + setting toggle~~
 - [ ] experiment w/ identical HTML markdown for all cards & have the theme and filter application be conducted solely by the CSS styles
 - [ ] first time visitor welcome informational / help modal to help users get started
-- [ ] investigate implementing overlay of textarea and pre code elements so you can see the syntax highlighting as you edit
+- ~~investigate implementing overlay of textarea and pre code elements so you can see the syntax highlighting as you edit~~
 - [ ] put donation link to buymeacoffee
 - [ ] implement export to apkg
 - [ ] implement ability to export multiple card designs at once with a multi-select
@@ -102,14 +121,14 @@
 - [x] add data name indicator inbetween left and right arrows ala "< example: namehere >"
 - [x] add line numbers to code editor pane
 - [x] make textarea have the exact same padding/margins as pre code elements so it has the exact same text placement
-- [ ] make it so that when clicking on the code editor pane the scroll position is maintained
-- [ ] make it so that when clicking on the code editor pane, the cursor is placed at the exact same position as the click
-- [ ] test out making a text-editable pre code block that has line numbers and syntax highlighting that updates text-highlighting and line-numbers on content change, and applies text-formatting on element blur
+- ~~make it so that when clicking on the code editor pane the scroll position is maintained~~
+- ~~make it so that when clicking on the code editor pane, the cursor is placed at the exact same position as the click~~
+- ~~test out making a text-editable pre code block that has line numbers and syntax highlighting that updates text-highlighting and line-numbers on content change, and applies text-formatting on element blur~~
 - [x] fix issue where line numbers get weirdly formatted after 99
 - [ ] add ability to toggle line numbers on/off
 - [ ] add ability to toggle syntax highlighting on/off
-- [ ] implement user defined data field name conversions, e.g. "{{reading}}" -> "{{yomi}}" via dropdown with text inputs
-- [ ] add subtle opacity transition to all images on hover
+- [ ] **implement user defined data field name conversions, e.g. "{{reading}}" -> "{{yomi}}" via dropdown with text inputs**
+- [o] add subtle filter removal transition to all images on hover
 - [ ] add glowing orb animation to Glowing Blue Circuits design
 - [ ] brainstorm some more light mode themes
 - [ ] take stock of light, dark, and neutral themes and make sure there's a good balance
@@ -117,6 +136,7 @@
 - [ ] add i18n support for Japanese for the menu UI text elements
 - [ ] add sidebar that has quick-links to useful sites, such as the GitHub repo, Google Fonts,
 - [ ] add preview thumbnail images for each card design
+- [ ] experiment with single letter card design thumbnail "icons"
 - [ ] "Anki Sync feature": provide seamless synchronization with Anki, including bidirectional updates
 - [ ] improve rendering performance to remove re-rendering "blips" when switching between tabs, clicking in or out of tabs, etc.
 - [ ] make some more card designs
@@ -125,50 +145,66 @@
   - [ ] Cyberpunk: Neon lights, holographic displays, digital rain, and other cyberpunk elements.
   - [x] Classic MacOS: Styled like the classic MacOS interface, complete with window frames, buttons, and icons.
   - [ ] Blue DOS Terminal: Styled like a blue DOS terminal, complete with a blinking cursor, monospaced font, and ASCII art.
+  - [ ] Classic Typewriter: Styled like a classic typewriter, complete with a monospaced font, paper texture, and typewriter sounds.
 - [ ] design custom cursors for some themes, such as a glowing green outline for green code rain, a glowing blue outline for glowing blue circuits, etc.
-- [ ] enable custom dummy data to be added to the dummy data list by users
+- [ ] **enable custom dummy data to be added to the dummy data list by users**
 - [x] add falling green rain animation to green code rain design
 - [ ] enable use of animation frames in CSS editor
 - [ ] add typing animation to green code rain design
 - [ ] review dummy data for representative sample of short words, long words, missing fields, etc.
 - [x] remove ".json" prefix from design names in the dropdown
-- [ ] enable user to make different front designs for different card types ("listening", "picture", "L1>L2 translation", etc.)
+- [ ] **enable user to make different front designs for different card types ("listening", "picture", "L1>L2 translation", etc.)**
 - [ ] enable user to add custom JavaScript to their cards
 - [ ] implement light/dark theme toggle for the app UI
 - [x] make active tabs stand out more by using a `reverse-dim` CSS effect for non-active tabs and underlining the active tab
 - [ ] fix classic apple theme cursor cursor hotspot to be pixel perfect: https://developer.mozilla.org/en-US/docs/Web/CSS/cursor
-- [ ] make play button grow on hover for all card types
+- [o] make play button grow on hover for most card types
 - [ ] add glowing border to play button for glowing blue circuits theme
 - [ ] add plain border to play button for blueprint theme
 - [ ] style play button for HTML brutalist theme as a standard HTML button
-- [ ] refactor code for readability and maintainability
-- [ ] rename main branch to "main"
+- [ ] **refactor code for readability and maintainability**
+- [ ] **rename main branch to "main"**
 
-- [ ] modify React to inject the global CSS styles dynamically into the head of the CSS editor pane, so they don't have to be written into the JSON of each design, but can still be easily copied or exported out to Anki
-- [ ] implement 'auto-switching' between preview when the editor is switched to 'Front HTML' or 'Back HTML' editor panes but not when switching to 'CSS' editor pane
-- [ ] modify the non-Google font imports to be served from a CDN rather than locally from the app itself so that themes can be more easily transferred with correct font display
-- [ ] include instructions for how to host fonts and images locally in Anki to reduce on web calls, leave both local first and CDN second as options within the CSS w/ local first commented out for the web app version to confirm correct importing behavior
-- [ ] write up instructions document for how to transfer designs from the web app to Anki, post to GitHub repo
-- [ ] add link to export to Anki instructions within web app
-- [ ] add text input field to all designs for text answer field on Anki cards
-- [ ] add sample hint field to all designs for hint field on Anki cards
+- ~~modify React to inject the global CSS styles dynamically into the head of the CSS editor pane, so they don't have to be written into the JSON of each design, but can still be easily copied or exported out to Anki~~
+- [x] implement 'auto-switching' between preview when the editor is switched to 'Front HTML' or 'Back HTML' editor panes but not when switching to 'CSS' editor pane
+- [o] **modify the non-Google font imports to be served from a CDN rather than locally from the app itself so that themes can be more easily transferred with correct font display**
+- [ ] **include instructions for how to host fonts and images locally in Anki to reduce on web calls, leave both local first and CDN second as options within the CSS w/ local first commented out for the web app version to confirm correct importing behavior**
+- [ ] **write up instructions document for how to transfer designs from the web app to Anki, post to GitHub repo**
+- [ ] **add link to export to Anki instructions within web app**
+- [o] **add text input field to all designs for text answer field on Anki cards**
+- [o] **add sample hint field to all designs for hint field on Anki cards**
 - [ ] implement local first, remote second strategy for sourcing of fonts, images, and CSS style sheets (Tachyons ~~and custom global styles CSS~~) for Anki export
 - ~~host CDN of global styles for all designs~~ (not necessary, can be included in the JSON of the design, and preferrably we will make less/no API calls to CDNs)
-- [x] implement CD styled play button transfer to Anki for Anki audio fields
+- [o]] implement CD styled play button transfer to Anki for Anki audio fields
   - [x] 8 bit
   - [x] blackboard
+  - [ ] blueprint
+  - [ ] brutalist html
+  - [ ] classic apple
+  - [ ] code rain
+  - [ ] da vinci sketch
+  - [ ] full photo 1
+  - [ ] full photo 2
+  - [ ] jrpg menu
+  - [ ] glowing blue circuits
+  - [ ] index card
+  - [ ] ink on ricepaper
+  - [ ] zenburn
+  - [ ] stormy night poster
+  - [ ] beach night poster
+  - [ ] starry night poster
 - [o] implement CD styled input element transfer to Anki for Anki input fields
   - [x] 8 bit
   - [x] blackboard
 - [o] implement CD styled hint element transfer to Anki for Anki hint fields
   - [x] 8 bit
   - [x] blackboard
-- [ ] add demo card data with a tall orientation image for testing purposes
+- [ ] **add demo card data with a tall orientation image for testing purposes**
 - [x] fix bug in 8-bit design where multiple images would not be fully displayed
-- [ ] remove global card styles from index.css, instead ~~locate any card styles in the JSON of the card designs themselves~~ inject the styles into the tail of the CSS editor pane when loading from JSON
+- [o] **remove global card styles from index.css, instead ~~locate any card styles in the JSON of the card designs themselves~~ inject the styles into the tail of the CSS editor pane when loading from JSON**
 - [x] figure out how to add custom placeholder text to text input field in Anki
 - [x] figure out how to override default play button styling and SVG icon in Anki
-- [ ] implement offline first strategy so that the app can be used offline
+- [ ] **implement offline first strategy so that the app can be used offline (because Anki needs to be able to be used offline as well)**
 - [ ] implement service worker for offline first strategy
 - [x] implement replacement of {{type:/S+}} field with HTML input element in the front HTML markdown
 - [ ] ~~inject img tag into the editor pane for the front HTML when loading from JSON~~
@@ -178,7 +214,7 @@
 - [ ] enable multiple pictures to be added to dummy data and card designs
 - [ ] enable multiple audio files to be added to dummy data and card designs
 - [ ] enable multiple hint fields to be added to dummy data and card designs
-- [ ] figure out how to render full photo themes w/ multiple images in picture field
+- [o] figure out how to render full photo themes w/ multiple images in picture field: either go with flex, grid, and/or masonry layout
   - [ ] add 2nd picture to cat card
 - [ ] figure out how to render play buttons for multiple audio files in audio field for each card theme
   - [ ] add 2nd audio to cat card
@@ -211,4 +247,5 @@
 - [ ] increase font size of term for glowing blue circuits theme by roughly a factor of 2
 - [x] fix front side of index card to render correctly
 - [x] remove ghost padding from bottom of index card (its the top--2 and margin-top)
+- [ ] fix syntax highlighting for HTML editor panes (it appears that LESS styles are currently being applied but it should be HTML styles)
 

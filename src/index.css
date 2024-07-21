@@ -221,3 +221,7 @@ pre table {
   text-shadow: inherit;
   line-height: inherit;
 }
+
+.bg-monokai {
+  background-color: #272822;
+}
