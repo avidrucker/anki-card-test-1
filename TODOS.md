@@ -7,7 +7,7 @@
 - [x] Padding
 - [x] Mobile support (responsive single-column display)
 - [ ] Ability to include Front on Back `{{FrontSide}}`
-- [ ] Auto-prettify/indent or button to do similar on blur of editor pane
+- [x] Auto-prettify/indent or button to do similar on blur of editor pane
 - [x] Ability to save/load import/export designs
 - [x] Ability to name designs
 - [ ] Add ability to clear out / reset all editor panes and title input
@@ -21,6 +21,7 @@
   - [x] Black ink on rice paper
   - [x] Lined paper / index card with hand-written pencil font
   - [x] Beautiful full-photo spread
+  - [x] Another full photo display
   - [x] 8-Bit console game
   - [ ] Illuminated manuscript
   - [x] Green code rain
@@ -28,7 +29,11 @@
   - [x] Blue architectural diagram
   - [x] Da Vinci's notes
   - [x] JRPG battle/menu screen
-  - [ ] Halloween theme
+  - [ ] Halloween
+  - [x] Stormy night poster
+  - [x] Beach night poster
+  - [x] Starry night poster
+  - [ ] Steampunk gears, brass, and glass
 - [x] Create menu dropdown for included card templates
 - [x] Add ability to load built-in card templates
 - [x] Fix issue where CSS styles are not applied immediately after loading a design
@@ -41,18 +46,20 @@
 - [ ] Use i18n library to enable internationalization of app interface
 - [x] Fix bug where textarea becomes resizable when it shouldn't after editing content
 - [ ] Add branding icon (Anki icon?) to the header
-- [ ] Implement ability to collapse/expand editor/preview panes
+- [o] Implement ability to collapse/expand editor/preview panes
+  - [x] maximize preview pane
+  - [ ] **maximize editor pane**
 - [ ] Add an info page / modal listing relevant/useful info such as what fonts are available, basic usage instructions, etc.
 - [x] Add SVG/CSS image filters
   - [x] 2 Bit color
   - ~~Pixelize~~
-  - [ ] Ink painting
+  - [x] Ink painting
   - [x] Green code rain
   - [x] Pencil drawing
   - [x] White pencil
   - [x] Blue architectural drawing
   - [x] Code rain
-- [o] Add thematically appropriate Japanese fonts to each card type
+- [x] Add thematically appropriate Japanese fonts to each card type
   - [x] Zenburn
   - [x] Blackboard and chalk
   - [x] Rice paper and ink
@@ -69,8 +76,8 @@
 - [x] Add ability to import Google fonts directly from user space (CSS editor pane)
 - [x] Fix bug where syntax highlighting turns off after switching tabs or refreshing page
 - [x] Make "Copy" button transparent by default, and solid on hover
-- [ ] Replace Save/Export and Load/Import buttons w/ SVG icons
-- [ ] Make non-active tabs dimmed by default, and brighten on hover
+- [ ] **Replace Save/Export and Load/Import buttons w/ SVG icons**
+- [x] Make non-active tabs dimmed by default, and brighten on hover
 - [x] Host on GitHub pages
 - [x] Fix bug where hosted app doesn't load CSS styles (but it should)
 - [x] Fix hover area to be just the image inline block for Zenburn theme
@@ -80,12 +87,24 @@
   - [ ] Pick whichever font has more supported characters to use in the app
 - [o] Make all images unfiltered on hover
   - [ ] Ink painting
-- [ ] Fix ink painting filter to be more like a sumi-e painting
+- [x] Fix ink painting filter to be more like a sumi-e painting
 - [x] Add ability to toggle between dummy card data display and template view
 - [ ] Add meaning and example sentence fields to dummy card data and template view
 - [x] Fix defect where erasing a design name causes the field to become inaccessible
-- [ ] Implement ability to add media breakpoints to the CSS editor contents
+- [ ] **Implement ability for users to add their own media breakpoints to the CSS editor pane contents**
 - [ ] Add responsiveness to the cards themselves
+  - [ ] full photo spread
+  - [ ] 8-bit
+  - [ ] blackboard
+  - [ ] blueprint
+  - [ ] brutalist html
+  - [ ] classic apple
+  - [ ] code rain
+  - [ ] da vinci sketch
+  - [ ] glowing blue circuits
+  - [ ] index card
+  - [ ] ink on ricepaper
+  - [ ] zenburn
 - [ ] make card flip animation for front to back preview
 - [ ] add optional audio auto-play + setting toggle
 - [ ] experiment w/ identical HTML markdown for all cards & have the theme and filter application be conducted solely by the CSS styles
@@ -211,4 +230,5 @@
 - [ ] increase font size of term for glowing blue circuits theme by roughly a factor of 2
 - [x] fix front side of index card to render correctly
 - [x] remove ghost padding from bottom of index card (its the top--2 and margin-top)
+- [ ] fix syntax highlighting for HTML editor panes (it appears that LESS styles are currently being applied but it should be HTML styles)
 
