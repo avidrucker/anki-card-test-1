@@ -48,14 +48,21 @@ const availableDesigns = [
   "Glowing Blue Circuits.json",
   "Index Card.json",
   "Ink on Ricepaper.json",
+  "Starry Night Poster.json",
   "Stormy Night Poster.json",
   "Zenburn Theme.json",
 ];
 
 function App() {
-  const [frontHtml, setFrontHtml] = useState(localStorage.getItem("frontHtml") || "put your front html here");
-  const [backHtml, setBackHtml] = useState(localStorage.getItem("backHtml") || "put your back html here");
-  const [cardCss, setCardCss] = useState(localStorage.getItem("cardCss") || "put your css here");
+  const [frontHtml, setFrontHtml] = useState(
+    localStorage.getItem("frontHtml") || "put your front html here"
+  );
+  const [backHtml, setBackHtml] = useState(
+    localStorage.getItem("backHtml") || "put your back html here"
+  );
+  const [cardCss, setCardCss] = useState(
+    localStorage.getItem("cardCss") || "put your css here"
+  );
   const [activeTab, setActiveTab] = useState(
     localStorage.getItem("activeTab") || "backHtml"
   );
@@ -70,10 +77,22 @@ function App() {
   const nameInputRef = useRef(null); // Create a reference to the input element
   const [cardData, setCardData] = useState({});
   const [previewData, setPreviewData] = useState("");
-  const [cardIndex, setCardIndex] = useState(parseInt(localStorage.getItem("cardIndex"), 10) || 0); // parseInt(localStorage.getItem("cardIndex"),10)
+  const [cardIndex, setCardIndex] = useState(
+    parseInt(localStorage.getItem("cardIndex"), 10) || 0
+  ); // parseInt(localStorage.getItem("cardIndex"),10)
   const [editorViewCollapsed, setEditorViewCollapsed] = useState(false);
   const [currentEditorText, setCurrentEditorText] = useState("");
   const [designLoaded, setDesignLoaded] = useState(false);
+
+  useEffect(() => {
+    if (activeTab === "frontHtml") {
+      setCurrentEditorText(frontHtml);
+    } else if (activeTab === "backHtml") {
+      setCurrentEditorText(backHtml);
+    } else {
+      setCurrentEditorText(cardCss);
+    }
+  }, [activeTab]);
 
   // when either of frontHtml, backHtml, or cardCss changes, we will set
   // the currentEditorText to the value of said changed variable
@@ -87,7 +106,13 @@ function App() {
     }
   }, [currentEditorText]);
 
-  // when changing content for the frontHtml, it 
+  useEffect(() => {
+    if ((Object.keys(cardData).length > 0 && frontHtml) || backHtml) {
+      displayCardData(cardIndex); // Ensure initial data is displayed on load
+    }
+  }, [cardData, cardCss, frontHtml, backHtml, cardIndex, viewSide]); // Depend on cardData and HTML content
+
+  // when changing content for the frontHtml, it
   // will trigger updating of currentEditorText
   const updateEditorTextConditionally = () => {
     if (activeTab === "frontHtml") {
@@ -211,8 +236,10 @@ function App() {
 
   // Load initial state from localStorage on component mount
   useEffect(() => {
-    const savedFrontHtml = localStorage.getItem("frontHtml") || "Error: No front HTML saved.";
-    const savedBackHtml = localStorage.getItem("backHtml") || "Error: No back HTML saved.";
+    const savedFrontHtml =
+      localStorage.getItem("frontHtml") || "Error: No front HTML saved.";
+    const savedBackHtml =
+      localStorage.getItem("backHtml") || "Error: No back HTML saved.";
     const savedCardCss = localStorage.getItem("cardCss");
     const savedActiveTab = localStorage.getItem("activeTab");
     const savedViewSide = localStorage.getItem("viewSide");
@@ -229,25 +256,9 @@ function App() {
     setActiveTab(savedActiveTab);
     setViewSide(savedViewSide);
     setCardIndex(savedCardIndex);
-    
+
     setDesignLoaded(true);
   }, []);
-
-  useEffect(() => {
-    if (activeTab === "frontHtml") {
-      setCurrentEditorText(frontHtml);
-    } else if (activeTab === "backHtml") {
-      setCurrentEditorText(backHtml);
-    } else {
-      setCurrentEditorText(cardCss);
-    }
-  }, [activeTab]);
-
-  useEffect(() => {
-    if ((Object.keys(cardData).length > 0 && frontHtml) || backHtml) {
-      displayCardData(cardIndex); // Ensure initial data is displayed on load
-    }
-  }, [cardData, cardCss, frontHtml, backHtml, cardIndex, viewSide]); // Depend on cardData and HTML content
 
   const handleNextCard = () => {
     const newIndex = (cardIndex + 1) % Object.keys(cardData).length;
@@ -385,7 +396,7 @@ function App() {
 
   const handleTabChange = (newTab) => {
     setActiveTab(newTab);
-    if(newTab === "frontHtml") {
+    if (newTab === "frontHtml") {
       setViewSide("front");
     }
     if (newTab === "backHtml") {
@@ -395,7 +406,7 @@ function App() {
   };
 
   const handleViewChange = (newView) => {
-    if(newView === "front") {
+    if (newView === "front") {
       setActiveTab("frontHtml");
     } else {
       setActiveTab("backHtml");
@@ -538,7 +549,6 @@ function App() {
 
   return (
     <div className="App w-100 flex flex-column vh-100 pb2">
-      
       <header className="flex flex-column flex-row-ns justify-between items-center pb2">
         {/*responsive design test classes: bg-blue bg-red-m bg-purple-l*/}
         <div className="header-left-side w-100 flex flex-column items-center-ns flex-row-ns">
@@ -690,7 +700,10 @@ function App() {
                 onBlur={formatCode}
                 value={currentEditorText}
                 height="100%"
-                extensions={[activeTab === "cardCss" ? less() : html(), EditorView.lineWrapping]}
+                extensions={[
+                  activeTab === "cardCss" ? less() : html(),
+                  EditorView.lineWrapping,
+                ]}
                 theme={monokai}
                 onChange={onEditorChange}
               />
