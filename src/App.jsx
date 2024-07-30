@@ -154,13 +154,15 @@ function App() {
     const match = removeConsecutiveSpaces(updatedHtml).match(placeholderRegex);
     const placeholder = match ? match[1] : "";
 
-    updatedHtml = updatedHtml.replace(
-      /{{audio}}/g,
-      cardData.audio === "{{audio}}"
-        ? "{{audio}}"
-        : `<audio class="dn" id="audio" src="${cardData.audio}" controls ></audio><button class="play-button" onclick="document.getElementById('audio').play()">▶</button>` ||
-            ""
-    );
+    // Check if audio is an array and not empty, then create audio elements
+    if (Array.isArray(cardData.audio) && cardData.audio.length) {
+      const audioElements = cardData.audio.map((audioSrc, index) => {
+        return `<audio class="dn" id="audio${index}" src="${audioSrc}" controls ></audio><button class="play-button" onclick="document.getElementById('audio${index}').play()">▶</button>`;
+      }).join("");
+      updatedHtml = updatedHtml.replace(/{{audio}}/g, audioElements);
+    } else {
+      updatedHtml = updatedHtml.replace(/{{audio}}/g, "");
+    }
     updatedHtml = updatedHtml.replace(/{{term}}/g, cardData.term || "");
     updatedHtml = updatedHtml.replace(/{{reading}}/g, cardData.reading || "");
     updatedHtml = updatedHtml.replace(
