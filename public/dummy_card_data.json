@@ -1,6 +1,6 @@
 {
     "0": {
-        "audio": "{{audio}}",
+        "audio": ["{{audio}}"],
         "term": "{{term}}",
         "reading": "{{reading}}",
         "translation": "{{translation}}",
@@ -8,7 +8,7 @@
         "Tags": ["{{Tags}}"],
         "picture": "{{picture}}"
     },
-    "1":{"audio":"cat_neko.mp3",
+    "1":{"audio": ["cat_neko.mp3"],
         "term": "猫",
         "reading": "ねこ",
         "translation": "cat",
@@ -16,7 +16,7 @@
         "Tags": ["animals", "noun", "common", "JLPT5", "kanji"],
         "picture": "https://bit.ly/fcc-relaxing-cat"
     },
-    "2":{"audio":"australia_oosutoraria.mp3",
+    "2":{"audio": ["australia_oosutoraria.mp3"],
         "term": "オーストラリア",
         "reading": "",
         "translation": "Australia",
@@ -24,7 +24,7 @@
         "Tags": ["countries", "noun", "common", "kana"],
         "picture": "australia.jpg"
     },
-    "3":{"audio":"crab_kani.mp3",
+    "3":{"audio": ["crab_kani.mp3"],
         "term": "蟹",
         "reading": "かに",
         "translation": "crab",
@@ -32,7 +32,7 @@
         "Tags": ["animals", "noun", "common", "JLPT5", "kanji"],
         "picture": "crab_l.jpg"
     },
-    "4":{"audio":"kokuren.mp3",
+    "4":{"audio": ["kokuren.mp3"],
         "term":"国連安全保障理事会",
         "reading":"こくれんあんぜんほしょうりじかい",
         "translation":"UN Security Council; United Nations Security Board of Directors​",
@@ -40,12 +40,21 @@
         "Tags":["noun", "fromNews", "kanji"],
         "picture": "un_security_council.jpg"
     },
-    "5":{"audio": "hataraku.mp3",
+    "5":{"audio": ["hataraku.mp3"],
         "term": "働く",
         "reading": "はたらく",
         "translation": "",
         "transliteration": "",
         "Tags": ["verb", "common", "JLPT5", "kanji"],
         "picture": ""
+    },
+    "6": {
+        "audio": ["aquarium1.mp3", "aquarium2.mp3"],
+        "term": "水族館",
+        "reading": "すいぞくかん",
+        "translation": "aquarium",
+        "transliteration": "suizokukan",
+        "Tags": ["places", "noun", "common", "kanji"],
+        "picture": "aquarium.jpg"
     }
 }
