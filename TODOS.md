@@ -248,4 +248,4 @@
 - [x] fix front side of index card to render correctly
 - [x] remove ghost padding from bottom of index card (its the top--2 and margin-top)
 - [ ] fix syntax highlighting for HTML editor panes (it appears that LESS styles are currently being applied but it should be HTML styles)
-
+- [ ] fix blueprint design to have the background also scroll with the text and image content
