@@ -55,13 +55,13 @@ const availableDesigns = [
 
 function App() {
   const [frontHtml, setFrontHtml] = useState(
-    localStorage.getItem("frontHtml") || "put your front html here"
+    localStorage.getItem("frontHtml") || "<!--put your front html here-->"
   );
   const [backHtml, setBackHtml] = useState(
-    localStorage.getItem("backHtml") || "put your back html here"
+    localStorage.getItem("backHtml") || "<!--put your back html here-->"
   );
   const [cardCss, setCardCss] = useState(
-    localStorage.getItem("cardCss") || "put your css here"
+    localStorage.getItem("cardCss") || "/*put your css here*/"
   );
   const [activeTab, setActiveTab] = useState(
     localStorage.getItem("activeTab") || "backHtml"
