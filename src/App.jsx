@@ -71,7 +71,7 @@ function App() {
   );
   const [copied, setCopied] = useState(false);
   const [designName, setDesignName] = useState(
-    localStorage.getItem("designName") || "Untitled"
+    localStorage.getItem("designName") || availableDesigns[0]
   );
   const [editingName, setEditingName] = useState(false);
   const nameInputRef = useRef(null); // Create a reference to the input element
@@ -265,83 +265,7 @@ function App() {
       .catch((error) => console.error("Failed to load card data:", error));
   }, []); // this is intentionally left blank to avoid circular dependency
 
-  // Load initial state from localStorage on component mount
-  useEffect(() => {
-    const savedFrontHtml =
-      localStorage.getItem("frontHtml") || "Error: No front HTML saved.";
-    const savedBackHtml =
-      localStorage.getItem("backHtml") || "Error: No back HTML saved.";
-    const savedCardCss = localStorage.getItem("cardCss");
-    const savedActiveTab = localStorage.getItem("activeTab");
-    const savedViewSide = localStorage.getItem("viewSide");
-    const savedCardIndex = parseInt(localStorage.getItem("cardIndex")) || 0; // parseInt(localStorage.getItem("cardIndex"), 10) || 0;
-    // TODO: save and load the activeTab
-
-    if (savedFrontHtml) setFrontHtml(savedFrontHtml);
-    if (savedBackHtml) setBackHtml(savedBackHtml);
-    if (savedCardCss) {
-      setCardCss(savedCardCss);
-      applyStyles(savedCardCss);
-    }
-
-    setActiveTab(savedActiveTab);
-    setViewSide(savedViewSide);
-    setCardIndex(savedCardIndex);
-
-    setDesignLoaded(true);
-  }, []);
-
-  const handleNextCard = () => {
-    const newIndex = (cardIndex + 1) % Object.keys(cardData).length;
-    setCardIndex(newIndex);
-    displayCardData(newIndex);
-    localStorage.setItem("cardIndex", newIndex);
-  };
-
-  const handlePreviousCard = () => {
-    const totalCards = Object.keys(cardData).length;
-    const newIndex = (cardIndex - 1 + totalCards) % totalCards;
-    setCardIndex(newIndex);
-    displayCardData(newIndex);
-    localStorage.setItem("cardIndex", newIndex);
-  };
-
-  const getCurrentTextareaContent = () => {
-    if (activeTab === "frontHtml") {
-      return frontHtml;
-    } else if (activeTab === "backHtml") {
-      return backHtml;
-    } else {
-      return cardCss;
-    }
-  };
-
-  const copyToClipboard = () => {
-    navigator.clipboard
-      .writeText(getCurrentTextareaContent())
-      .then(() => {
-        // alert('Text copied to clipboard'); // Optionally, handle UI feedback here
-        setCopied(true);
-      })
-      .catch((err) => {
-        console.error("Failed to copy text: ", err);
-      });
-  };
-
-  // Effect to save changes when frontHtml, backHtml, cardCss, activeTab, or viewSide changes
-  useEffect(() => {
-    saveToLocalStorage();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [frontHtml, backHtml, cardCss, activeTab, viewSide, designName]); // Including all dependencies for saving
-
-  useEffect(() => {
-    // Whenever editingName becomes true, focus the input
-    if (editingName) {
-      nameInputRef.current && nameInputRef.current.focus();
-    }
-  }, [editingName]); // Depend on editingName to re-run the effect
-
-  const applyStyles = (css) => {
+  const applyStyles = useCallback((css) => {
     // Remove existing style tag if it exists
     const existingStyleTag = document.getElementById("dynamic-styles");
     if (existingStyleTag) {
@@ -419,11 +343,111 @@ function App() {
 
     // Append the style tag to the head of the document
     document.head.appendChild(styleTag);
+  }, []);
+
+  //// TODO: dry code between loadDesign and handleFileRead
+  // gets called when loading from drop-down
+  const loadDesign = useCallback((filename) => {
+    fetch(`${filename}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setFrontHtml(data.frontHtml || "");
+        setBackHtml(data.backHtml || "");
+        setCardCss(data.cardCss || "");
+        setDesignName(filename.replace(".json", ""));
+        //// TODO: change active tab to be loaded from localStorage
+        setActiveTab("backHtml"); // Switch to CSS tab
+        setViewSide("back"); // Switch to back view
+        applyStyles(data.cardCss || ""); // Apply styles immediately after loading
+        setDesignLoaded(true);
+      })
+      .catch((err) => console.error("Failed to load design:", err));
+  }, [applyStyles]);
+
+  // Load initial state from localStorage on component mount
+  useEffect(() => {
+    const savedDesignName = localStorage.getItem("designName");
+    const savedFrontHtml = localStorage.getItem("frontHtml");
+    const savedBackHtml = localStorage.getItem("backHtml");
+    const savedCardCss = localStorage.getItem("cardCss");
+    const savedActiveTab = localStorage.getItem("activeTab");
+    const savedViewSide = localStorage.getItem("viewSide");
+    const savedCardIndex = parseInt(localStorage.getItem("cardIndex")) || 0;
+
+    // If no saved design, load the first design from availableDesigns
+    if (!savedDesignName || !savedFrontHtml || !savedBackHtml || !savedCardCss) {
+      loadDesign(availableDesigns[0]);
+    } else {
+      // Load from localStorage
+      if (savedFrontHtml) setFrontHtml(savedFrontHtml);
+      if (savedBackHtml) setBackHtml(savedBackHtml);
+      if (savedCardCss) {
+        setCardCss(savedCardCss);
+        applyStyles(savedCardCss);
+      }
+
+      setActiveTab(savedActiveTab || "backHtml");
+      setViewSide(savedViewSide || "back");
+      setCardIndex(savedCardIndex);
+
+      setDesignLoaded(true);
+    }
+  }, [applyStyles, loadDesign]);
+
+  const handleNextCard = () => {
+    const newIndex = (cardIndex + 1) % Object.keys(cardData).length;
+    setCardIndex(newIndex);
+    displayCardData(newIndex);
+    localStorage.setItem("cardIndex", newIndex);
   };
+
+  const handlePreviousCard = () => {
+    const totalCards = Object.keys(cardData).length;
+    const newIndex = (cardIndex - 1 + totalCards) % totalCards;
+    setCardIndex(newIndex);
+    displayCardData(newIndex);
+    localStorage.setItem("cardIndex", newIndex);
+  };
+
+  const getCurrentTextareaContent = () => {
+    if (activeTab === "frontHtml") {
+      return frontHtml;
+    } else if (activeTab === "backHtml") {
+      return backHtml;
+    } else {
+      return cardCss;
+    }
+  };
+
+  const copyToClipboard = () => {
+    navigator.clipboard
+      .writeText(getCurrentTextareaContent())
+      .then(() => {
+        // alert('Text copied to clipboard'); // Optionally, handle UI feedback here
+        setCopied(true);
+      })
+      .catch((err) => {
+        console.error("Failed to copy text: ", err);
+      });
+  };
+
+  // Effect to save changes when frontHtml, backHtml, cardCss, activeTab, or viewSide changes
+  useEffect(() => {
+    saveToLocalStorage();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [frontHtml, backHtml, cardCss, activeTab, viewSide, designName]); // Including all dependencies for saving
+
+  useEffect(() => {
+    // Whenever editingName becomes true, focus the input
+    if (editingName) {
+      nameInputRef.current && nameInputRef.current.focus();
+    }
+  }, [editingName]); // Depend on editingName to re-run the effect
+
 
   useEffect(() => {
     applyStyles(cardCss);
-  }, [cardCss]); // Re-run the effect whenever the CSS changes
+  }, [cardCss, applyStyles]); // Re-run the effect whenever the CSS changes
 
   const handleTabChange = (newTab) => {
     setActiveTab(newTab);
@@ -514,25 +538,6 @@ function App() {
 
   const handleToggleEditorView = () => {
     setEditorViewCollapsed(!editorViewCollapsed);
-  };
-
-  //// TODO: dry code between loadDesign and handleFileRead
-  // gets called when loading from drop-down
-  const loadDesign = (filename) => {
-    fetch(`${filename}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setFrontHtml(data.frontHtml || "");
-        setBackHtml(data.backHtml || "");
-        setCardCss(data.cardCss || "");
-        setDesignName(filename.replace(".json", ""));
-        //// TODO: change active tab to be loaded from localStorage
-        setActiveTab("backHtml"); // Switch to CSS tab
-        setViewSide("back"); // Switch to back view
-        applyStyles(data.cardCss || ""); // Apply styles immediately after loading
-        setDesignLoaded(true);
-      })
-      .catch((err) => console.error("Failed to load design:", err));
   };
 
   // useEffect to call updateEditorTextConditionally after state updates
