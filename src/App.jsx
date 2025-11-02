@@ -78,8 +78,8 @@ function App() {
   const [cardData, setCardData] = useState({});
   const [previewData, setPreviewData] = useState("");
   const [cardIndex, setCardIndex] = useState(
-    parseInt(localStorage.getItem("cardIndex"), 10) || 0
-  ); // parseInt(localStorage.getItem("cardIndex"),10)
+    parseInt(localStorage.getItem("cardIndex"), 10) || 1
+  );
   const [editorViewCollapsed, setEditorViewCollapsed] = useState(false);
   const [currentEditorText, setCurrentEditorText] = useState("");
   const [designLoaded, setDesignLoaded] = useState(false);
