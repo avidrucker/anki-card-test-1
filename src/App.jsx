@@ -83,20 +83,48 @@ function App() {
   const [editorViewCollapsed, setEditorViewCollapsed] = useState(false);
   const [currentEditorText, setCurrentEditorText] = useState("");
   const [designLoaded, setDesignLoaded] = useState(false);
+  const isLoadingTabContentRef = useRef(false);
 
+  // Load the editor content when switching tabs or when source content changes externally
   useEffect(() => {
+    // console.log('LOAD Effect - activeTab:', activeTab, 'isLoading:', isLoadingTabContentRef.current);
+    // console.log('LOAD Effect - frontHtml length:', frontHtml.length, 'backHtml length:', backHtml.length, 'cardCss length:', cardCss.length);
+    
+    isLoadingTabContentRef.current = true;
+    
+    let contentToLoad = '';
     if (activeTab === "frontHtml") {
-      setCurrentEditorText(frontHtml);
+      contentToLoad = frontHtml;
     } else if (activeTab === "backHtml") {
-      setCurrentEditorText(backHtml);
+      contentToLoad = backHtml;
     } else {
-      setCurrentEditorText(cardCss);
+      contentToLoad = cardCss;
     }
-  }, [activeTab]);
+    
+    // console.log('LOAD Effect - Setting currentEditorText to:', contentToLoad.substring(0, 50) + '...');
+    setCurrentEditorText(contentToLoad);
+    
+    // Reset the flag after the current execution context
+    const timerId = setTimeout(() => {
+      // console.log('LOAD Effect - Resetting isLoading flag');
+      isLoadingTabContentRef.current = false;
+    }, 50); // Small delay to ensure state updates are processed
+    
+    return () => clearTimeout(timerId);
+  }, [activeTab, frontHtml, backHtml, cardCss]);
 
-  // when either of frontHtml, backHtml, or cardCss changes, we will set
-  // the currentEditorText to the value of said changed variable
+  // Save editor content back to the appropriate state variable (only when user types)
   useEffect(() => {
+    // console.log('SAVE Effect - currentEditorText changed, isLoading:', isLoadingTabContentRef.current);
+    // console.log('SAVE Effect - activeTab:', activeTab, 'currentEditorText length:', currentEditorText.length);
+    
+    // Don't save if we're currently loading content from a tab switch
+    if (isLoadingTabContentRef.current) {
+      // console.log('SAVE Effect - BLOCKED because isLoading is true');
+      return;
+    }
+    
+    // console.log('SAVE Effect - SAVING to', activeTab);
     if (activeTab === "frontHtml") {
       setFrontHtml(currentEditorText);
     } else if (activeTab === "backHtml") {
@@ -104,48 +132,14 @@ function App() {
     } else {
       setCardCss(currentEditorText);
     }
-  }, [currentEditorText]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentEditorText, activeTab]);
 
-  useEffect(() => {
-    if ((Object.keys(cardData).length > 0 && frontHtml) || backHtml) {
-      displayCardData(cardIndex); // Ensure initial data is displayed on load
-    }
-  }, [cardData, cardCss, frontHtml, backHtml, cardIndex, viewSide]); // Depend on cardData and HTML content
-
-  // when changing content for the frontHtml, it
-  // will trigger updating of currentEditorText
-  const updateEditorTextConditionally = () => {
-    if (activeTab === "frontHtml") {
-      setCurrentEditorText(frontHtml);
-    } else if (activeTab === "backHtml") {
-      setCurrentEditorText(backHtml);
-    } else {
-      setCurrentEditorText(cardCss);
-    }
-  };
-
-  const displayCardData = (index) => {
-    const cardKeys = Object.keys(cardData).filter((key) => key !== "default"); // Avoid 'default'
-    if (cardKeys.length > 0 && cardData[cardKeys[index]]) {
-      const currentCard = cardData[cardKeys[index]];
-      const htmlWithValues = replacePlaceholders(
-        viewSide === "front" ? frontHtml : backHtml,
-        currentCard
-      );
-      const conditionalHtml = processConditionalContent(
-        htmlWithValues,
-        currentCard,
-        viewSide === "front"
-      );
-      setPreviewData(conditionalHtml); // Assuming you have a state to hold the preview HTML
-    }
-  };
-
-  const removeConsecutiveSpaces = (str) => {
+  const removeConsecutiveSpaces = useCallback((str) => {
     return str.replace(/\s+/g, " ");
-  };
+  }, []);
 
-  const replacePlaceholders = (htmlContent, cardData) => {
+  const replacePlaceholders = useCallback((htmlContent, cardData) => {
     let updatedHtml = htmlContent;
 
     // look in htmlContent for placeholder field on div with class of input-container, save this into a variable called placeholder
@@ -188,9 +182,9 @@ function App() {
       return `<input type="text" id="typeans" class="input-field" placeholder="${placeholder || type}" />`;
     });
     return updatedHtml;
-  };
+  }, [removeConsecutiveSpaces]);
 
-  const processConditionalContent = (htmlContent, cardData, isFrontSide) => {
+  const processConditionalContent = useCallback((htmlContent, cardData, isFrontSide) => {
     // Function to process conditionals, allowing for up to two levels of nesting
     const processConditionals = (content, regex, keepIfTrue) => {
       return content.replace(regex, (match, key, innerContent) => {
@@ -224,6 +218,41 @@ function App() {
     }
 
     return htmlContent;
+  }, []);
+
+  const displayCardData = useCallback((index) => {
+    const cardKeys = Object.keys(cardData).filter((key) => key !== "default"); // Avoid 'default'
+    if (cardKeys.length > 0 && cardData[cardKeys[index]]) {
+      const currentCard = cardData[cardKeys[index]];
+      const htmlWithValues = replacePlaceholders(
+        viewSide === "front" ? frontHtml : backHtml,
+        currentCard
+      );
+      const conditionalHtml = processConditionalContent(
+        htmlWithValues,
+        currentCard,
+        viewSide === "front"
+      );
+      setPreviewData(conditionalHtml); // Assuming you have a state to hold the preview HTML
+    }
+  }, [cardData, viewSide, frontHtml, backHtml, replacePlaceholders, processConditionalContent]);
+
+  useEffect(() => {
+    if ((Object.keys(cardData).length > 0 && frontHtml) || backHtml) {
+      displayCardData(cardIndex); // Ensure initial data is displayed on load
+    }
+  }, [cardData, cardCss, frontHtml, backHtml, cardIndex, viewSide, displayCardData]); // Depend on cardData and HTML content
+
+  // when changing content for the frontHtml, it
+  // will trigger updating of currentEditorText
+  const updateEditorTextConditionally = () => {
+    if (activeTab === "frontHtml") {
+      setCurrentEditorText(frontHtml);
+    } else if (activeTab === "backHtml") {
+      setCurrentEditorText(backHtml);
+    } else {
+      setCurrentEditorText(cardCss);
+    }
   };
 
   useEffect(() => {
@@ -234,7 +263,7 @@ function App() {
         displayCardData(0); // Initialize display with the first card
       })
       .catch((error) => console.error("Failed to load card data:", error));
-  }, []);
+  }, []); // this is intentionally left blank to avoid circular dependency
 
   // Load initial state from localStorage on component mount
   useEffect(() => {
@@ -537,6 +566,23 @@ function App() {
   // activetab in this onblur will be the old tab
   // ( if we are in fronthtml and click backhtml it will be fronthtml )
   const formatCode = async () => {
+    // Don't format if we're in the middle of a tab switch
+    if (isLoadingTabContentRef.current) {
+      console.log('formatCode - SKIPPED because tab is switching');
+      return;
+    }
+    
+    // Verify that currentEditorText matches the current tab's content
+    // to prevent formatting old content after a tab switch
+    const expectedContent = activeTab === "frontHtml" ? frontHtml : 
+                           activeTab === "backHtml" ? backHtml : cardCss;
+    
+    if (currentEditorText !== expectedContent) {
+      console.log('formatCode - SKIPPED because content does not match current tab');
+      console.log('formatCode - Expected length:', expectedContent.length, 'Got:', currentEditorText.length);
+      return;
+    }
+    
     const parser = activeTab.includes("Html") ? "html" : "css";
 
     const formattedCode = await prettier.format(currentEditorText, {
@@ -546,6 +592,7 @@ function App() {
       useTabs: false,
     });
 
+    console.log('formatCode - Formatting code for', activeTab);
     setCurrentEditorText(formattedCode);
   };
 
