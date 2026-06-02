@@ -117,16 +117,11 @@ This was a chained ternary inside `formatCode` that duplicated the logic already
 
 **Severity:** Advisory  
 **Concern:** Developer experience  
-**Status:** Open
+**Status:** Resolved (2026-06-01)
 
 Card theme JSON files live in `public/` and are served as static assets. Vite's HMR watches `src/` for JS/JSX/CSS changes but does not watch static files in `public/`, so editing a theme JSON or the `scripts/generate-themes.mjs` generator requires a manual browser refresh to pick up changes. This breaks the tightest possible edit→preview loop when iterating on card designs.
 
-**Desired behaviour:** Running `npm run dev` should automatically reload the card preview in the browser whenever a theme JSON in `public/` changes (i.e. after `node scripts/generate-themes.mjs` is run).
-
-**Possible approaches:**
-- Add a Vite plugin or custom middleware that watches `public/*.json` and sends an HMR invalidation signal on change.
-- Wire a file-watcher (e.g. `chokidar-cli` or a small Node script) that calls `node scripts/generate-themes.mjs` on source change and then triggers a browser reload via a WebSocket or Vite's `ws` server.
-- Add an `npm run dev:themes` script that wraps `generate-themes.mjs` in watch mode (using `--watch` or `chokidar`) so saving the generator script auto-regenerates the JSONs and Vite picks up the static file change.
+**Fix applied:** Added a zero-dependency inline Vite plugin (`watchPublicJson`) to `vite.config.js`. It registers `public/*.json` with Vite's chokidar watcher and, on any change, sends a `full-reload` signal over the dev server WebSocket. Running `node scripts/generate-themes.mjs` in one terminal now automatically reloads the browser preview with no manual refresh needed.
 
 ---
 
