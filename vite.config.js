@@ -26,5 +26,6 @@ export default defineConfig({
   plugins: [react(), watchPublicJson],
   test: {
     environment: 'node',
+    exclude: ['e2e/**', 'node_modules/**'],
   },
 });

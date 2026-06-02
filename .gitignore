@@ -24,3 +24,6 @@ dist-ssr
 *.sw?
 
 build/
+test-results/
+.playwright-mcp/
+/*.png

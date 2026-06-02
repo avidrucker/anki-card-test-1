@@ -2,7 +2,7 @@
   "name": "anki-card-test-1",
   "homepage": "https://avidrucker.github.io/anki-card-test-1",
   "private": true,
-  "version": "0.0.1",
+  "version": "0.1.0",
   "type": "module",
   "scripts": {
     "predeploy": "npm run build",
@@ -24,9 +24,11 @@
     "highlightjs-line-numbers.js": "^2.8.0",
     "prettier": "^3.3.2",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "tachyons": "^4.12.0"
   },
   "devDependencies": {
+    "@playwright/test": "^1.60.0",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
     "@vitejs/plugin-react-swc": "^3.3.2",

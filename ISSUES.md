@@ -143,7 +143,7 @@ The four new themes authored in `scripts/generate-themes.mjs` do have top-of-fil
 
 **Severity:** Advisory  
 **Concern:** Performance  
-**Status:** Open
+**Status:** Resolved (2026-06-02)
 
 Every time the user selects a different card design, `applyStyles` tears down the old `<style>` tag and injects a fresh one containing the new theme's full CSS, including all `@import` statements. This means each theme switch re-fires every network request in that CSS — Google Fonts stylesheet fetches, font file fetches, and the Tachyons CDN fetch — even when the browser has already cached them. On a slow or offline connection the card preview can be blank or unstyled for a perceptible moment.
 
@@ -191,6 +191,61 @@ Code Rain, Index Card, Ink on Ricepaper, Starry Night Poster, Stormy Night Poste
 - Detect whether the incoming CSS is identical to the current one and skip the re-inject
 - Separate the `@import` block from the rule block — inject imports into a persistent `<link>` element (or a stable `<style>` tag) so they survive theme switches, and only replace the rule block
 - Track which font URLs have already been injected and deduplicate at the `applyStyles` level
+
+**Fix applied (2026-06-02):**
+- Tachyons installed as npm dep (`import 'tachyons'` in `main.jsx`); CDN `<link>` removed from `index.html`. The `@import` URL in theme JSON files is preserved for Anki export compatibility; `applyStyles` silently drops it in the web app.
+- `<link rel="preconnect">` hints for `fonts.googleapis.com` and `fonts.gstatic.com` added to `index.html`.
+- `applyStyles` refactored: a persistent `<style id="dynamic-imports">` accumulator survives theme switches and deduplicates font URLs — each URL is injected at most once per page lifetime. The rebuilt `<style id="dynamic-styles">` now contains only keyframes and rules (no `@import`). Inner loop switched from `innerHTML +=` to a single `textContent =` write.
+- `performance.mark/measure` instrumentation added to `applyStyles` and `loadDesign`; results visible in DevTools → Performance → User Timings and console (`[perf] applyStyles Xms`).
+- Playwright e2e tests added (`e2e/theme-perf.spec.js`): tachyons CDN request count, import dedup DOM assertion, same-theme-switch dedup, applyStyles perf budget, visual snapshots (fonts mocked for determinism).
+- Font weight axis narrowing deferred to Issue 12.
+
+---
+
+## Issue 12 — Performance: narrow Google Fonts weight axes to used values only
+
+**Severity:** Advisory  
+**Concern:** Performance  
+**Status:** Open  
+**Parent:** Issue 10
+
+Several themes import Google Fonts with full variable-weight axes even though the card templates only use a small subset of those weights. This causes unnecessary font data to be downloaded on first load.
+
+Suspected over-loaded imports (requires per-theme weight audit to confirm):
+
+| Font | Current import | Likely used weights |
+|---|---|---|
+| `Libre Franklin` | `wght@100;900` (full axis) | 400, 700 |
+| `Noto Sans JP` | `wght@100;900` (full CJK axis) | 400, 700 — and only a small glyph subset |
+| `M PLUS Rounded 1c` | `wght@400;700` in one theme, `wght@700` in another | Consolidate to one URL |
+| `M PLUS 1p` | Per-theme import | Check weight usage |
+| `M PLUS 1 Code` | Per-theme import | Check weight usage |
+
+**Fix approach:**
+1. For each affected theme JSON, audit `frontHtml`/`backHtml` templates and CSS for explicit `font-weight` values and utility classes that imply a weight.
+2. Update the `@import` URL to request only the weights confirmed in step 1.
+3. For CJK fonts (`Noto Sans JP`, M PLUS variants), consider the Google Fonts `text=` parameter to subset to only glyphs present in typical card vocabulary — potential saving of several hundred KB per load.
+
+**Note:** Any change to theme JSON files also affects Anki export. Weight-narrowing changes are safe as long as only unused weights are removed and the change is verified visually in the designer before committing.
+
+---
+
+## Issue 13 — Switching design resets view to Back / Back HTML
+
+**Severity:** Advisory  
+**Concern:** UX / correctness  
+**Status:** Resolved (2026-06-02)
+
+Selecting a theme from the dropdown always forces `activeTab = "backHtml"` and `viewSide = "back"`, overwriting whatever the user had open. If the user was on the Front HTML tab or the Front View, switching designs silently navigates them away.
+
+**Repro:**
+1. Switch to Front HTML tab and / or Front View.
+2. Select any design from the dropdown.
+3. Observe: editor and preview both jump to Back HTML / Back View.
+
+**Root cause:** `loadDesign` (called by `handleDesignChange`) unconditionally calls `setActiveTab("backHtml")` and `setViewSide("back")` after applying the new design data (`src/App.jsx`, inside the `.then()` of the fetch).
+
+**Fix:** Remove the two unconditional resets from `loadDesign`. The editor and preview should stay on whatever tab/side the user was already viewing. (The initial-load default of "back" can be retained in the mount effect / `localStorage` fallback where it already exists.)
 
 ---
 

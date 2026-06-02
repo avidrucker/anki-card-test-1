@@ -194,6 +194,8 @@ function App() {
   }, []); // intentionally omits displayCardData — it depends on cardData, adding it here would re-trigger the fetch
 
   const applyStyles = useCallback((css) => {
+    performance.mark("applyStyles:start");
+
     // Remove existing style tag if it exists
     const existingStyleTag = document.getElementById("dynamic-styles");
     if (existingStyleTag) {
@@ -203,21 +205,49 @@ function App() {
     // Remove comments
     css = css.replace(/\/\*[\s\S]*?\*\//g, "");
 
-    // Extract and handle @import statements
+    // Extract @import statements
     let importStatements = [];
     css = css.replace(/@import\s+url\([^)]+\);?/g, (match) => {
       importStatements.push(match.trim());
-      return ""; // Remove the import statement from the main CSS text
+      return "";
     });
 
-    // Extract and handle @keyframes rules
+    // Strip @imports that are now bundled — kept in JSON for Anki export compat
+    const BUNDLED_CDN = ["unpkg.com/tachyons"];
+    importStatements = importStatements.filter(
+      (s) => !BUNDLED_CDN.some((b) => s.includes(b))
+    );
+
+    // Accumulate new @imports into a persistent tag that survives theme switches.
+    // Only genuinely new URLs are appended — fonts loaded by a previous theme are
+    // never re-fetched when switching to a theme that shares them.
+    let importTag = document.getElementById("dynamic-imports");
+    if (!importTag) {
+      importTag = document.createElement("style");
+      importTag.id = "dynamic-imports";
+      document.head.appendChild(importTag);
+    }
+    let importAccumulator = importTag.textContent;
+    const newImports = [];
+    importStatements.forEach((importRule) => {
+      const urlMatch = importRule.match(/url\(['"]?([^'")\s]+)['"]?\)/);
+      if (urlMatch && !importAccumulator.includes(urlMatch[1])) {
+        newImports.push(importRule);
+        importAccumulator += importRule + "\n";
+      }
+    });
+    if (newImports.length > 0) {
+      importTag.textContent = importAccumulator;
+    }
+
+    // Extract @keyframes rules
     let keyframesRules = [];
     css = css.replace(/@keyframes\s+[\s\S]+?\{([\s\S]+?\}){2,}/g, (match) => {
       keyframesRules.push(match.trim());
-      return ""; // Remove the @keyframes rule from the main CSS text
+      return "";
     });
 
-    // Process and insert other CSS rules
+    // Process other CSS rules
     const rules = css
       .split("}")
       .filter((rule) => rule.trim() !== "")
@@ -232,45 +262,22 @@ function App() {
         }
         return rule.trim();
       })
-      .map((rule) => rule + "}") // Close the rule
-      .filter((rule) => rule.length > 2); // Filter out empty rules
+      .map((rule) => rule + "}")
+      .filter((rule) => rule.length > 2);
 
-    // Create a new style tag
+    // Create a new style tag for rules only (@imports live in dynamic-imports).
+    // textContent = single write, avoids O(n²) innerHTML re-parse loop.
     const styleTag = document.createElement("style");
     styleTag.id = "dynamic-styles";
-
-    // Insert @import rules at the beginning
-    importStatements.forEach((importRule) => {
-      try {
-        styleTag.innerHTML += importRule + "\n";
-      } catch (error) {
-        console.error("Failed to insert import rule:", importRule, error);
-      }
-    });
-
-    // Insert @keyframes rules next
-    keyframesRules.forEach((keyframeRule) => {
-      try {
-        styleTag.innerHTML += keyframeRule + "\n";
-      } catch (error) {
-        console.error("Failed to insert keyframe rule:", keyframeRule, error);
-      }
-    });
-
-    // Insert other CSS rules
-    rules.forEach((rule) => {
-      try {
-        if (!rule.startsWith("@import")) {
-          // Ensure no @import rules are in this batch
-          styleTag.innerHTML += rule + "\n";
-        }
-      } catch (error) {
-        console.error("Failed to insert rule:", rule, error);
-      }
-    });
-
-    // Append the style tag to the head of the document
+    styleTag.textContent = [...keyframesRules, ...rules].join("\n");
     document.head.appendChild(styleTag);
+
+    performance.mark("applyStyles:end");
+    performance.measure("applyStyles", "applyStyles:start", "applyStyles:end");
+    console.debug(
+      "[perf] applyStyles",
+      performance.getEntriesByName("applyStyles").at(-1).duration.toFixed(1) + "ms"
+    );
   }, []);
 
   // Shared state-setter for any design load (dropdown or file import).
@@ -284,15 +291,18 @@ function App() {
     setDesignLoaded(true);
   }, [applyStyles]);
 
-  // Called when selecting a design from the dropdown. Always resets to back view
-  // because the user is intentionally switching to a different design.
   const loadDesign = useCallback((filename) => {
+    performance.mark("loadDesign:start");
     fetch(`${filename}`)
       .then((res) => res.json())
       .then((data) => {
         applyDesignData(data, formatDesignName(filename));
-        setActiveTab("backHtml");
-        setViewSide("back");
+        performance.mark("loadDesign:end");
+        performance.measure("loadDesign", "loadDesign:start", "loadDesign:end");
+        console.debug(
+          "[perf] loadDesign",
+          performance.getEntriesByName("loadDesign").at(-1).duration.toFixed(1) + "ms"
+        );
       })
       .catch((err) => console.error("Failed to load design:", err));
   }, [applyDesignData]);
@@ -307,23 +317,41 @@ function App() {
     const savedViewSide = localStorage.getItem("viewSide");
     const savedCardIndex = parseInt(localStorage.getItem("cardIndex")) || 0;
 
-    // If no saved design, load the first design from availableDesigns
-    if (!savedDesignName || !savedFrontHtml || !savedBackHtml || !savedCardCss) {
-      loadDesign(availableDesigns[0]);
-    } else {
-      // Load from localStorage
-      if (savedFrontHtml) setFrontHtml(savedFrontHtml);
-      if (savedBackHtml) setBackHtml(savedBackHtml);
-      if (savedCardCss) {
-        setCardCss(savedCardCss);
-        applyStyles(savedCardCss);
-      }
+    // For built-in themes, always reload canonical HTML/CSS from JSON so that
+    // localStorage can never drift out of sync with the source file (e.g. stale
+    // values saved under a different port or from an older session). UI prefs
+    // (active tab, view side, card position) are preserved from localStorage.
+    const matchingFilename = availableDesigns.find(
+      (f) => formatDesignName(f) === savedDesignName
+    );
 
+    if (matchingFilename) {
+      fetch(matchingFilename)
+        .then((res) => res.json())
+        .then((data) => {
+          setFrontHtml(data.frontHtml || "");
+          setBackHtml(data.backHtml || "");
+          setCardCss(data.cardCss || "");
+          applyStyles(data.cardCss || "");
+          setDesignName(savedDesignName);
+          setActiveTab(savedActiveTab || "backHtml");
+          setViewSide(savedViewSide || "back");
+          setCardIndex(savedCardIndex);
+          setDesignLoaded(true);
+        })
+        .catch(() => loadDesign(availableDesigns[0]));
+    } else if (savedDesignName && savedFrontHtml && savedBackHtml && savedCardCss) {
+      // Custom / imported theme: localStorage is the source of truth
+      setFrontHtml(savedFrontHtml);
+      setBackHtml(savedBackHtml);
+      setCardCss(savedCardCss);
+      applyStyles(savedCardCss);
       setActiveTab(savedActiveTab || "backHtml");
       setViewSide(savedViewSide || "back");
       setCardIndex(savedCardIndex);
-
       setDesignLoaded(true);
+    } else {
+      loadDesign(availableDesigns[0]);
     }
   }, [applyStyles, loadDesign]);
 
