@@ -129,20 +129,13 @@ Card theme JSON files live in `public/` and are served as static assets. Vite's 
 
 **Severity:** Advisory  
 **Concern:** Maintainability  
-**Status:** Open
+**Status:** Resolved (2026-06-01)
 
 The CSS for the 16 existing built-in card themes (the pre-`scripts/generate-themes.mjs` designs) lives inline in their respective `.json` files under `public/`. None of it has inline comments explaining how individual effects are achieved — the choice of font, the gradient trick, the filter chain, the blend mode — so anyone reading or editing a theme must reverse-engineer the intent from the properties alone.
 
 The four new themes authored in `scripts/generate-themes.mjs` do have top-of-file block comments (added 2026-06-01), but those are file-level overviews, not line-level or rule-level explanations of the more surprising techniques.
 
-**Desired behaviour:** Each card theme's CSS should have inline comments at the rule or property level wherever the technique is non-obvious. Examples of what warrants a comment:
-- A `filter: contrast(22)` that sharpens soft radial-gradient dots into crisp halftone circles
-- A `mix-blend-mode: multiply` that makes a dot grid image-adaptive
-- A `transform: perspective(220px) rotateX(58deg)` that creates the vaporwave grid floor
-- A `box-shadow: inset 0 0 0 1px … inset 0 0 0 3px …` that produces a nested ornate frame border
-- A `repeating-linear-gradient` stripe overlay that creates the retro-sun horizontal bands
-
-**Scope:** All 16 original themes + the 4 new themes in `generate-themes.mjs`.
+**Fix applied:** Added `scripts/annotate-themes.mjs` — a one-shot script that prepends a structured comment block to every original theme's `cardCss`. Each block documents the aesthetic, font choices, colour palette, and key CSS techniques (SVG filter chains, blend modes, gradient tricks, pseudo-element patterns, etc.). Script is idempotent (skips files already annotated). All 17 original theme JSON files updated.
 
 ---
 
