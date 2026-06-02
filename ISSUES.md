@@ -206,6 +206,52 @@ Code Rain, Index Card, Ink on Ricepaper, Starry Night Poster, Stormy Night Poste
 
 ---
 
+## Issue 11 — "About" modal with info button
+
+**Severity:** Advisory  
+**Concern:** Usability  
+**Status:** Open
+
+The app has no in-app information about itself. A new user landing on the deployed GitHub Pages build has no way to discover who made it, what it does at a high level, or where to go if something is broken. An "ⓘ" info button in the header that opens a small modal would solve this without cluttering the UI.
+
+### UI
+
+- Add a small circular `ⓘ` button to the header (right side, near the Import/Export buttons)
+- Clicking it opens a modal overlay with an "×" close button and a click-outside-to-dismiss behaviour
+- Modal should be keyboard-accessible: `Escape` closes it, focus is trapped inside while open
+
+### Modal content
+
+**About Card Designer**
+
+A brief one-sentence description of what the app does (design and preview Anki flashcard templates).
+
+**Made by**  
+[Avi Drucker](https://github.com/avidrucker) — link to GitHub profile
+
+**Source & issues**  
+Link to the GitHub repo (`https://github.com/avidrucker/anki-card-test-1`) with a direct call to action: "Found a bug or have a feature request? [Open an issue](https://github.com/avidrucker/anki-card-test-1/issues)"
+
+**Built with**
+
+| Technology | Role |
+|---|---|
+| React 18 | UI framework |
+| Vite | Build tool & dev server |
+| CodeMirror 6 | In-browser HTML/CSS editor panes |
+| Prettier | On-blur code formatting |
+| Tachyons | Utility CSS (used by several card themes) |
+| GitHub Pages | Static hosting & deployment |
+
+### Implementation notes
+
+- Modal state (`isAboutOpen`) lives in `App.jsx` alongside the existing `editingName` / `editorViewCollapsed` booleans — no new state management layer needed
+- The `ⓘ` button should use the existing `BTN_STYLE_GLASS` constant (or a close variant) so it matches the eye-toggle and copy buttons already in the header
+- The modal itself can be a simple `position: fixed` overlay with a centred white card; no third-party modal library needed
+- Trap focus with a `useEffect` that moves focus to the modal on open and restores it to the `ⓘ` button on close
+
+---
+
 ## Checks that passed
 
 | Check | Concern | Severity |
