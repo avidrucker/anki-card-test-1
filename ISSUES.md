@@ -113,6 +113,44 @@ This was a chained ternary inside `formatCode` that duplicated the logic already
 
 ---
 
+## Issue 8 — No hot-reload in dev-local
+
+**Severity:** Advisory  
+**Concern:** Developer experience  
+**Status:** Open
+
+Card theme JSON files live in `public/` and are served as static assets. Vite's HMR watches `src/` for JS/JSX/CSS changes but does not watch static files in `public/`, so editing a theme JSON or the `scripts/generate-themes.mjs` generator requires a manual browser refresh to pick up changes. This breaks the tightest possible edit→preview loop when iterating on card designs.
+
+**Desired behaviour:** Running `npm run dev` should automatically reload the card preview in the browser whenever a theme JSON in `public/` changes (i.e. after `node scripts/generate-themes.mjs` is run).
+
+**Possible approaches:**
+- Add a Vite plugin or custom middleware that watches `public/*.json` and sends an HMR invalidation signal on change.
+- Wire a file-watcher (e.g. `chokidar-cli` or a small Node script) that calls `node scripts/generate-themes.mjs` on source change and then triggers a browser reload via a WebSocket or Vite's `ws` server.
+- Add an `npm run dev:themes` script that wraps `generate-themes.mjs` in watch mode (using `--watch` or `chokidar`) so saving the generator script auto-regenerates the JSONs and Vite picks up the static file change.
+
+---
+
+## Issue 9 — Theme CSS inline comments
+
+**Severity:** Advisory  
+**Concern:** Maintainability  
+**Status:** Open
+
+The CSS for the 16 existing built-in card themes (the pre-`scripts/generate-themes.mjs` designs) lives inline in their respective `.json` files under `public/`. None of it has inline comments explaining how individual effects are achieved — the choice of font, the gradient trick, the filter chain, the blend mode — so anyone reading or editing a theme must reverse-engineer the intent from the properties alone.
+
+The four new themes authored in `scripts/generate-themes.mjs` do have top-of-file block comments (added 2026-06-01), but those are file-level overviews, not line-level or rule-level explanations of the more surprising techniques.
+
+**Desired behaviour:** Each card theme's CSS should have inline comments at the rule or property level wherever the technique is non-obvious. Examples of what warrants a comment:
+- A `filter: contrast(22)` that sharpens soft radial-gradient dots into crisp halftone circles
+- A `mix-blend-mode: multiply` that makes a dot grid image-adaptive
+- A `transform: perspective(220px) rotateX(58deg)` that creates the vaporwave grid floor
+- A `box-shadow: inset 0 0 0 1px … inset 0 0 0 3px …` that produces a nested ornate frame border
+- A `repeating-linear-gradient` stripe overlay that creates the retro-sun horizontal bands
+
+**Scope:** All 16 original themes + the 4 new themes in `generate-themes.mjs`.
+
+---
+
 ## Checks that passed
 
 | Check | Concern | Severity |
