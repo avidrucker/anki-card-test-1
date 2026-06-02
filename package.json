@@ -2,7 +2,7 @@
   "name": "anki-card-test-1",
   "homepage": "https://avidrucker.github.io/anki-card-test-1",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.2.0",
   "type": "module",
   "scripts": {
     "predeploy": "npm run build",
