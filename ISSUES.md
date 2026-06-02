@@ -151,6 +151,61 @@ The four new themes authored in `scripts/generate-themes.mjs` do have top-of-fil
 
 ---
 
+## Issue 10 — Performance: external asset loading on theme switch
+
+**Severity:** Advisory  
+**Concern:** Performance  
+**Status:** Open
+
+Every time the user selects a different card design, `applyStyles` tears down the old `<style>` tag and injects a fresh one containing the new theme's full CSS, including all `@import` statements. This means each theme switch re-fires every network request in that CSS — Google Fonts stylesheet fetches, font file fetches, and the Tachyons CDN fetch — even when the browser has already cached them. On a slow or offline connection the card preview can be blank or unstyled for a perceptible moment.
+
+### Tachyons
+
+9 of 20 themes load Tachyons (~60 KB gzip) from `unpkg.com` on demand:
+
+```
+8 Bit Console, Beach Night Poster, Blackboard and Chalk, Classic Apple,
+Code Rain, Index Card, Ink on Ricepaper, Starry Night Poster, Stormy Night Poster
+```
+
+**Problems:**
+- External CDN dependency (unpkg reliability; CORS; no SRI hash)
+- Fetched per-theme rather than once at app level
+- Duplicates the same URL 9 times across JSON files — a single version bump must touch every file
+
+**Fix options:**
+- Add `tachyons` as an npm dependency and import it once in `main.jsx` (removes all CDN fetches)
+- Or vendor the minified CSS into `public/tachyons.min.css` and reference it with a relative path
+
+### Google Fonts
+
+21 distinct `fonts.googleapis.com` import URLs are spread across the 20 themes. Each triggers two round trips: the CSS descriptor file then the WOFF2 font file(s). Notable concerns:
+
+| Font | Issue |
+|---|---|
+| `Noto Sans JP` (wght 100–900) | Full CJK variable font; downloads all 9 weight axes — several hundred KB |
+| `M PLUS Rounded 1c` | Appears twice with different weight specs (`wght@400;700` vs `wght@700`) — duplicate for overlapping weights |
+| `M PLUS 1p`, `M PLUS 1 Code` | Three separate M PLUS imports in different themes; could be consolidated |
+| `Libre Franklin` (wght 100–900) | Full variable axis — most weights never used |
+| `Noto Sans JP`, `M PLUS` variants | CJK fonts with thousands of glyphs; only a small Japanese vocabulary subset is ever displayed |
+
+**Fix options:**
+- Add `<link rel="preconnect" href="https://fonts.googleapis.com">` and `<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>` to `index.html` so the TCP/TLS handshake is amortised across all theme loads
+- Subset CJK fonts (Noto Sans JP, M PLUS variants) using `pyftsubset` or the Google Fonts `text=` parameter to only download glyphs present in the card data
+- Narrow weight ranges on variable fonts to the axes actually used (e.g. `Libre Franklin` only needs regular + bold, not the full 100–900 axis)
+- Self-host the most commonly used fonts to remove the external DNS dependency entirely
+
+### `applyStyles` re-fetch behaviour
+
+`applyStyles` in `src/App.jsx` removes the existing `<style id="dynamic-styles">` tag and creates a new one on every call. This is correct for CSS rule isolation but means `@import` statements re-execute on every theme switch, re-queueing network requests even for cached resources.
+
+**Fix options:**
+- Detect whether the incoming CSS is identical to the current one and skip the re-inject
+- Separate the `@import` block from the rule block — inject imports into a persistent `<link>` element (or a stable `<style>` tag) so they survive theme switches, and only replace the rule block
+- Track which font URLs have already been injected and deduplicate at the `applyStyles` level
+
+---
+
 ## Checks that passed
 
 | Check | Concern | Severity |
