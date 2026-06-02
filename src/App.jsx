@@ -58,6 +58,10 @@ const availableDesigns = [
   "Starry Night Poster.json",
   "Stormy Night Poster.json",
   "Zenburn Theme.json",
+  "You Died.json",
+  "Vaporwave.json",
+  "Tarot Card.json",
+  "Halftone Comics.json",
 ];
 
 function App() {
