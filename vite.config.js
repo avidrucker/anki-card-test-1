@@ -4,9 +4,12 @@ import react from '@vitejs/plugin-react-swc'
 export default defineConfig({
   base: '/anki-card-test-1/',
   build: {
-    outDir: 'build',  // Default and generally recommended setting
+    outDir: 'build',
     assetsDir: 'assets'
   },
   publicDir: 'public',
   plugins: [react()],
+  test: {
+    environment: 'node',
+  },
 });

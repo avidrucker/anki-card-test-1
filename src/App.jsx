@@ -1,5 +1,12 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import "./App.css";
+import {
+  replacePlaceholders,
+  processConditionalContent,
+  formatDesignName,
+  nextCardIndex,
+  prevCardIndex,
+} from "./cardUtils";
 // import hljs from "highlight.js";
 import prettier from "prettier/standalone";
 import htmlParser from "prettier/plugins/html";
@@ -132,93 +139,9 @@ function App() {
     } else {
       setCardCss(currentEditorText);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentEditorText, activeTab]);
 
-  const removeConsecutiveSpaces = useCallback((str) => {
-    return str.replace(/\s+/g, " ");
-  }, []);
 
-  const replacePlaceholders = useCallback((htmlContent, cardData) => {
-    let updatedHtml = htmlContent;
-
-    // look in htmlContent for placeholder field on div with class of input-container, save this into a variable called placeholder
-    const placeholderRegex =
-      /<div id="input-container".*?placeholder="([^"]+)"/;
-    const match = removeConsecutiveSpaces(updatedHtml).match(placeholderRegex);
-    const placeholder = match ? match[1] : "";
-
-    // Check if audio is an array and not empty, then create audio elements
-    if (Array.isArray(cardData.audio) && cardData.audio.length) {
-      const audioElements = cardData.audio.map((audioSrc, index) => {
-        return `<audio class="dn" id="audio${index}" src="${audioSrc}" controls ></audio><button class="play-button" onclick="document.getElementById('audio${index}').play()">▶</button>`;
-      }).join("");
-      updatedHtml = updatedHtml.replace(/{{audio}}/g, audioElements);
-    } else {
-      updatedHtml = updatedHtml.replace(/{{audio}}/g, "");
-    }
-    updatedHtml = updatedHtml.replace(/{{term}}/g, cardData.term || "");
-    updatedHtml = updatedHtml.replace(/{{reading}}/g, cardData.reading || "");
-    updatedHtml = updatedHtml.replace(
-      /{{translation}}/g,
-      cardData.translation || ""
-    );
-    updatedHtml = updatedHtml.replace(
-      /{{transliteration}}/g,
-      cardData.transliteration || ""
-    );
-    updatedHtml = updatedHtml.replace(
-      /{{Tags}}/g,
-      (cardData.Tags || []).join(", ")
-    );
-    updatedHtml = updatedHtml.replace(
-      /{{picture}}/g,
-      cardData.picture === "{{picture}}"
-        ? "{{picture}}"
-        : `<img src="${cardData.picture}" />` || ""
-    );
-    // grab a tag in the format of {{type:TAG_NAME}} and replace like the audio button but this time instead with an input text field
-    updatedHtml = updatedHtml.replace(/{{type:([^}]+)}}/g, (type) => {
-      return `<input type="text" id="typeans" class="input-field" placeholder="${placeholder || type}" />`;
-    });
-    return updatedHtml;
-  }, [removeConsecutiveSpaces]);
-
-  const processConditionalContent = useCallback((htmlContent, cardData, isFrontSide) => {
-    // Function to process conditionals, allowing for up to two levels of nesting
-    const processConditionals = (content, regex, keepIfTrue) => {
-      return content.replace(regex, (match, key, innerContent) => {
-        // Check if the key exists in cardData to determine if the section should be kept
-        const hasData = !!cardData[key];
-        if (keepIfTrue === hasData) {
-          // Process nested conditionals within this section before returning
-          innerContent = processConditionals(innerContent, positiveRegex, true); // Process nested positive conditionals
-          innerContent = processConditionals(
-            innerContent,
-            negativeRegex,
-            false
-          ); // Process nested negative conditionals
-          return innerContent || ""; // Return inner content if condition is met
-        }
-        return ""; // Remove section if condition is not met
-      });
-    };
-
-    // Regex for positive and negative conditions
-    const positiveRegex = /{{#([^{}]+)}}([\s\S]*?){{\/\1}}/g;
-    const negativeRegex = /{{\^([^{}]+)}}([\s\S]*?){{\/\1}}/g;
-
-    // Process outer conditionals first
-    htmlContent = processConditionals(htmlContent, positiveRegex, true);
-    htmlContent = processConditionals(htmlContent, negativeRegex, false);
-
-    // Handle case where htmlContent is empty on the front side
-    if (isFrontSide && htmlContent.trim() === "") {
-      htmlContent = `<div class="black"><p>The front of this card is blank.</p><a class="blue link underline" href="https://anki.tenderapp.com/kb/card-appearance/the-front-of-this-card-is-blank">More information</a></div>`;
-    }
-
-    return htmlContent;
-  }, []);
 
   const displayCardData = useCallback((index) => {
     const cardKeys = Object.keys(cardData).filter((key) => key !== "default"); // Avoid 'default'
@@ -235,7 +158,7 @@ function App() {
       );
       setPreviewData(conditionalHtml); // Assuming you have a state to hold the preview HTML
     }
-  }, [cardData, viewSide, frontHtml, backHtml, replacePlaceholders, processConditionalContent]);
+  }, [cardData, viewSide, frontHtml, backHtml]);
 
   useEffect(() => {
     if ((Object.keys(cardData).length > 0 && frontHtml) || backHtml) {
@@ -263,7 +186,8 @@ function App() {
         displayCardData(0); // Initialize display with the first card
       })
       .catch((error) => console.error("Failed to load card data:", error));
-  }, []); // this is intentionally left blank to avoid circular dependency
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // intentionally omits displayCardData — it depends on cardData, adding it here would re-trigger the fetch
 
   const applyStyles = useCallback((css) => {
     // Remove existing style tag if it exists
@@ -345,24 +269,29 @@ function App() {
     document.head.appendChild(styleTag);
   }, []);
 
-  //// TODO: dry code between loadDesign and handleFileRead
-  // gets called when loading from drop-down
+  // Shared state-setter for any design load (dropdown or file import).
+  // activeTab/viewSide are intentionally NOT reset here — callers set them as needed.
+  const applyDesignData = useCallback((data, name) => {
+    setFrontHtml(data.frontHtml || "");
+    setBackHtml(data.backHtml || "");
+    setCardCss(data.cardCss || "");
+    applyStyles(data.cardCss || "");
+    setDesignName(name);
+    setDesignLoaded(true);
+  }, [applyStyles]);
+
+  // Called when selecting a design from the dropdown. Always resets to back view
+  // because the user is intentionally switching to a different design.
   const loadDesign = useCallback((filename) => {
     fetch(`${filename}`)
       .then((res) => res.json())
       .then((data) => {
-        setFrontHtml(data.frontHtml || "");
-        setBackHtml(data.backHtml || "");
-        setCardCss(data.cardCss || "");
-        setDesignName(filename.replace(".json", ""));
-        //// TODO: change active tab to be loaded from localStorage
-        setActiveTab("backHtml"); // Switch to CSS tab
-        setViewSide("back"); // Switch to back view
-        applyStyles(data.cardCss || ""); // Apply styles immediately after loading
-        setDesignLoaded(true);
+        applyDesignData(data, formatDesignName(filename));
+        setActiveTab("backHtml");
+        setViewSide("back");
       })
       .catch((err) => console.error("Failed to load design:", err));
-  }, [applyStyles]);
+  }, [applyDesignData]);
 
   // Load initial state from localStorage on component mount
   useEffect(() => {
@@ -395,15 +324,14 @@ function App() {
   }, [applyStyles, loadDesign]);
 
   const handleNextCard = () => {
-    const newIndex = (cardIndex + 1) % Object.keys(cardData).length;
+    const newIndex = nextCardIndex(cardIndex, Object.keys(cardData).length);
     setCardIndex(newIndex);
     displayCardData(newIndex);
     localStorage.setItem("cardIndex", newIndex);
   };
 
   const handlePreviousCard = () => {
-    const totalCards = Object.keys(cardData).length;
-    const newIndex = (cardIndex - 1 + totalCards) % totalCards;
+    const newIndex = prevCardIndex(cardIndex, Object.keys(cardData).length);
     setCardIndex(newIndex);
     displayCardData(newIndex);
     localStorage.setItem("cardIndex", newIndex);
@@ -502,19 +430,9 @@ function App() {
     if (file) {
       const reader = new FileReader();
       reader.onload = (e) => {
-        const content = e.target.result;
         try {
-          // debugger;
-          const jsonData = JSON.parse(content);
-          setFrontHtml(jsonData.frontHtml || "");
-          setBackHtml(jsonData.backHtml || "");
-          // Update the CSS and immediately apply it
-          if (jsonData.cardCss) {
-            setCardCss(jsonData.cardCss);
-            applyStyles(jsonData.cardCss); // Apply styles immediately after loading
-          }
-          setDesignName(jsonData.designName || "Untitled");
-          setDesignLoaded(true);
+          const jsonData = JSON.parse(e.target.result);
+          applyDesignData(jsonData, jsonData.designName || "Untitled");
         } catch (error) {
           console.error("Error parsing JSON:", error);
           alert("Invalid JSON file");
@@ -531,7 +449,7 @@ function App() {
     fileInput.click();
   };
 
-  const onEditorChange = useCallback((val, viewUpdate) => {
+  const onEditorChange = useCallback((val) => {
     setCurrentEditorText(val);
     setCopied(false); // set copied icon back
   }, []);
@@ -547,7 +465,8 @@ function App() {
       // Reset designLoaded to false
       setDesignLoaded(false);
     }
-  }, [designLoaded, cardCss, frontHtml, backHtml]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [designLoaded, cardCss, frontHtml, backHtml]); // omits updateEditorTextConditionally — plain fn, would cause infinite re-runs
 
   const handleDesignChange = (event) => {
     loadDesign(event.target.value);
@@ -564,10 +483,6 @@ function App() {
     setEditingName(false);
   };
 
-  const formatDesignName = (name) => {
-    return name.replace(".json", "");
-  };
-
   // activetab in this onblur will be the old tab
   // ( if we are in fronthtml and click backhtml it will be fronthtml )
   const formatCode = async () => {
@@ -579,8 +494,7 @@ function App() {
     
     // Verify that currentEditorText matches the current tab's content
     // to prevent formatting old content after a tab switch
-    const expectedContent = activeTab === "frontHtml" ? frontHtml : 
-                           activeTab === "backHtml" ? backHtml : cardCss;
+    const expectedContent = getCurrentTextareaContent();
     
     if (currentEditorText !== expectedContent) {
       console.log('formatCode - SKIPPED because content does not match current tab');

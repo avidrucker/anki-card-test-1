@@ -11,7 +11,8 @@
     "build": "vite build",
     "_postbuild": "mv build/*.jpg build/assets/ && mv build/*.png build/assets/ && mv build/*.woff build/assets/",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "vitest run"
   },
   "dependencies": {
     "@codemirror/lang-html": "^6.4.9",
@@ -35,6 +36,7 @@
     "eslint-plugin-react-refresh": "^0.4.3",
     "express": "^4.19.2",
     "gh-pages": "^6.1.1",
-    "vite": "^4.4.5"
+    "vite": "^4.4.5",
+    "vitest": "^4.1.8"
   }
 }
