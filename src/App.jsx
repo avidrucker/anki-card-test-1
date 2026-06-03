@@ -62,6 +62,13 @@ const availableDesigns = [
   "Vaporwave.json",
   "Tarot Card.json",
   "Halftone Comics.json",
+  "Death Note.json",
+  "Holographic Foil.json",
+  "Ukiyo-e Woodblock.json",
+  "Hollow Knight Lore Tablet.json",
+  "Pokemon RBY.json",
+  "Obon Festival.json",
+  "Steampunk.json",
 ];
 
 function App() {
