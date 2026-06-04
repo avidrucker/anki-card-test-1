@@ -253,7 +253,7 @@ Selecting a theme from the dropdown always forces `activeTab = "backHtml"` and `
 
 **Severity:** Advisory  
 **Concern:** Usability  
-**Status:** Open
+**Status:** Resolved (2026-06-04)
 
 The app has no in-app information about itself. A new user landing on the deployed GitHub Pages build has no way to discover who made it, what it does at a high level, or where to go if something is broken. An "ⓘ" info button in the header that opens a small modal would solve this without cluttering the UI.
 

@@ -92,13 +92,16 @@ function App() {
     localStorage.getItem("designName") || availableDesigns[0]
   );
   const [editingName, setEditingName] = useState(false);
-  const nameInputRef = useRef(null); // Create a reference to the input element
+  const nameInputRef = useRef(null);
+  const aboutBtnRef = useRef(null);
+  const aboutModalRef = useRef(null);
   const [cardData, setCardData] = useState({});
   const [previewData, setPreviewData] = useState("");
   const [cardIndex, setCardIndex] = useState(
     parseInt(localStorage.getItem("cardIndex"), 10) || 1
   );
   const [editorViewCollapsed, setEditorViewCollapsed] = useState(false);
+  const [isAboutOpen, setIsAboutOpen] = useState(false);
   const [currentEditorText, setCurrentEditorText] = useState("");
   const [designLoaded, setDesignLoaded] = useState(false);
   const isLoadingTabContentRef = useRef(false);
@@ -410,7 +413,31 @@ function App() {
     if (editingName) {
       nameInputRef.current && nameInputRef.current.focus();
     }
-  }, [editingName]); // Depend on editingName to re-run the effect
+  }, [editingName]);
+
+  useEffect(() => {
+    if (!isAboutOpen) {
+      aboutBtnRef.current?.focus();
+      return;
+    }
+    const modal = aboutModalRef.current;
+    if (!modal) return;
+    const focusables = [...modal.querySelectorAll('button, [href], [tabindex]:not([tabindex="-1"])')];
+    focusables[0]?.focus();
+    const onKey = (e) => {
+      if (e.key === 'Escape') { setIsAboutOpen(false); return; }
+      if (e.key !== 'Tab') return;
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault(); last?.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault(); first?.focus();
+      }
+    };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [isAboutOpen]);
 
 
   useEffect(() => {
@@ -652,6 +679,15 @@ function App() {
             >
               Export
             </button>
+            <button
+              ref={aboutBtnRef}
+              title="About Card Designer"
+              aria-label="About Card Designer"
+              className={`${BTN_STYLE_GLASS} ml1`}
+              onClick={() => setIsAboutOpen(true)}
+            >
+              ⓘ
+            </button>
           </div>
         </div>
       </header>
@@ -757,6 +793,72 @@ function App() {
           </div>
         </div>
       </div>
+
+      {isAboutOpen && (
+        <div
+          className="fixed top-0 left-0 w-100 h-100 flex items-center justify-center"
+          style={{ background: "rgba(0,0,0,0.6)", zIndex: 1000 }}
+          onClick={() => setIsAboutOpen(false)}
+        >
+          <div
+            ref={aboutModalRef}
+            className="bg-white dark-gray pa4 br3 mw6 w-90"
+            style={{ maxHeight: "80vh", overflowY: "auto" }}
+            onClick={(e) => e.stopPropagation()}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="about-title"
+          >
+            <div className="flex justify-between items-center mb3">
+              <h2 id="about-title" className="ma0 f4">About Card Designer</h2>
+              <button
+                className="bn pointer bg-transparent f3 dark-gray"
+                onClick={() => setIsAboutOpen(false)}
+                aria-label="Close"
+              >
+                ×
+              </button>
+            </div>
+            <p className="mt0 mb3">
+              A browser-based tool for designing and previewing Anki flashcard templates.
+            </p>
+            <p className="mt0 mb2">
+              <strong>Made by</strong><br />
+              <a href="https://github.com/avidrucker" className="link blue" target="_blank" rel="noreferrer">
+                Avi Drucker
+              </a>
+            </p>
+            <p className="mt0 mb3">
+              <strong>Source &amp; issues</strong><br />
+              <a href="https://github.com/avidrucker/anki-card-test-1" className="link blue" target="_blank" rel="noreferrer">
+                github.com/avidrucker/anki-card-test-1
+              </a>
+              <br />Found a bug or have a feature request?{" "}
+              <a href="https://github.com/avidrucker/anki-card-test-1/issues" className="link blue" target="_blank" rel="noreferrer">
+                Open an issue
+              </a>
+            </p>
+            <strong>Built with</strong>
+            <table className="w-100 mt2 f6" style={{ borderCollapse: "collapse" }}>
+              <tbody>
+                {[
+                  ["React 18", "UI framework"],
+                  ["Vite", "Build tool & dev server"],
+                  ["CodeMirror 6", "In-browser HTML/CSS editor panes"],
+                  ["Prettier", "On-blur code formatting"],
+                  ["Tachyons", "Utility CSS (used by several card themes)"],
+                  ["GitHub Pages", "Static hosting & deployment"],
+                ].map(([tech, role]) => (
+                  <tr key={tech} className="bb b--black-10">
+                    <td className="pv1 pr3 fw6">{tech}</td>
+                    <td className="pv1">{role}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
