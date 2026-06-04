@@ -206,7 +206,7 @@ Code Rain, Index Card, Ink on Ricepaper, Starry Night Poster, Stormy Night Poste
 
 **Severity:** Advisory  
 **Concern:** Performance  
-**Status:** Open  
+**Status:** Resolved (2026-06-04)  
 **Parent:** Issue 10
 
 Several themes import Google Fonts with full variable-weight axes even though the card templates only use a small subset of those weights. This causes unnecessary font data to be downloaded on first load.
