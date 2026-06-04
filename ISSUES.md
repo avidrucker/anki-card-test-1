@@ -1071,6 +1071,80 @@ The `ⓘ` About button uses a raw Unicode character while all other icon buttons
 
 ---
 
+## Issue 41 — Spike: analyze the Avoloch Steam Pen CodePen to faithfully reproduce it as the new main Steampunk design
+
+**Severity:** Advisory  
+**Concern:** Design quality  
+**Status:** Open  
+**Reference:** https://codepen.io/Avoloch/pen/ZYYXYdv  
+**Parent:** Issue 40
+
+The Avoloch "Steam Pen" CodePen is the target reference aesthetic for Variation E and the intended new main Steampunk card design. Before implementing, a thorough analysis is needed: every visual technique must be catalogued so the reproduction is accurate rather than approximate.
+
+**Have:** Partial CSS extraction performed during Issue 30 spike (2026-06-04). Key variables noted but not fully analysed against the rendered result. No per-element rendering comparison has been done.
+
+**Should have:** A written findings note (added to this issue as a comment or appended below) covering every visual layer in the reference, with the exact CSS values to carry into the card theme. The findings note is the prerequisite for implementation — no CSS should be written until this analysis is complete.
+
+### Analysis checklist
+
+Work through the rendered full-page view of the CodePen and document each of the following:
+
+#### Colour palette
+- [ ] Exact hex values for all background colours (body, header, editor zones, preview zone)
+- [ ] Full stops of the brass gradient (`--brass-vertical` / `--brass-horizontal`)
+- [ ] Full stops of the copper gradient (`--copper-vertical` / `--copper-horizontal`)
+- [ ] Text colour(s) on dark and light surfaces
+- [ ] Border/separator colour
+
+#### Typography
+- [ ] Font families used (header logo, tab labels, button labels, editor content)
+- [ ] Font sizes, weights, letter-spacing for each zone
+- [ ] Text-shadow treatment on the logo and buttons
+
+#### Metallic surfaces
+- [ ] Exact gradient stops for the header band background (copper)
+- [ ] Exact gradient stops for the tab backgrounds (brass vs copper for active/inactive)
+- [ ] Exact gradient stops for the editor-header band
+- [ ] Divider/resize handle treatment (gradient + `≡≡≡` label)
+
+#### Wood-grain texture
+- [ ] The 5-layer stacked `background-image` formula (exact `rgba` values per layer)
+- [ ] The 5 `background-size` values (currently noted as `13px 3px, 29px 7px, 37px 11px, 53px 23px, 100% 100%`)
+- [ ] Base colour underneath the grain layers
+
+#### Gear ornaments
+- [ ] Gear emoji vs SVG — confirm which is used in the reference
+- [ ] Gear size (px), position (left/right offsets), colour and gradient treatment
+- [ ] Rotation animation: duration, easing, direction (`5s linear infinite` observed — confirm)
+- [ ] Whether counter-rotation is used on any gear
+
+#### SVG tile background pattern
+- [ ] The exact inline SVG data-URI used for the gear/circle tile (two overlapping circles at 50% offset)
+- [ ] Fill colour and opacity (`fill='%23614818' fill-opacity='0.05'` observed — confirm)
+- [ ] Which elements use this pattern (body, editor content, both?)
+
+#### Piping / steam decoration
+- [ ] Copper pipe + pipe-joint element geometry (widths, heights, border-radius)
+- [ ] Steam animation: keyframe values (`right` from/to, `opacity`, `width/height` at 0%/50%/100%`)
+- [ ] Whether the pipe/steam decoration is essential to the aesthetic or incidental
+
+#### Depth and shadow
+- [ ] `box-shadow` on the header (`0px 5px 15px rgba(0,0,0,0.7)` observed — confirm)
+- [ ] Inset shadow on editor content areas
+- [ ] Border widths and colours on major structural dividers
+
+#### Adaptation notes for a flashcard
+The reference is a code-editor UI; the card theme must adapt it to a flashcard layout. Document here what maps directly and what needs to be reimagined:
+- Header band → card header band (term label / side indicator)
+- Editor content zone → card body (term, reading, translation fields)
+- Preview zone → not applicable; replace with card back content
+- Piping/steam → optional decorative element; assess whether it fits
+
+### Output
+Append a "Findings" section to this issue with all the above filled in. That section becomes the implementation spec for the Variation E card theme.
+
+---
+
 ## Issue 40 — Steampunk: create 3–4 card variations with brass, wood, and large spinning gears
 
 **Severity:** Advisory  
