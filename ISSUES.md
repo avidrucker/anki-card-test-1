@@ -854,7 +854,7 @@ Output of spike: a short findings note added to this issue, listing the chosen t
 
 **Severity:** Advisory  
 **Concern:** Design quality  
-**Status:** Open
+**Status:** Resolved (2026-06-04)
 
 The current Steampunk theme has the right vocabulary (aged parchment, brass/copper accents, Cinzel typography) but has not been benchmarked against high-quality steampunk UI/card designs. Without a reference survey it is unclear whether the current implementation is close to its aesthetic ceiling or has significant room to improve.
 
