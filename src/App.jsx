@@ -508,7 +508,10 @@ function App() {
   }, [designLoaded, cardCss, frontHtml, backHtml]); // omits updateEditorTextConditionally — plain fn, would cause infinite re-runs
 
   const handleDesignChange = (event) => {
-    loadDesign(event.target.value);
+    const filename = availableDesigns.find(
+      (f) => formatDesignName(f) === event.target.value
+    );
+    if (filename) loadDesign(filename);
   };
 
   const finalizeDesignName = (event) => {
@@ -627,7 +630,7 @@ function App() {
           >
             <option value="">Select a Design</option>
             {availableDesigns.map((design) => (
-              <option key={design} value={design}>
+              <option key={design} value={formatDesignName(design)}>
                 {formatDesignName(design)}
               </option>
             ))}
