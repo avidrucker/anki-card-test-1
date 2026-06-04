@@ -1009,6 +1009,44 @@ The `isLoadingTabContentRef` guard was intended to prevent this but is set async
 
 ---
 
+## Issue 37 — About modal uses white/light theme instead of app dark theme
+
+**Severity:** Advisory  
+**Concern:** Design quality / Usability  
+**Status:** Open
+
+The About modal uses a white background and dark-gray text, which clashes with the app's dark-gray/near-black UI. The `ⓘ` button icon is not visually centred inside its circular glass button.
+
+**Have:** Modal rendered with `bg-white dark-gray` — looks like a foreign light-mode component dropped into a dark UI. The `ⓘ` character sits off-centre inside the `BTN_STYLE_GLASS` button (which uses `pa2 w2 h2` without explicit flex centering).
+
+**Should have:** Modal background, text, and border colours match the app's existing dark palette (e.g. `bg-dark-gray white` with a `b--gray` border, consistent with the editor and header areas). The `ⓘ` icon is horizontally and vertically centred inside its button using `flex items-center justify-center`.
+
+**Repro:**
+1. Load the app (dark UI).
+2. Click the `ⓘ` button.
+3. Observe: modal is stark white, jarring against the dark background; `ⓘ` icon appears top-left of its button rather than centred.
+
+---
+
+## Issue 38 — Pokémon theme padding and layout spacing needs improvement
+
+**Severity:** Advisory  
+**Concern:** Design quality  
+**Status:** Open
+
+The Pokémon RBY theme's layout uses spacing values that leave elements cramped or poorly proportioned at card preview size.
+
+**Have:** Current padding and margin values in `public/Pokemon RBY.json` `cardCss` produce a layout that does not make effective use of the card area — elements feel squeezed or misaligned.
+
+**Should have:** Padding and margins adjusted so the card content breathes appropriately at the default preview size, consistent with the Game Boy aesthetic (tight but not cramped; clear visual hierarchy between zones).
+
+**Repro:**
+1. Select the Pokémon RBY theme.
+2. View front and back sides.
+3. Observe: layout spacing feels off — elements are too close together or proportions are awkward.
+
+---
+
 ## Checks that passed
 
 | Check | Concern | Severity |
