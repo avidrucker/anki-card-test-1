@@ -1071,6 +1071,42 @@ The `ⓘ` About button uses a raw Unicode character while all other icon buttons
 
 ---
 
+## Issue 40 — Steampunk: create 3–4 card variations with brass, wood, and large spinning gears
+
+**Severity:** Advisory  
+**Concern:** Design quality  
+**Status:** Open  
+**Parent:** Issue 30
+
+The current Steampunk theme uses one layout and one visual treatment. Expanding it to 3–4 distinct visual variations would showcase the aesthetic range of the genre and give users meaningful choice.
+
+**Have:** One Steampunk card design — parchment body, iron-black header band with wood-grain texture, brass gradient rule, rotating corner gears (`⚙` glyph, footer only).
+
+**Should have:** 3–4 distinct visual treatments saved as separate theme JSON files, each leaning into a different steampunk sub-aesthetic. Each variation must include prominently visible spinning metallic gear(s), richer brass/copper surface treatments, and at least one wood-surface zone.
+
+### Proposed variations
+
+**Variation A — "The Engine Room"**  
+Dark iron/coal aesthetic. Near-black `#1a0d00` background. Large SVG gear(s) visible behind the content area (CSS `clip-path` or `opacity` layer), slowly rotating. Copper piping accent border. Brass rivets at corners. Courier Prime monospace for all text (typewriter aesthetic). Content zone uses a dark aged-metal texture.
+
+**Variation B — "The Airship Logbook"**  
+Parchment + reclaimed mahogany. Wide wood-plank header using the multi-layer gradient technique. Large brass cog watermark centred behind the term (low-opacity `⚙` at `8–10rem`, rotating). Soft leather-brown ink. Cinzel Decorative header, IM Fell English body.
+
+**Variation C — "The Inventor's Workshop"**  
+Blueprint meets brass — dark navy/indigo background with a faint grid, brass-foil lettering (`mix-blend-mode: screen` or outline text). SVG gears in two sizes at opposing corners, counter-rotating. Mechanical sans-serif (`Exo 2`) for readability against dark background.
+
+**Variation D — "The Royal Society"**  
+Formal Victorian manuscript. Ivory vellum body. Ornate ruled border (double-line with corner flourishes via CSS). Deep burgundy `#4a0a14` header band. Gold-leaf gradient title. Two large decorative gear SVGs flanking the term on the back side. Libre Baskerville body text.
+
+### Implementation notes
+
+- Each variation is a new `public/Steampunk-*.json` file (e.g. `Steampunk Engine Room.json`) following the existing `sp-*` class namespace pattern.
+- Spinning gears: use `@keyframes` rotation on a large Unicode `⚙` (8–12rem) or an inline SVG gear path placed as an absolutely-positioned background element within the card.
+- Register each new file in the `availableDesigns` array in `src/App.jsx`.
+- Verify all variations visually at card preview size before committing.
+
+---
+
 ## Checks that passed
 
 | Check | Concern | Severity |
