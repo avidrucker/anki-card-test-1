@@ -295,6 +295,720 @@ Link to the GitHub repo (`https://github.com/avidrucker/anki-card-test-1`) with 
 
 ---
 
+## Issue 14 — UX / a11y audit for all 21 pre-made card themes
+
+**Severity:** Advisory  
+**Concern:** Accessibility / Usability  
+**Status:** Open
+
+No accessibility review has been performed on the 21 pre-made card themes. Each theme ships with its own CSS (colour palette, typography, animations) and HTML templates, so issues like low contrast, hard-to-read fonts, and unsuppressed motion vary theme by theme.
+
+### Per-theme checklist
+
+For each of the 21 themes, verify all items below. Record pass / fail / N/A per theme in a follow-up table once the audit is complete.
+
+#### Colour contrast
+- [ ] **Body text vs. background** — minimum 4.5:1 (WCAG AA normal text)
+- [ ] **Heading / large text vs. background** — minimum 3:1 (WCAG AA large text, ≥18 pt or ≥14 pt bold)
+- [ ] **No information conveyed by colour alone** — e.g., highlighted terms also use underline, bold, or another non-colour cue
+
+#### Typography
+- [ ] **Minimum readable font size** — body text ≥ 14 px at default zoom (Anki default font size is 20 px; check any theme that overrides it smaller)
+- [ ] **Line height ≥ 1.4** for multi-line body text blocks (WCAG 1.4.12 Text Spacing)
+- [ ] **Letter-spacing / word-spacing** not so tight that it becomes illegible
+- [ ] **CJK fonts load and render legibly** — themes using `Noto Sans JP` or `M PLUS` variants: confirm Japanese/Korean/Chinese glyphs display at an appropriate size and weight
+
+#### Motion & animation
+- [ ] **`prefers-reduced-motion` respected** — any `@keyframes` or `animation:` rule is either gated behind `@media (prefers-reduced-motion: no-preference)` or offers a static fallback. Animated themes (12 of 21):
+  - 8 Bit Console, Beach Night Poster, Blackboard and Chalk, Brutalist HTML, Classic Apple, Code Rain, Game Menu UI, Glowing Blue Circuits, Index Card, Ink on Ricepaper, Starry Night Poster, Stormy Night Poster, Zenburn Theme
+- [ ] **No content flashes** — no animation that produces more than 3 flashes per second (WCAG 2.3.1 — seizure risk)
+
+#### Readability in context
+- [ ] **Both sides readable** — front and back HTML templates: verify the card content area is not obscured by decorative background elements (full-bleed images, overlay layers, low-opacity text)
+- [ ] **Text does not overflow card bounds** at default template content lengths
+- [ ] **Decorative images marked as presentational** — background images serving only aesthetic purposes do not need alt text, but any `<img>` in the HTML templates should have appropriate `alt`
+
+#### High-contrast / forced-colours mode (stretch goal)
+- [ ] **Theme degrades gracefully under `forced-colors: active`** — decorative backgrounds collapse but text remains legible and card structure is still visible
+
+### Themes to audit
+
+| # | Theme | Animated | CJK fonts |
+|---|---|---|---|
+| 1 | 8 Bit Console | Yes | Yes |
+| 2 | Beach Night Poster | Yes | Yes |
+| 3 | Blackboard and Chalk | Yes | Yes |
+| 4 | Blueprint Theme | No | Yes |
+| 5 | Brutalist HTML | Yes | No |
+| 6 | Classic Apple | Yes | No |
+| 7 | Code Rain | Yes | Yes |
+| 8 | Da Vinci Sketch | No | No |
+| 9 | Full Photo | No | Yes |
+| 10 | Full Photo 2 | No | Yes |
+| 11 | Game Menu UI | Yes | Yes |
+| 12 | Glowing Blue Circuits | Yes | Yes |
+| 13 | Halftone Comics | No | No |
+| 14 | Index Card | Yes | No |
+| 15 | Ink on Ricepaper | Yes | No |
+| 16 | Starry Night Poster | Yes | Yes |
+| 17 | Stormy Night Poster | Yes | No |
+| 18 | Tarot Card | No | No |
+| 19 | Vaporwave | No | No |
+| 20 | You Died | No | No |
+| 21 | Zenburn Theme | Yes | Yes |
+
+### Implementation notes
+
+- Use browser DevTools **Accessibility** panel (or the axe browser extension) to check contrast ratios; the Playwright e2e suite can be extended with `@axe-core/playwright` for automated contrast checking across themes.
+- For `prefers-reduced-motion`, test by setting `Emulate CSS media feature prefers-reduced-motion: reduce` in DevTools.
+- Fixes will almost certainly need to be applied per-theme in the individual JSON files under `public/`. Use `scripts/annotate-themes.mjs` as a model for batch edits where the same fix applies to multiple themes.
+
+---
+
+## Issue 15 — Visual design review pass on all pre-existing card themes
+
+**Severity:** Advisory  
+**Concern:** Design quality / Usability  
+**Status:** Open
+
+No structured visual design review has been performed on the existing themes since they were authored. As the set has grown to 21 themes — with varying age, origin, and intent — some are likely to have inconsistencies, visual rough edges, or layout issues that weren't caught at authoring time. This issue tracks a single dedicated pass to catch and fix those problems.
+
+### Scope
+
+Review each of the 21 pre-made themes (excluding `dummy_card_data`) for the following categories of problem:
+
+#### Layout & proportion
+- [ ] Card content overflows its container at default template content lengths
+- [ ] Front and back sides have mismatched proportions or padding
+- [ ] Text or image areas clip, overlap, or leave excessive whitespace
+- [ ] The card does not render at a consistent aspect ratio across themes
+
+#### Typography
+- [ ] Font size is too small or too large relative to the card area
+- [ ] Line height is cramped for multi-line content
+- [ ] Font weight or style is inconsistent with the theme's aesthetic (e.g., a serif in a pixel-art theme)
+- [ ] Google Fonts load correctly and render at the intended weight
+
+#### Colour & contrast
+- [ ] Text contrast falls below 4.5:1 against its background (cross-reference with Issue 14 a11y audit)
+- [ ] Background colours or gradients clash with the text colour in unexpected ways
+- [ ] Decorative colours overwhelm the content area
+
+#### Image handling
+- [ ] If the theme includes an image and the card has no image, the layout breaks or shows a blank zone
+- [ ] Image does not scale or crop gracefully at different aspect ratios
+- [ ] Image filter effects (grayscale, brightness, SVG filters) behave as intended
+
+#### Animation & motion
+- [ ] Animated elements do not cause layout reflow or jitter
+- [ ] Animations loop cleanly with no visual pop at the loop point
+- [ ] (Cross-reference Issue 14: `prefers-reduced-motion` is respected)
+
+#### Overall polish
+- [ ] The theme looks intentional and finished rather than a rough draft
+- [ ] Front and back sides feel visually related (same design language) while being distinct
+- [ ] The theme is clearly differentiated from the most visually similar theme in the set
+
+### Themes to review
+
+| # | Theme | Notes |
+|---|---|---|
+| 1 | 8 Bit Console | Check pixel font sizing at card dimensions |
+| 2 | Beach Night Poster | Multi-filter complexity — verify all layers composite correctly |
+| 3 | Blackboard and Chalk | Check chalk texture legibility on dark background |
+| 4 | Blueprint Theme | Verify grid lines don't interfere with text zones |
+| 5 | Brutalist HTML | Intentional roughness — check it reads as deliberate, not broken |
+| 6 | Classic Apple | Check dithering filter renders correctly on retina displays |
+| 7 | Code Rain | Verify animated characters don't obscure card content |
+| 8 | Da Vinci Sketch | Check sketch effect on images with transparent backgrounds |
+| 9 | Full Photo | Verify text contrast over arbitrary user photos |
+| 10 | Full Photo 2 | Same as above; check back side differs visually |
+| 11 | Game Menu UI | 7-light specular — check render performance |
+| 12 | Glowing Blue Circuits | Check glow intensity; verify text sits above circuit layer |
+| 13 | Halftone Comics | Check dot pattern scale; verify speech bubble layout |
+| 14 | Index Card | Check ruled-line alignment with text baseline |
+| 15 | Ink on Ricepaper | 4× Sobel pass — verify edge detection doesn't create noise artifacts |
+| 16 | Starry Night Poster | Check feMorphology star shapes at different zoom levels |
+| 17 | Stormy Night Poster | Verify dark background doesn't swallow dark text |
+| 18 | Tarot Card | Check ornate border doesn't crowd content at normal card size |
+| 19 | Vaporwave | Verify gradient + grid lines are clearly visible |
+| 20 | You Died | Confirm ash particle animation doesn't obscure the text |
+| 21 | Zenburn Theme | Verify muted palette maintains enough text contrast |
+
+### Output
+
+For each theme with a finding: create a sub-issue or inline fix note describing what was found, what was changed, and how it was verified (screenshot or Playwright visual snapshot comparison).
+
+---
+
+## Issue 16 — Revise Vaporwave theme to match max-datom.com aesthetic
+
+**Severity:** Advisory  
+**Concern:** Design quality  
+**Status:** Open  
+**Reference:** https://max-datom.com/
+
+The current Vaporwave theme uses a purple/violet gradient background with a pink grid and pink-dominant text — a "pastel aesthetic internet" interpretation of vaporwave. The max-datom.com site shows a sharper, darker **synthwave/outrun** variant: near-black teal background, dominant bright cyan grid, hot-pink used only as a single italic accent, and grey-white as the primary text colour. The overall feel is more cinematic and game-UI than retro-internet. The revision should shift the existing theme toward that reference without restructuring the HTML.
+
+### Reference screenshot analysis (max-datom.com)
+
+| Element | Current theme | Target (max-datom.com) |
+|---|---|---|
+| Background | Purple gradient `#0d0221 → #1a0533 → #2d1b69` | Near-black dark teal `#001414` (flat or very subtle gradient) |
+| Grid colour | Pink `rgba(255,113,206,0.55)` lines | Bright cyan `#00e5cc` lines, noticeably higher opacity |
+| Grid height | `42%` of card | ~50–55% — grid is the visual centrepiece, not a subtle floor |
+| Grid perspective | `perspective(220px) rotateX(58deg)` | Similar perspective depth, horizon sits at ~50% card height |
+| Sun | Pink/orange/red half-circle with stripe cutouts | Absent or replaced with a subtle cyan horizon glow line |
+| Primary text colour | Hot pink `#ff71ce` | Light grey-white `#d8e8e8` — most text is NOT pink |
+| Accent colour | Cyan `#01cdfe`, purple `#b967ff`, yellow `#fffb96` | Hot pink `#ff2090` used sparingly for ONE italic subtitle element only |
+| Eyebrow / subtitle | `"Ａ Ｅ Ｓ Ｔ Ｈ Ｅ Ｔ Ｉ Ｃ"` full-width chars in purple | Italic/script style in hot pink — matches the "Analy Personal Assistant" cursive line |
+| Font | VT323 (bitmap monospace) | Max-datom uses a chunkier bitmap font (possibly `"Press Start 2P"`); VT323 is acceptable but worth testing `"Press Start 2P"` |
+| Image filter | `hue-rotate(270deg)` → purple/pink tint | `hue-rotate(180deg)` → cyan/teal tint to match new palette |
+| Text glow | Pink/cyan/purple multi-colour glows | Cyan glow on most text; hot-pink glow only on the italic accent element |
+
+### Specific changes to `Vaporwave.json`
+
+**`cardCss`:**
+
+1. **`:root` variables** — replace entire palette:
+   ```css
+   --vp-bg:     #001414;
+   --vp-cyan:   #00e5cc;
+   --vp-pink:   #ff2090;
+   --vp-white:  #d8e8e8;
+   --vp-dim:    #6a9090;
+   ```
+
+2. **`.card` and `.vapor-card` background** — replace purple gradient:
+   ```css
+   background: #001414;
+   /* or very subtle: linear-gradient(180deg, #000d0d 0%, #001a1a 100%) */
+   ```
+
+3. **`.vapor-grid` colour** — change pink lines to cyan:
+   ```css
+   background-image:
+     linear-gradient(rgba(0,229,204,0.65) 1px, transparent 1px),
+     linear-gradient(90deg, rgba(0,229,204,0.65) 1px, transparent 1px);
+   height: 52%;
+   ```
+
+4. **`.vapor-sun` / `.vapor-sun-wrap`** — two options:
+   - **Option A (remove):** Set `.vapor-sun-wrap { display: none; }` — let the grid be the sole hero element.
+   - **Option B (horizon glow):** Replace the sun with a thin horizontal glow line at the grid horizon: `box-shadow: 0 0 18px 4px rgba(0,229,204,0.6)` on a 1px-tall absolutely-positioned `div` at 48% from top.
+   - Recommendation: **Option B** — the horizon glow anchors the grid visually without the distraction of the striped sun.
+
+5. **`.vapor-term`** — change from pink to white with cyan glow:
+   ```css
+   color: var(--vp-white);
+   text-shadow: 0 0 14px var(--vp-cyan), 2px 2px 0 rgba(0,229,204,0.3);
+   ```
+
+6. **`.vapor-eyebrow`** — change from full-width purple chars to hot-pink italic accent:
+   ```css
+   font-style: italic;
+   color: var(--vp-pink);
+   text-shadow: 0 0 10px var(--vp-pink);
+   letter-spacing: 0.1em;
+   ```
+   Also update the eyebrow text in `frontHtml` and `backHtml` from `"Ａ Ｅ Ｓ Ｔ Ｈ Ｅ Ｔ Ｉ Ｃ"` to something shorter and italic-appropriate, e.g. `"Synthwave Study"` or `"Ａ Ｅ Ｓ Ｔ Ｈ Ｅ Ｔ Ｉ Ｃ"` retained but restyled pink italic.
+
+7. **All other text** (`.vapor-reading`, `.vapor-translation`, `.vapor-prompt`, etc.) — change to `var(--vp-white)` or `var(--vp-cyan)` with cyan glow. Remove yellow and purple entirely.
+
+8. **`.vapor-picture img`** — update image filter:
+   ```css
+   filter: hue-rotate(180deg) saturate(1.8) brightness(0.8);
+   border-color: var(--vp-cyan);
+   box-shadow: 0 0 12px var(--vp-cyan);
+   ```
+
+9. **Input field** — update border/glow from blue to cyan (already close, just variable swap).
+
+**Optional font upgrade:**
+
+Test replacing `VT323` with `"Press Start 2P"` (also on Google Fonts). Press Start 2P is chunkier and matches the max-datom title font more closely. Tradeoff: it is wider and may require smaller `font-size` values on `.vapor-term` (drop from `4.5rem` to ~`2.5rem`). If legibility at smaller sizes is acceptable, prefer Press Start 2P; otherwise keep VT323.
+
+### What should NOT change
+
+- HTML template structure (`frontHtml` / `backHtml`) — no restructuring needed
+- The perspective grid concept — already correct, just recoloured
+- VT323 font import — keep unless Press Start 2P is tested and preferred
+- The `{{type:term}}` input block on the front side
+
+### Verification
+
+After changes, visually compare against the max-datom.com screenshot (saved at `max-datom-screenshot.png` in project root) for:
+- [ ] Background is dark teal, not purple
+- [ ] Grid lines are bright cyan and visually dominant
+- [ ] Only one element (eyebrow/subtitle) uses hot pink
+- [ ] All other text is grey-white or cyan
+- [ ] Image filter tints cyan, not purple
+- [ ] Playwright visual snapshot updated (`e2e/` suite)
+
+---
+
+## Issue 17 — Holo Foil sparkle effect bleeds outside picture bounds
+
+**Severity:** Advisory  
+**Concern:** Visual correctness  
+**Status:** Resolved (2026-06-03)
+
+The sparkle/shimmer overlay on the Holographic Foil theme renders outside the picture element's bounding box — sparkle particles are visible in the card area surrounding the image, not only over the image itself.
+
+**Have:** Sparkle effect overflows the `{{picture}}` container and is visible outside the image bounds.
+
+**Should have:** Sparkle effect is fully clipped to the picture element's bounds; no sparkle particles appear outside the image area.
+
+**Repro:**
+1. Select the Holographic Foil theme in the designer.
+2. Load a card that includes a picture.
+3. Observe: the sparkle/shimmer layer extends beyond the image into the surrounding card layout.
+
+**Likely fix:** Add `overflow: hidden` (or equivalent `clip-path`) to the picture wrapper element in `public/Holographic Foil.json` `cardCss` so the sparkle pseudo-element is clipped to the image container's bounds.
+
+---
+
+## Issue 18 — Hollow Knight back view tags text is too small to read
+
+**Severity:** Advisory  
+**Concern:** Readability  
+**Status:** Resolved (2026-06-03)
+
+The `.hk-tags` rule sets `font-size: 0.85rem` and `opacity: 0.5` — the smallest and most faded text on the back view. At card viewing distance the tags are effectively illegible.
+
+**Have:** Tags render at `0.85rem` with `opacity: 0.5` in `public/Hollow Knight Lore Tablet.json` `cardCss` (line 110).
+
+**Should have:** Tags are legible at normal viewing distance — font size increased (suggest `1rem`–`1.1rem`) and/or opacity raised to be clearly readable without straining.
+
+**Repro:**
+1. Select the Hollow Knight Lore Tablet theme.
+2. Load a card with non-empty tags and flip to the back.
+3. Observe: tags text is noticeably smaller and more faded than all surrounding fields.
+
+---
+
+## Issue 19 — Hollow Knight back view uses no Japanese font
+
+**Severity:** Advisory  
+**Concern:** Design quality  
+**Status:** Open
+
+The HK back view applies Cinzel (a Latin serif) to all text fields — reading, transliteration, tags, and input — including content that contains Japanese characters. No Japanese font is imported or specified, so Japanese glyphs fall back to the system default and clash with the stone-tablet aesthetic.
+
+**Have:** `@import` in `public/Hollow Knight Lore Tablet.json` loads only `Cinzel Decorative` and `Cinzel`; no Japanese-capable font is present. Japanese text in `.hk-reading`, `.hk-transliteration`, and `.hk-tags` renders in the OS fallback font.
+
+**Should have:** At least 3–4 Japanese font candidates are trialed on the back view and the best aesthetic match for the stone-tablet / ancient-script feel is selected and committed. Candidates to try: Zen Antique, Shippori Mincho B1, Hina Mincho, Noto Serif JP.
+
+**Repro:**
+1. Select the Hollow Knight Lore Tablet theme.
+2. Load a card whose reading/transliteration fields contain Japanese characters.
+3. Flip to the back view.
+4. Observe: Japanese glyphs render in the OS system font, not a font matched to the theme aesthetic.
+
+---
+
+## Issue 20 — Pokémon front: blinking cursor shows when input is unfocused
+
+**Severity:** Advisory  
+**Concern:** Visual correctness  
+**Status:** Resolved (2026-06-03)
+
+The `.gb-input-wrap::after` pseudo-element runs the `gb-blink` animation unconditionally — the `_` cursor blinks even when the input has never been touched.
+
+**Have:** `.gb-input-wrap::after` is always rendered and animating in `public/Pokemon RBY.json` `cardCss` (line 174–185).
+
+**Should have:** Cursor blinks only while the input is focused. Fix: change selector to `.gb-input-wrap:focus-within::after`.
+
+**Repro:**
+1. Select the Pokémon RBY theme; view the front side.
+2. Do not click the input field.
+3. Observe: `_` cursor blinks in the empty input without any focus.
+
+---
+
+## Issue 20b — Pokémon front: restore pixel `_` cursor that tracks typed text
+
+**Severity:** Advisory  
+**Concern:** Design quality  
+**Status:** Open  
+**Parent:** Issue 20
+
+The fake `_` cursor was removed (Issue 20 fix) because it was absolutely positioned and couldn't track the text insertion point. The real browser caret (styled `var(--gb-dark)`) is correct but not pixel-aesthetic.
+
+**Have:** Input uses the browser's standard I-beam/line caret in `var(--gb-dark)`.
+
+**Should have:** A `_` character in "Press Start 2P" that sits immediately after the last typed character and blinks, matching the GB aesthetic.
+
+**Investigation approach:** Because "Press Start 2P" is monospace, character width is constant and predictable — a small script could listen to `input` events, count characters, and set a CSS custom property (`--cursor-x: calc(N * 1ch)`) that the `::after` pseudo-element reads for its `left` offset. Needs a font-loaded guard before measuring `ch` width.
+
+---
+
+## Issue 21 — Pokémon front: placeholder text renders in browser-default gray
+
+**Severity:** Advisory  
+**Concern:** Visual correctness / Design quality  
+**Status:** Resolved (2026-06-03)
+
+No `::placeholder` colour rule exists for `.gb-input-wrap input`. The browser renders placeholder text in its default gray, which is off-palette for the 4-shade GB green design.
+
+**Have:** `{{type:term}}` input has no `::placeholder { color: … }` rule; placeholder appears gray in `public/Pokemon RBY.json`.
+
+**Should have:** Placeholder uses a GB palette green — e.g. `var(--gb-dark)` (`#306230`) — so it stays visually consistent with the rest of the card.
+
+**Repro:**
+1. Select the Pokémon RBY theme; view the front side.
+2. Observe the "Type your answer here" placeholder text — it is gray, not green.
+
+---
+
+## Issue 22 — Pokémon front: text sizes too large relative to card area
+
+**Severity:** Advisory  
+**Concern:** Design quality  
+**Status:** Resolved (2026-06-03)
+
+Front-view text elements use the same large sizes as the back-view content, making the banner and prompt dominate the card with little breathing room. The user-facing ask is roughly half the current sizes on the front only; back sizes are intentionally unchanged.
+
+**Have:** `.gb-wild-banner` and `.gb-prompt` at `1.80rem`; `.gb-input-wrap input` and its `::after` cursor at `1.95rem`; `.gb-hint-link` at `1.65rem`; `.gb-hint-text` at `1.80rem` — all in `public/Pokemon RBY.json` `cardCss`.
+
+**Should have:** Front-side text sizes reduced to roughly half current values (suggested: banner/prompt `~0.9rem`, input `~1rem`, hint text proportionally scaled). Back-side class sizes (`gb-term`, `gb-reading`, etc.) remain unchanged.
+
+**Repro:**
+1. Select the Pokémon RBY theme; view the front side.
+2. Observe: the banner and prompt text appear oversized; the input field and hint text leave minimal margin within the menu box.
+
+---
+
+## Issue 23 — Pokémon back: Japanese text fields render in non-pixel system fallback font
+
+**Severity:** Advisory  
+**Concern:** Design quality  
+**Status:** Resolved (2026-06-03)
+
+The back view applies `"Press Start 2P"` to all fields including `.gb-reading`, `.gb-transliteration`, and `.gb-tags`. Press Start 2P is a Latin-only font; Japanese glyphs fall through to the OS system font, breaking the pixel aesthetic for those fields.
+
+**Have:** `@import` in `public/Pokemon RBY.json` loads only `Press Start 2P` (Latin-only). Fields containing Japanese glyphs render in the OS default serif/sans font.
+
+**Should have:** A Unicode-capable pixel font — e.g. `UnifontMedium` (as used in the 8 Bit Console theme via `https://cdn.jsdelivr.net/gh/avidrucker/anki-card-test-1/public/UnifontMedium.woff`) — is applied to the Japanese-bearing fields (`gb-reading`, `gb-transliteration`, `gb-tags`) so glyphs render in a pixel style consistent with the GB aesthetic.
+
+**Repro:**
+1. Select the Pokémon RBY theme; view the back side with a card containing Japanese reading or transliteration.
+2. Observe: Japanese characters render in a system font, not a pixel font.
+
+---
+
+## Issue 24 — Pokémon front/back: play button lacks explicit pixel font-family
+
+**Severity:** Advisory  
+**Concern:** Design quality  
+**Status:** Resolved (2026-06-03)
+
+`.append-play-btn-text button` sets only `font-size: 9rem` — no `font-family` is declared. The button inherits `"Press Start 2P"` from `.card`, which is Latin-only and inconsistent with the 8 Bit Console approach of explicitly using `UnifontMedium` (a Unicode pixel font) at `5rem`.
+
+**Have:** `public/Pokemon RBY.json` `cardCss` line 202: `.append-play-btn-text button { font-size: 9rem; cursor: pointer; color: var(--gb-white); }` — no `font-family`.
+
+**Should have:** Play button explicitly declares a pixel `font-family` (e.g. `UnifontMedium` for Unicode coverage, or `"Press Start 2P"` if the symbol renders correctly) and uses a size comparable to the 8 Bit Console (`5rem`), matching the retro-design approach.
+
+**Repro:**
+1. Select the Pokémon RBY theme; view a card with audio.
+2. Observe the play button — it has no explicit pixel font declaration and is rendered at an oversized 9rem compared to the retro design's 5rem.
+
+---
+
+## Issue 25 — Steampunk: Japanese font experiment unresolved; three unused fonts still loaded
+
+**Severity:** Advisory  
+**Concern:** Design quality / Performance  
+**Status:** Resolved (2026-06-03)
+
+A temporary 4-font comparison block was added to `public/Steampunk.json` to evaluate Japanese fonts for `.sp-term` and `.sp-reading`. The winner (Noto Serif JP) has not been promoted to the main rules, and the three losing fonts (Shippori Mincho B1, Zen Old Mincho, Yuji Syuku) are still imported and defined.
+
+**Have:**
+- `.sp-term` uses `"Cinzel Decorative"` (Latin-only); `.sp-reading` uses `"IM Fell English"` (Latin-only) — Japanese glyphs fall back to the system font.
+- `cardCss` line 17: second `@import` loads all four Japanese fonts.
+- Lines 239–261: temporary experiment classes (`.sp-term--shippori-b1`, `.sp-reading--shippori-b1`, `.sp-term--zen-old`, `.sp-reading--zen-old`, `.sp-term--yuji`, `.sp-reading--yuji`, `.sp-term--noto`, `.sp-reading--noto`) and `.sp-font-label` remain in the stylesheet.
+
+**Should have:**
+- `.sp-term` and `.sp-reading` updated to `font-family: "Noto Serif JP", serif`.
+- Second `@import` (line 17) replaced with a single Noto Serif JP import (weights 400, 700, 900 are sufficient).
+- All font-experiment classes and `.sp-font-label` removed.
+- Any corresponding experiment markup in `frontHtml`/`backHtml` (font-label spans, experiment wrapper divs) cleaned up if present.
+
+**Repro:**
+1. Select the Steampunk theme; view the back side with a card that has Japanese in the term or reading fields.
+2. Observe: Japanese glyphs do not render in Noto Serif JP or any intentional Japanese font.
+
+---
+
+## Issue 26 — Pokémon: SVG palette filter colors visually diverge from CSS custom properties
+
+**Severity:** Advisory  
+**Concern:** Visual correctness  
+**Status:** Resolved (2026-06-03) — closed as side effect of Issue 28
+
+The GB 4-shade palette is defined in two places: CSS custom properties (`--gb-black` / `--gb-dark` / `--gb-light` / `--gb-white`) and the `feComponentTransfer discrete` tableValues in the SVG `#gb-palette` filter. The float-to-hex conversion checks out on paper (e.g. `0.059 × 255 = 15 = 0x0F`), but the filtered image pixels visually diverge from the equivalent CSS-painted UI elements when viewed side by side in the browser.
+
+**Have:** Filtered image pixels and CSS palette elements appear as noticeably different shades on screen despite the tableValues being mathematically equivalent to the CSS hex colours (`#0f380f`, `#306230`, `#8bac0f`, `#9bbc0f`). Root cause likely lies in the browser's SVG filter rendering pipeline — colour space handling, gamma correction, or floating-point precision in `feComponentTransfer`.
+
+Current tableValues (both `frontHtml` and `backHtml` SVG blocks):
+```
+feFuncR: 0.059  0.188  0.545  0.608
+feFuncG: 0.220  0.384  0.675  0.737
+feFuncB: 0.059  0.188  0.059  0.059
+```
+
+**Should have:** Filtered image shades are perceptually indistinguishable from the CSS palette used for the card UI chrome.
+
+**Repro:**
+1. Select the Pokémon RBY theme; load a card with a picture on the back side.
+2. Compare the filtered image shades against the `gb-menu-box` background (`--gb-white`) and the `gb-battle-zone` background (`--gb-dark`).
+3. Observe: the filtered tones do not match the CSS-painted areas exactly.
+
+**Investigation notes:**
+- `color-interpolation-filters="sRGB"` is already set on the filter, which should prevent linear-light blending errors — check if removing it changes anything.
+- Try expressing the tableValues as exact fractions derived from the hex bytes (e.g. `15/255 = 0.05882…` rather than `0.059`) to eliminate rounding as a variable.
+- DevTools eyedropper on a filtered pixel vs. a CSS-painted element is the fastest way to confirm the actual rendered hex difference.
+
+---
+
+## Issue 27 — Pokémon front: input field background is tinted instead of transparent
+
+**Severity:** Advisory  
+**Concern:** Design quality  
+**Status:** Resolved (2026-06-03)
+
+The `{{type:term}}` input has `background: var(--gb-light)` (`#8bac0f`) at rest and switches to `var(--gb-white)` on focus — both are opaque GB greens. The input should be visually clear so the menu-box background shows through.
+
+**Have:** `.gb-input-wrap input { background: var(--gb-light); }` and `.gb-input-wrap input:focus { background: var(--gb-white); }` in `public/Pokemon RBY.json` `cardCss`.
+
+**Should have:** Both rest and focus states use `background: transparent` so no fill colour is applied to the input field.
+
+**Repro:**
+1. Select the Pokémon RBY theme; view the front side.
+2. Observe: the input box has a visible light-green fill before and after clicking into it.
+
+---
+
+## Issue 28 — Pokémon theme uses green LCD palette instead of classic monochrome
+
+**Severity:** Advisory  
+**Concern:** Design quality  
+**Status:** Resolved (2026-06-03)
+
+The theme currently uses the Game Boy Color green-tinted LCD palette. The target aesthetic is the original monochrome Game Boy — true black, white, and two grays.
+
+**Have:** CSS custom properties in `public/Pokemon RBY.json` use a green-tinted palette:
+```
+--gb-white: #9bbc0f
+--gb-light: #8bac0f
+--gb-dark:  #306230
+--gb-black: #0f380f
+```
+SVG filter tableValues are also tuned to this green palette.
+
+**Should have:** Palette replaced with classic monochrome 4-shade values:
+```
+--gb-white: #ffffff  (255, 255, 255)
+--gb-light: #a9a9a9  (169, 169, 169)
+--gb-dark:  #545454  ( 84,  84,  84)
+--gb-black: #000000  (  0,   0,   0)
+```
+SVG `feComponentTransfer discrete` tableValues updated to match — exact fractions derived from the new hex bytes:
+```
+feFuncR/G/B shade 1 (black):      0.000  0.000  0.000
+feFuncR/G/B shade 2 (dark gray):  0.329  0.329  0.329   (84/255)
+feFuncR/G/B shade 3 (light gray): 0.663  0.663  0.663  (169/255)
+feFuncR/G/B shade 4 (white):      1.000  1.000  1.000
+```
+All three R/G/B funcs use the same tableValues since the target is achromatic. The SVG filter update also closes the rendering-pipeline mismatch tracked in Issue 26.
+
+**Repro:**
+1. Select the Pokémon RBY theme.
+2. Observe: the card renders in green tones rather than classic black-and-white.
+
+---
+
+## Issue 29 — Holographic Foil effect does not look convincingly holographic
+
+**Severity:** Advisory  
+**Concern:** Design quality  
+**Status:** Open
+
+The current Holo Foil theme uses a rotating conic-gradient + SVG feTurbulence sparkle + feSpecularLighting sweep. In practice the card does not read as a holographic foil card to a viewer.
+
+**Have:** Three-layer effect (rainbow conic-gradient, feTurbulence sparkle mask, feSpecularLighting sweep) produces an animated shimmer but lacks the characteristic rainbow-shift-on-tilt, prismatic depth, and sharp glint behaviour of real holographic foil.
+
+**Should have:** The card's image zone convincingly mimics a holographic foil trading card — rainbow iridescence that shifts with viewing angle (simulated via pointer/device-orientation events or CSS `@property` animation), sharp prismatic glints, and a foil texture that feels physically plausible.
+
+**Spike — research before implementing:**
+- Survey CodePen for high-quality holographic card CSS demos (search: "holographic card CSS", "holo foil trading card", "Pokemon holographic CSS")
+- Note which techniques are used: CSS `background-blend-mode`, `mix-blend-mode`, `filter: hue-rotate()`, pointer-tracking via `mousemove`/`deviceorientation`, `backdrop-filter`, SVG `feDiffuseLighting`/`feSpecularLighting`, WebGL shaders
+- Identify the minimum set of techniques that produces a convincing result within a static `<style>` block (no external JS libraries, must work in Anki's WebView)
+- Record the best reference implementations and note what each contributes
+
+Output of spike: a short findings note added to this issue, listing the chosen technique(s) and at least one reference CodePen/demo URL, before any CSS is written.
+
+---
+
+## Issue 30 — Steampunk theme visual design lacks reference-quality authenticity
+
+**Severity:** Advisory  
+**Concern:** Design quality  
+**Status:** Open
+
+The current Steampunk theme has the right vocabulary (aged parchment, brass/copper accents, Cinzel typography) but has not been benchmarked against high-quality steampunk UI/card designs. Without a reference survey it is unclear whether the current implementation is close to its aesthetic ceiling or has significant room to improve.
+
+**Have:** Steampunk theme designed from scratch with no reference CodePen or visual inspiration sources documented.
+
+**Should have:** A short findings note on this issue listing the strongest steampunk card/UI CSS references found, the key techniques they use (texture overlays, noise filters, SVG rust/oxidation effects, gear motifs, aged-paper gradients, brass border treatments), and a concrete list of improvements to apply to the theme.
+
+**Spike — research before implementing:**
+- Search CodePen for steampunk card and UI demos ("steampunk card CSS", "steampunk UI", "aged parchment CSS", "brass border effect")
+- Search Dribbble/Behance for steampunk trading card or flashcard visual references
+- Note techniques: SVG `feTurbulence` paper texture, `feColorMatrix` sepia, riveted border via `radial-gradient`, gear/cog pseudo-elements, letterpress text shadow, aged-vellum background gradients
+- Identify what the current theme is missing vs. the reference bar
+- Record at least two reference URLs before any CSS is written
+
+---
+
+## Issue 31 — Blueprint Theme front side is missing a type-answer input field
+
+**Severity:** Advisory  
+**Concern:** Correctness / Usability  
+**Status:** Resolved (2026-06-03)
+
+The Blueprint Theme front side shows only an audio player and a prompt line. There is no `{{type:term}}` input field, so the user cannot type their answer — the core study interaction is absent.
+
+**Have:** `frontHtml` in `public/Blueprint Theme.json` contains only an audio element and a static prompt paragraph; no `{{type:term}}` input or wrapper div.
+
+**Should have:** A `{{type:term}}` input field present on the front side, consistent with other themes that support typed answers (e.g. Pokémon RBY, Holographic Foil, Hollow Knight Lore Tablet).
+
+**Repro:**
+1. Select the Blueprint Theme; view the front side.
+2. Observe: no text input field is rendered — only the audio element and the prompt text.
+
+---
+
+## Issue 32 — Da Vinci Sketch front side is missing a type-answer input field
+
+**Severity:** Advisory  
+**Concern:** Correctness / Usability  
+**Status:** Resolved (2026-06-03)
+
+The Da Vinci Sketch front side shows only an audio player and a prompt line, with no `{{type:term}}` input field.
+
+**Have:** `frontHtml` in `public/Da Vinci Sketch.json` contains only an audio element and a static prompt paragraph; no `{{type:term}}` input or wrapper div.
+
+**Should have:** A `{{type:term}}` input field on the front side, styled to match the sketch aesthetic — underline/bottom-border only, no box border or outline (e.g. `border: none; border-bottom: 1px solid <ink-colour>; outline: none; background: transparent`).
+
+**Repro:**
+1. Select the Da Vinci Sketch theme; view the front side.
+2. Observe: no text input field is rendered — only the audio element and the prompt text.
+
+---
+
+## Issue 33 — Full Photo front side is missing a type-answer input field
+
+**Severity:** Advisory  
+**Concern:** Correctness / Usability  
+**Status:** Resolved (2026-06-03)
+
+The Full Photo front side shows only an audio player and a prompt line, with no `{{type:term}}` input field.
+
+**Have:** `frontHtml` in `public/Full Photo.json` contains only an audio element and a static prompt paragraph; no `{{type:term}}` input or wrapper div.
+
+**Should have:** A `{{type:term}}` input field on the front side, styled to complement the full-bleed photo background — likely transparent or semi-transparent with a white/light border so it remains visible over an arbitrary photo.
+
+**Repro:**
+1. Select the Full Photo theme; view the front side.
+2. Observe: no text input field is rendered.
+
+---
+
+## Issue 34 — Full Photo 2 front side is missing a type-answer input field
+
+**Severity:** Advisory  
+**Concern:** Correctness / Usability  
+**Status:** Resolved (2026-06-03)
+
+The Full Photo 2 front side shows only an audio player and a prompt line, with no `{{type:term}}` input field.
+
+**Have:** `frontHtml` in `public/Full Photo 2.json` contains only an audio element and a static prompt paragraph; no `{{type:term}}` input or wrapper div.
+
+**Should have:** A `{{type:term}}` input field on the front side, styled to match the off-white header band — likely placed inside or below the header section with a dark border to contrast against the light background.
+
+**Repro:**
+1. Select the Full Photo 2 theme; view the front side.
+2. Observe: no text input field is rendered.
+
+---
+
+## Issue 35 — Tachyons audit: custom CSS duplicates utilities already in Tachyons
+
+**Severity:** Advisory  
+**Concern:** Maintainability  
+**Status:** Open
+
+Each theme's `cardCss` contains hand-rolled CSS rules for common layout and typography concerns (margin, padding, flex, font-size, opacity, text-align, display, etc.) that Tachyons already covers with single-class utilities. This creates redundancy, increases per-theme CSS size, and makes it harder to spot what is genuinely theme-specific vs. structural boilerplate.
+
+**Have:** Themes contain custom CSS rules that reimplement Tachyons utilities, e.g. explicit `margin: 0`, `display: flex`, `font-size: 1rem`, `opacity: 0.5`, `text-align: center`, `width: 100%`, `box-sizing: border-box` — all covered by Tachyons classes (`ma0`, `flex`, `f5`, `o-50`, `tc`, `w-100`, `box-border`). No audit has been done to identify the overlap.
+
+**Should have:** A per-theme findings table identifying:
+1. Custom CSS rules that can be **replaced** by standard Tachyons classes (move to HTML, remove from CSS)
+2. Custom CSS rules that appear in 3+ themes and could become a **shared utility class** in a project-level stylesheet (e.g. `<style>` in `index.html` or a `src/themes.css`)
+3. Rules that are genuinely theme-specific and should stay in `cardCss`
+
+After the audit, apply the consolidations theme by theme and verify visually.
+
+**Scope:** All 28 themes in `public/*.json` plus any shared CSS in `src/`.
+
+**Note:** Tachyons is globally available (imported in `main.jsx`). Classes added to theme HTML are available in both the designer preview and Anki export.
+
+---
+
+## Issue 36 — CSS/HTML editor cursor jumps to top of pane while typing
+
+**Severity:** Advisory  
+**Concern:** UX / Correctness  
+**Status:** Open
+
+When typing in the CSS (or HTML) editor panel, the CodeMirror cursor spontaneously jumps to the top of the editor after certain keystrokes, interrupting editing flow.
+
+**Have:** Typing in the editor causes the cursor to jump to position 0 (top of file) mid-edit.
+
+**Should have:** Cursor stays at the insertion point for the entire editing session; it only moves when the user explicitly navigates or a tab/design switch occurs.
+
+**Root cause (diagnosed):**
+
+The LOAD `useEffect` (`src/App.jsx` ~line 107) has `[activeTab, frontHtml, backHtml, cardCss]` as dependencies:
+
+```js
+useEffect(() => {
+  setCurrentEditorText(contentToLoad);   // ← resets CodeMirror value
+  ...
+}, [activeTab, frontHtml, backHtml, cardCss]);
+```
+
+When the user types, `onEditorChange` sets `currentEditorText`, which the SAVE effect writes back to `cardCss` (or `frontHtml`/`backHtml`). That state change is in the LOAD effect's dependency array, so the LOAD effect re-fires on every keystroke, calling `setCurrentEditorText(cardCss)` with the current content. Any external write to CodeMirror's `value` prop resets the cursor to position 0 — even when the string is identical.
+
+The `isLoadingTabContentRef` guard was intended to prevent this but is set asynchronously (50 ms `setTimeout`) and is not checked before the `setCurrentEditorText` call in the LOAD effect.
+
+**Fix approach (to research and confirm before implementing):**
+
+1. **Remove source-content deps from the LOAD effect** — change the dependency array to `[activeTab]` only. The LOAD effect should fire when the user switches tabs, not when content changes from typing. The SAVE effect already handles the reverse direction.
+2. **Guard with `isLoadingTabContentRef`** — before `setCurrentEditorText` in the LOAD effect, check the flag and skip if the user is actively editing (belt-and-suspenders).
+3. **Consider CodeMirror's imperative API** — instead of setting the `value` prop (which always resets cursor), use `EditorView.dispatch` with a `replaceAll` transaction that preserves cursor position when the incoming content equals the current content.
+
+**Regression test (must pass before closing):**
+
+1. Select any design; open the CSS editor tab.
+2. Click into the middle of a long CSS rule (not the first line).
+3. Type 10+ characters.
+4. Verify: cursor remains at the insertion point after every keystroke — it does not jump to the top of the file.
+5. Switch tabs and back; verify content and cursor position are restored correctly.
+
+---
+
 ## Checks that passed
 
 | Check | Concern | Severity |
