@@ -103,7 +103,7 @@ function App() {
   const [designLoaded, setDesignLoaded] = useState(false);
   const isLoadingTabContentRef = useRef(false);
 
-  // Load the editor content when switching tabs or when source content changes externally
+  // Load the editor content when switching tabs. Design-switch loads go through the designLoaded effect.
   useEffect(() => {
     // console.log('LOAD Effect - activeTab:', activeTab, 'isLoading:', isLoadingTabContentRef.current);
     // console.log('LOAD Effect - frontHtml length:', frontHtml.length, 'backHtml length:', backHtml.length, 'cardCss length:', cardCss.length);
@@ -129,7 +129,8 @@ function App() {
     }, 50); // Small delay to ensure state updates are processed
     
     return () => clearTimeout(timerId);
-  }, [activeTab, frontHtml, backHtml, cardCss]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeTab]); // intentionally omits frontHtml/backHtml/cardCss — content changes from typing must not re-fire this effect (cursor reset). Design loads are handled by the designLoaded effect.
 
   // Save editor content back to the appropriate state variable (only when user types)
   useEffect(() => {

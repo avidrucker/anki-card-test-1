@@ -970,7 +970,7 @@ After the audit, apply the consolidations theme by theme and verify visually.
 
 **Severity:** Advisory  
 **Concern:** UX / Correctness  
-**Status:** Open
+**Status:** Resolved (2026-06-04)
 
 When typing in the CSS (or HTML) editor panel, the CodeMirror cursor spontaneously jumps to the top of the editor after certain keystrokes, interrupting editing flow.
 
