@@ -862,12 +862,16 @@ The current Steampunk theme has the right vocabulary (aged parchment, brass/copp
 
 **Should have:** A short findings note on this issue listing the strongest steampunk card/UI CSS references found, the key techniques they use (texture overlays, noise filters, SVG rust/oxidation effects, gear motifs, aged-paper gradients, brass border treatments), and a concrete list of improvements to apply to the theme.
 
+**References collected so far:**
+- https://codepen.io/Avoloch/pen/ZYYXYdv — steampunk card CSS demo (added 2026-06-04)
+
 **Spike — research before implementing:**
-- Search CodePen for steampunk card and UI demos ("steampunk card CSS", "steampunk UI", "aged parchment CSS", "brass border effect")
+- Analyse the reference above; note which specific techniques it uses (texture layers, border treatment, gear motifs, typography, colour palette)
+- Search CodePen for additional steampunk card and UI demos ("steampunk card CSS", "steampunk UI", "aged parchment CSS", "brass border effect")
 - Search Dribbble/Behance for steampunk trading card or flashcard visual references
 - Note techniques: SVG `feTurbulence` paper texture, `feColorMatrix` sepia, riveted border via `radial-gradient`, gear/cog pseudo-elements, letterpress text shadow, aged-vellum background gradients
 - Identify what the current theme is missing vs. the reference bar
-- Record at least two reference URLs before any CSS is written
+- Record findings before any CSS is written
 
 ---
 
