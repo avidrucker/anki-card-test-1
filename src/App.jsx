@@ -686,7 +686,7 @@ function App() {
               className={`${BTN_STYLE_GLASS} ml1`}
               onClick={() => setIsAboutOpen(true)}
             >
-              ⓘ
+              <span className="flex items-center justify-center h-100">ⓘ</span>
             </button>
           </div>
         </div>
@@ -802,7 +802,7 @@ function App() {
         >
           <div
             ref={aboutModalRef}
-            className="bg-white dark-gray pa4 br3 mw6 w-90"
+            className="bg-dark-gray white ba b--gray pa4 br3 mw6 w-90"
             style={{ maxHeight: "80vh", overflowY: "auto" }}
             onClick={(e) => e.stopPropagation()}
             role="dialog"
@@ -812,7 +812,7 @@ function App() {
             <div className="flex justify-between items-center mb3">
               <h2 id="about-title" className="ma0 f4">About Card Designer</h2>
               <button
-                className="bn pointer bg-transparent f3 dark-gray"
+                className="bn pointer bg-transparent f3 white"
                 onClick={() => setIsAboutOpen(false)}
                 aria-label="Close"
               >
@@ -824,17 +824,17 @@ function App() {
             </p>
             <p className="mt0 mb2">
               <strong>Made by</strong><br />
-              <a href="https://github.com/avidrucker" className="link blue" target="_blank" rel="noreferrer">
+              <a href="https://github.com/avidrucker" className="link light-blue" target="_blank" rel="noreferrer">
                 Avi Drucker
               </a>
             </p>
             <p className="mt0 mb3">
               <strong>Source &amp; issues</strong><br />
-              <a href="https://github.com/avidrucker/anki-card-test-1" className="link blue" target="_blank" rel="noreferrer">
+              <a href="https://github.com/avidrucker/anki-card-test-1" className="link light-blue" target="_blank" rel="noreferrer">
                 github.com/avidrucker/anki-card-test-1
               </a>
               <br />Found a bug or have a feature request?{" "}
-              <a href="https://github.com/avidrucker/anki-card-test-1/issues" className="link blue" target="_blank" rel="noreferrer">
+              <a href="https://github.com/avidrucker/anki-card-test-1/issues" className="link light-blue" target="_blank" rel="noreferrer">
                 Open an issue
               </a>
             </p>
@@ -849,7 +849,7 @@ function App() {
                   ["Tachyons", "Utility CSS (used by several card themes)"],
                   ["GitHub Pages", "Static hosting & deployment"],
                 ].map(([tech, role]) => (
-                  <tr key={tech} className="bb b--black-10">
+                  <tr key={tech} className="bb b--white-20">
                     <td className="pv1 pr3 fw6">{tech}</td>
                     <td className="pv1">{role}</td>
                   </tr>

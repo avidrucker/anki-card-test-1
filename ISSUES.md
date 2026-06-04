@@ -1013,7 +1013,7 @@ The `isLoadingTabContentRef` guard was intended to prevent this but is set async
 
 **Severity:** Advisory  
 **Concern:** Design quality / Usability  
-**Status:** Open
+**Status:** Resolved (2026-06-04)
 
 The About modal uses a white background and dark-gray text, which clashes with the app's dark-gray/near-black UI. The `ⓘ` button icon is not visually centred inside its circular glass button.
 
