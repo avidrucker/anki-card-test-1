@@ -1047,6 +1047,26 @@ The Pokémon RBY theme's layout uses spacing values that leave elements cramped 
 
 ---
 
+## Issue 39 — About button uses Unicode ⓘ instead of matching SVG icon
+
+**Severity:** Advisory  
+**Concern:** Design quality  
+**Status:** Open
+
+The `ⓘ` About button uses a raw Unicode character while all other icon buttons (`eyeIcon`, `eyeSlashIcon`, `copyIcon`, `checkIcon`) use inline Font Awesome 5 SVGs from `src/icons.jsx` with `fill="gray"`. The Unicode glyph renders differently across OSes and fonts, and is visually inconsistent with the rest of the icon set.
+
+**Have:** `ⓘ` Unicode character inside a `<span>` in the About button; no `infoIcon` export in `src/icons.jsx`.
+
+**Should have:** An `infoIcon` added to `src/icons.jsx` using the Font Awesome 5 Free `fa-info-circle` SVG path (same license, CC BY 4.0), with `fill="gray"` to match existing icons. About button updated to render `{infoIcon}` instead of the Unicode character.
+
+**Repro:**
+1. Inspect the About button (`ⓘ`) next to the eye-toggle button in the header.
+2. Observe: the `ⓘ` glyph is a Unicode character, not an SVG; its weight, size, and rendering differ from the SVG icons beside it.
+
+**Implementation note:** Font Awesome 5 Free `info-circle` path is available at `https://fontawesome.com/icons/info-circle` under CC BY 4.0. Add it to `src/icons.jsx` alongside the existing four exports.
+
+---
+
 ## Checks that passed
 
 | Check | Concern | Severity |
